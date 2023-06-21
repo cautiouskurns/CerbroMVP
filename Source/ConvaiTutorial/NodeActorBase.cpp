@@ -10,8 +10,15 @@ ANodeActorBase::ANodeActorBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//NodeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NodeMesh"));
+	//RootComponent = NodeMesh;
+
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = Root;
+
+	// Create the StaticMeshComponent and attach it to the Root
 	NodeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NodeMesh"));
-	RootComponent = NodeMesh;
+	NodeMesh->SetupAttachment(RootComponent);
 
 }
 
@@ -19,7 +26,6 @@ ANodeActorBase::ANodeActorBase()
 void ANodeActorBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame

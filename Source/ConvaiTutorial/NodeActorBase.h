@@ -26,4 +26,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
 	UStaticMeshComponent* NodeMesh;
 
+	// The root scene component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USceneComponent* Root;
 };
