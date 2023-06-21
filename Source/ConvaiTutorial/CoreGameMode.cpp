@@ -24,5 +24,7 @@ void ACoreGameMode::BeginPlay()
 	{
 		NodeManager->InitializeNodes();
 		NodeManager->PositionNodes();
+		NodeManager->GenerateEdges();
+		
 	}
 }

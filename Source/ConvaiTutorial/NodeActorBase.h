@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include <Engine/TextRenderActor.h>
+#include <Components/TextRenderComponent.h>
 #include "NodeActorBase.generated.h"
+
 
 UCLASS()
 class CONVAITUTORIAL_API ANodeActorBase : public AActor
@@ -29,4 +32,9 @@ public:
 	// The root scene component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* Root;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
+	UTextRenderComponent* NodeTextComponent;
+
+	void SetNodeText(const FString& NewText);
 };

@@ -3,6 +3,7 @@
 
 #include "EdgeActorBase.h"
 #include "NodeActorBase.h"
+#include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -11,19 +12,69 @@ AEdgeActorBase::AEdgeActorBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//EdgeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EdgeMesh"));
+	//RootComponent = EdgeMesh;
+
+	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	RootComponent = Root;
+
+	// Create the StaticMeshComponent and attach it to the Root
 	EdgeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EdgeMesh"));
-	RootComponent = EdgeMesh;
-
-	//NodeA = nullptr;
-	//NodeB = nullptr;
+	EdgeMesh->SetupAttachment(RootComponent);
 
 }
 
-void AEdgeActorBase::SetNodes(ANodeActorBase* InNodeA, ANodeActorBase* InNodeB)
+void AEdgeActorBase::SetNodes(ANodeActorBase* StartNode, ANodeActorBase* EndNode)
 {
-	NodeA = InNodeA;
-	NodeB = InNodeB;
+	if (StartNode && EndNode && EdgeMesh)
+	{
+		float Radius = GetStaticMeshComponentRadius(StartNode->NodeMesh);
+
+		NodeOffset = FVector(0, 0, Radius);
+
+		FVector StartPos = StartNode->NodeMesh->GetComponentLocation() + NodeOffset;
+		FVector EndPos = EndNode->NodeMesh->GetComponentLocation() + NodeOffset;
+
+		// Position
+		FVector MidPoint = (StartPos + EndPos) / 2;
+		SetActorLocation(StartPos);
+		/*SetActorLocation(MidPoint);*/
+
+		// Rotation
+		FVector Direction = (EndPos - StartPos).GetSafeNormal();
+		FRotator Rotation = Direction.Rotation();
+		SetActorRotation(Rotation);
+
+		// Scale
+		float Distance = FVector::Dist(StartPos, EndPos);
+		float ScalingFactor = 0.01f; // adjust this value as needed
+		FVector Scale = FVector(0.05, 0.05, Distance * ScalingFactor);  // adjust the 1s as needed for your edge's width and height
+		EdgeMesh->SetWorldScale3D(Scale);
+	}
 }
+
+float AEdgeActorBase::GetStaticMeshComponentRadius(UStaticMeshComponent* StaticMeshComponent)
+{
+	if (StaticMeshComponent == nullptr)
+	{
+		// Handle the case where the StaticMeshComponent is invalid.
+		return 0.0f;
+	}
+
+	UStaticMesh* StaticMesh = StaticMeshComponent->GetStaticMesh();
+	if (StaticMesh == nullptr)
+	{
+		// Handle the case where the StaticMesh is invalid.
+		return 0.0f;
+	}
+
+	FVector BoundsExtent = StaticMesh->GetBounds().BoxExtent;
+	float MaxExtent = FMath::Max3(BoundsExtent.X, BoundsExtent.Y, BoundsExtent.Z);
+
+	return MaxExtent;
+}
+
+
 
 // Called when the game starts or when spawned
 void AEdgeActorBase::BeginPlay()
@@ -36,9 +87,5 @@ void AEdgeActorBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (NodeA && NodeB)
-	{
-		// Set the position, rotation, and scale of the edge based on the nodes' positions
-	}
 }
 

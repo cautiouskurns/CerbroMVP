@@ -19,15 +19,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Your Category")
 	FSectionStruct SectionStruct;
 
-public:
 	UPROPERTY(BlueprintReadWrite, Category = "Your Category")
 	FTopic TopicStruct;
 
-public:
 	UPROPERTY(BlueprintReadWrite, Category = "Your Category")
 	FSubtopic SubTopicStruct;
 
-public:
 	UPROPERTY(BlueprintReadWrite, Category = "Your Category")
 	FTest QuestionStruct;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "My Category")
+	TArray<FSectionStruct> SectionDataArray;
 };

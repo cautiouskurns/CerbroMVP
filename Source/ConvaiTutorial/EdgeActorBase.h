@@ -26,7 +26,10 @@ public:
 	UStaticMeshComponent* EdgeMesh;
 
 	UFUNCTION(BlueprintCallable, Category = "Edge")
-	void SetNodes(ANodeActorBase* InNodeA, ANodeActorBase* InNodeB);
+	void SetNodes(ANodeActorBase* StartNode, ANodeActorBase* EndNode);
+
+	UFUNCTION(BlueprintCallable, Category = "Edge")
+	float GetStaticMeshComponentRadius(UStaticMeshComponent* StaticMeshComponent);
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,6 +38,15 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	// The root scene component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USceneComponent* Root;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeManager")
+	FVector NodeOffset;
+
+
 
 
 };

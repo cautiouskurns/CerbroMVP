@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "NodeActorBase.h"
+#include "EdgeActorBase.h"
 #include "NodeManager.generated.h"
 
 
@@ -31,13 +32,20 @@ public:
 	// Positions NodeActors in a grid
 	void PositionNodes();
 
-	void NodeTest();
+	UFUNCTION(BlueprintCallable, Category = "Edge")
+	void GenerateEdges();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
 	TSubclassOf<class ANodeActorBase> NodeBlueprintClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Edge")
+	TSubclassOf<class AEdgeActorBase> EdgeBlueprintClass;
+
 	UPROPERTY()
 	TArray<ANodeActorBase*> NodeActors;
+
+	UPROPERTY()
+	TArray<AEdgeActorBase*> EdgeActors;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeManager")
 	FVector StartPosition;
