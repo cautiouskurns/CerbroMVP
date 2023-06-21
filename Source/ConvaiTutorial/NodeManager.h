@@ -32,8 +32,13 @@ public:
 	// Positions NodeActors in a grid
 	void PositionNodes();
 
+	TArray<FString> GenerateSubtopicNames();
+
+	void SetNodeText();
+
 	UFUNCTION(BlueprintCallable, Category = "Edge")
 	void GenerateEdges();
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
 	TSubclassOf<class ANodeActorBase> NodeBlueprintClass;

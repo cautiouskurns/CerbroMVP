@@ -22,8 +22,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Your Category")
 	FTopic TopicStruct;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Your Category")
-	FSubtopic SubTopicStruct;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "My Category")
+	TArray<FSubtopic> SubTopicStructArray;
+
 
 	UPROPERTY(BlueprintReadWrite, Category = "Your Category")
 	FTest QuestionStruct;

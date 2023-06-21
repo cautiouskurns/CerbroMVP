@@ -3,6 +3,7 @@
 
 #include "NodeManager.h"
 #include "NodeActorBase.h"
+#include "ReadWriteJsonFile.h"
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/TextRenderActor.h"
@@ -43,14 +44,41 @@ void ANodeManager::InitializeNodes()
     UWorld* World = GetWorld();
     if (!World) return;
 
-    for (int i = 0; i < 10; ++i)  // Create 10 nodes
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+    if (!GameInstance) return;
+
+    TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
+    TArray<FSubtopic> GameInstanceSubTopicDataArray = GameInstance->SubTopicStructArray;
+
+
+    FString TestContent = GameInstanceSectionDataArray[0].Topics[0].Subtopics[0].Title;
+    UE_LOG(LogTemp, Warning, TEXT("TestContent: %s"), *TestContent);
+
+    int TotalSubTopics = 0;
+
+
+    if (GameInstance)
+    {
+        for (FSectionStruct& Section : GameInstance->SectionDataArray)
+        {
+            for (FTopic& Topic : Section.Topics)
+            {
+                TotalSubTopics += Topic.Subtopics.Num();
+            }
+        }
+        // Now TotalSubTopics contains the total number of subtopics
+
+        // pritn TotalSubTopics
+        UE_LOG(LogTemp, Warning, TEXT("TotalSubTopics: %d"), TotalSubTopics);
+    }
+
+    
+    for (int i = 0; i < TotalSubTopics; ++i)  // Create 10 nodes
     {
         FActorSpawnParameters SpawnParams;
 
         if (NodeBlueprintClass)
         {
-            //FVector NodeZero(-2230.000000, -360.000000, -20.000000);
-
             ANodeActorBase* NodeActor = World->SpawnActor<ANodeActorBase>(NodeBlueprintClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
             NodeActors.Add(NodeActor);
 
@@ -82,27 +110,52 @@ void ANodeManager::PositionNodes()
         Position.Z = 0;
 
         NodeActor->SetActorLocation(Position + StartPosition);
+       
+    }
+
+    // Set Node Text
+    SetNodeText();
+}
 
 
-        // Setting text
-        ANodeActorBase* NodeActorBase = Cast<ANodeActorBase>(NodeActor);
-        UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-        if (GameInstance)
+TArray<FString> ANodeManager::GenerateSubtopicNames()
+{
+    TArray<FString> SubTopicNames;
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+
+    if (GameInstance)
+    {
+        // First, flatten the structure into a list of subtopic names
+        for (FSectionStruct& Section : GameInstance->SectionDataArray)
         {
-            TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
-            // Now you can use GameInstanceSectionDataArray
-            if (NodeActorBase && i < GameInstanceSectionDataArray.Num())
+            for (FTopic& Topic : Section.Topics)
             {
-                FString DebugMessage = FString::Printf(TEXT("NodeActorBase 111"));
-
-                // print debug message to log
-                UE_LOG(LogTemp, Warning, TEXT("%s"), *DebugMessage);
-
-                NodeActorBase->SetNodeText(GameInstanceSectionDataArray[i].SectionName);
+                for (FSubtopic& SubTopic : Topic.Subtopics)
+                {
+                    SubTopicNames.Add(SubTopic.Title);
+                }
             }
         }
+    }
 
-       
+    return SubTopicNames;
+}
+
+
+void ANodeManager::SetNodeText()
+{
+    TArray<FString> SubTopicNames = GenerateSubtopicNames();
+
+    for (int32 i = 0; i < NodeActors.Num(); i++)
+    {
+        AActor* NodeActor = NodeActors[i];
+        if (!NodeActor) continue;  // skip if the pointer is null
+
+        ANodeActorBase* NodeActorBase = Cast<ANodeActorBase>(NodeActor);
+        if (NodeActorBase && i < SubTopicNames.Num())
+        {
+            NodeActorBase->SetNodeText(SubTopicNames[i]);
+        }
     }
 }
 
