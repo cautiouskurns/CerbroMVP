@@ -31,7 +31,7 @@ public:
 
 	void InitializeNodesByTopic();
 
-	ANodeActorBase* CreateNode(const FString& NodeName, const FVector& Position);
+	ANodeActorBase* CreateNode(const FString& NodeName, const FVector& Position, bool IsTopicNode);
 
 	FVector CalculateTopicPosition(int32 TopicIndex, int32 TotalNumberOfTopics);
 
@@ -64,5 +64,17 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeManager")
 	FVector StartPosition;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Materials")
+	UMaterialInterface* TopicNodeMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Materials")
+	UMaterialInterface* SubtopicNodeMaterial;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Config")
+	FColor TopicFontColor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Config")
+	FColor SubtopicFontColor;
 
 };

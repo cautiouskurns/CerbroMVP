@@ -22,7 +22,7 @@ ANodeManager::ANodeManager()
 	PrimaryActorTick.bCanEverTick = true;
 
    /* StartPosition = FVector(-2230.000000, -360.000000, 0);*/
-    StartPosition = FVector(0, 0, 0);
+    StartPosition = FVector(0, 0, 100);
 
 }
 
@@ -259,27 +259,36 @@ void ANodeManager::InitializeNodesByTopic()
         for (const FTopic& Topic : Section.Topics)
         {
             // Create a node for the Topic
-            ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition);
-            NodeActors.Add(TopicNode);
-            TopicIndex++;
+            ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
+            TopicNode->SetFontColor(TopicFontColor);  // Set font color for topic
 
+            NodeActors.Add(TopicNode);
+
+           
             // Create a node for each Subtopic
             int32 SubtopicIndex = 0;
             for (const FSubtopic& Subtopic : Topic.Subtopics)
             {
-                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics));
+                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
+                SubtopicNode->SetFontColor(SubtopicFontColor);  // Set font color for subtopic
+
                 NodeActors.Add(SubtopicNode);
 
                 CreateEdge(TopicNode, SubtopicNode);
 
                 SubtopicIndex++;
             }
+
+            TopicIndex++;
         }
     }
 }
 
-ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector& Position)
+ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector& Position, bool IsTopicNode)
 {
+    float TopicFontSize = 28.0f;
+    float SubtopicFontSize = 18.0f;
+
     UWorld* World = GetWorld();
     if (!World) return nullptr;
 
@@ -289,7 +298,15 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector&
         ANodeActorBase* NodeActor = World->SpawnActor<ANodeActorBase>(NodeBlueprintClass, Position, FRotator::ZeroRotator, SpawnParams);
         if (NodeActor)
         {
+            // Set font size based on whether it's a topic node
+            NodeActor->SetFontSize(IsTopicNode ? TopicFontSize : SubtopicFontSize);
             NodeActor->SetNodeText(NodeName);
+
+            
+
+            // Set the material based on whether this is a Topic or Subtopic node
+            UMaterialInterface* Material = IsTopicNode ? TopicNodeMaterial : SubtopicNodeMaterial;
+            NodeActor->SetMaterial(Material);
             return NodeActor;
         }
     }
@@ -318,7 +335,7 @@ FVector ANodeManager::CalculateTopicPosition(int32 TopicIndex, int32 TotalNumber
 {
     // Implement this function to calculate where the Topic nodes should be positioned
     // Example:
-    float Radius = 1000.0f;
+    float Radius = 500.0f;
     float AngleStep = 360.0f / TotalNumberOfTopics;
     float CurrentAngle = AngleStep * TopicIndex;
     FVector Position;

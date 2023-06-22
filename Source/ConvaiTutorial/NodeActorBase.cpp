@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "Engine/Engine.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/Font.h"
 #include "Engine/TextRenderActor.h"
 #include "Components/TextRenderComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -24,6 +25,7 @@ ANodeActorBase::ANodeActorBase()
 
 	NodeTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("NodeText"));
 	NodeTextComponent->SetupAttachment(RootComponent); // attach to the root component
+	NodeTextComponent->SetWorldSize(1000.0f); // sets the size of the text in the world
 
 }
 
@@ -38,6 +40,15 @@ void ANodeActorBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (PlayerController && NodeTextComponent)
+	{
+		FVector PlayerLocation = PlayerController->GetPawn()->GetActorLocation();
+		FVector Direction = PlayerLocation - GetActorLocation();
+		FRotator NewRotation = Direction.Rotation();
+		NodeTextComponent->SetWorldRotation(NewRotation);
+	}
+
 }
 
 void ANodeActorBase::SetNodeText(const FString& NewText)
@@ -48,3 +59,44 @@ void ANodeActorBase::SetNodeText(const FString& NewText)
 	}
 }
 
+void ANodeActorBase::SetFontSize(float FontSize)
+{
+	if (NodeTextComponent)
+	{
+		if (NodeFont)
+		{
+			NodeTextComponent->SetWorldSize(FontSize);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("NodeFont is nullptr."));
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NodeTextComponent is nullptr."));
+	}
+}
+
+void ANodeActorBase::SetFontColor(FColor Color)
+{
+	if (NodeTextComponent)
+	{
+		NodeTextComponent->SetTextRenderColor(Color);
+	}
+}
+
+
+void ANodeActorBase::SetMaterial(UMaterialInterface* Material)
+{
+	UStaticMeshComponent* MeshComponent = GetStaticMeshComponent();
+	if (MeshComponent)
+	{
+		MeshComponent->SetMaterial(0, Material);
+	}
+}
+
+UStaticMeshComponent* ANodeActorBase::GetStaticMeshComponent() const
+{
+	return FindComponentByClass<UStaticMeshComponent>();
+}

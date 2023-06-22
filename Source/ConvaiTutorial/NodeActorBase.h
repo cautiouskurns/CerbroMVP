@@ -36,5 +36,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
 	UTextRenderComponent* NodeTextComponent;
 
+	UPROPERTY(EditAnywhere, Category = "Font")
+	UFont* NodeFont;
+
 	void SetNodeText(const FString& NewText);
+	void SetFontSize(float FontSize);
+	void SetFontColor(FColor Color);
+	void SetMaterial(UMaterialInterface* Material);
+	UStaticMeshComponent* GetStaticMeshComponent() const;
 };
