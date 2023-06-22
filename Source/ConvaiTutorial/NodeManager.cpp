@@ -21,7 +21,8 @@ ANodeManager::ANodeManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-    StartPosition = FVector(-2230.000000, -360.000000, 0);
+   /* StartPosition = FVector(-2230.000000, -360.000000, 0);*/
+    StartPosition = FVector(0, 0, 0);
 
 }
 
@@ -29,7 +30,9 @@ ANodeManager::ANodeManager()
 void ANodeManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+    // This ensures that the nodes and edges are created after the GameInstance data is populated
+    GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesByTopic);
 }
 
 // Called every frame
@@ -91,6 +94,8 @@ void ANodeManager::InitializeNodes()
 
     }
 }
+
+
 
 void ANodeManager::PositionNodes()
 {
@@ -187,3 +192,181 @@ void ANodeManager::GenerateEdges()
         }
     }
 }
+
+
+
+
+
+
+
+//void ANodeManager::InitializeNodesByTopic()
+//{
+//    UWorld* World = GetWorld();
+//    if (!World) return;
+//
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+//    if (!GameInstance) return;
+//
+//    TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
+//
+//    // Generate Nodes for Topics and Subtopics
+//    int32 TopicIndex = 0;
+//    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
+//    {
+//        for (const FTopic& Topic : Section.Topics)
+//        {
+//            // Create a node for the Topic
+//            ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex));
+//            NodeActors.Add(TopicNode);
+//            TopicIndex++;
+//
+//            // Create a node for each Subtopic
+//            int32 SubtopicIndex = 0;
+//            for (const FSubtopic& Subtopic : Topic.Subtopics)
+//            {
+//                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex));
+//                NodeActors.Add(SubtopicNode);
+//
+//                CreateEdge(TopicNode, SubtopicNode);
+//
+//                SubtopicIndex++;
+//            }
+//        }
+//    }
+//}
+
+void ANodeManager::InitializeNodesByTopic()
+{
+    UWorld* World = GetWorld();
+    if (!World) return;
+
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+    if (!GameInstance) return;
+
+    TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
+
+    // Determine total number of topics across all sections
+    int32 TotalNumberOfTopics = 0;
+    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
+    {
+        TotalNumberOfTopics += Section.Topics.Num();
+    }
+
+    // Generate Nodes for Topics and Subtopics
+    int32 TopicIndex = 0;
+    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
+    {
+        for (const FTopic& Topic : Section.Topics)
+        {
+            // Create a node for the Topic
+            ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition);
+            NodeActors.Add(TopicNode);
+            TopicIndex++;
+
+            // Create a node for each Subtopic
+            int32 SubtopicIndex = 0;
+            for (const FSubtopic& Subtopic : Topic.Subtopics)
+            {
+                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics));
+                NodeActors.Add(SubtopicNode);
+
+                CreateEdge(TopicNode, SubtopicNode);
+
+                SubtopicIndex++;
+            }
+        }
+    }
+}
+
+ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector& Position)
+{
+    UWorld* World = GetWorld();
+    if (!World) return nullptr;
+
+    FActorSpawnParameters SpawnParams;
+    if (NodeBlueprintClass)
+    {
+        ANodeActorBase* NodeActor = World->SpawnActor<ANodeActorBase>(NodeBlueprintClass, Position, FRotator::ZeroRotator, SpawnParams);
+        if (NodeActor)
+        {
+            NodeActor->SetNodeText(NodeName);
+            return NodeActor;
+        }
+    }
+
+    return nullptr;
+}
+
+
+//FVector ANodeManager::CalculateTopicPosition(int32 TopicIndex)
+//{
+//    StartPosition = FVector(-2230.000000, -360.000000, 0);
+//    // Suppose Topics are arranged vertically with 100 unit spacing
+//    return FVector(0.f, TopicIndex * 500.f, 0.f) + StartPosition;
+//}
+//
+//FVector ANodeManager::CalculateSubTopicPosition(int32 TopicIndex, int32 SubTopicIndex)
+//{
+//    
+//    // Suppose Subtopics are arranged horizontally with 100 unit spacing, relative to their parent Topic
+//    FVector TopicPosition = CalculateTopicPosition(TopicIndex);
+//    return FVector(TopicPosition.X + (SubTopicIndex + 1) * 100.f, TopicPosition.Y, TopicPosition.Z);
+//}
+
+
+FVector ANodeManager::CalculateTopicPosition(int32 TopicIndex, int32 TotalNumberOfTopics)
+{
+    // Implement this function to calculate where the Topic nodes should be positioned
+    // Example:
+    float Radius = 1000.0f;
+    float AngleStep = 360.0f / TotalNumberOfTopics;
+    float CurrentAngle = AngleStep * TopicIndex;
+    FVector Position;
+    Position.X = Radius * FMath::Cos(FMath::DegreesToRadians(CurrentAngle));
+    Position.Y = Radius * FMath::Sin(FMath::DegreesToRadians(CurrentAngle));
+    Position.Z = 0;
+
+    return Position;
+}
+
+FVector ANodeManager::CalculateSubTopicPosition(int32 TopicIndex, int32 SubTopicIndex, int32 TotalNumberOfSubTopics, int32 TotalNumberOfTopics)
+{
+    // Implement this function to calculate where the Subtopic nodes should be positioned relative to their Topic
+    // Example:
+    float Radius = 300.0f; // Subtopics will be closer to their Topic
+    float AngleStep = 360.0f / TotalNumberOfSubTopics;
+    float CurrentAngle = AngleStep * SubTopicIndex;
+    FVector Position;
+    Position.X = Radius * FMath::Cos(FMath::DegreesToRadians(CurrentAngle));
+    Position.Y = Radius * FMath::Sin(FMath::DegreesToRadians(CurrentAngle));
+    Position.Z = 0;
+
+    FVector TopicPosition = CalculateTopicPosition(TopicIndex, TotalNumberOfTopics);
+
+    // Add the position of the parent Topic to the calculated position
+    return Position + TopicPosition;
+}
+
+
+void ANodeManager::CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2)
+{
+    // Ensure the world exists
+    UWorld* World = GetWorld();
+    if (!World) return;
+
+    // Ensure the Edge blueprint class is set
+    if (!EdgeBlueprintClass) return;
+
+    // Spawn params
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.Owner = this;
+
+    // Create edge between Node1 and Node2
+    AEdgeActorBase* EdgeActor = World->SpawnActor<AEdgeActorBase>(EdgeBlueprintClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+    if (EdgeActor)
+    {
+        EdgeActor->SetNodes(Node1, Node2);
+        EdgeActors.Add(EdgeActor);
+    }
+}
+

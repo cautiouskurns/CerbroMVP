@@ -29,6 +29,16 @@ public:
 	// Populates NodeActors array with instances of NodeActorBase
 	void InitializeNodes();
 
+	void InitializeNodesByTopic();
+
+	ANodeActorBase* CreateNode(const FString& NodeName, const FVector& Position);
+
+	FVector CalculateTopicPosition(int32 TopicIndex, int32 TotalNumberOfTopics);
+
+	FVector CalculateSubTopicPosition(int32 TopicIndex, int32 SubTopicIndex, int32 TotalNumberOfSubTopics, int32 TotalNumberOfTopics);
+
+	void CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2);
+
 	// Positions NodeActors in a grid
 	void PositionNodes();
 

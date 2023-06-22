@@ -22,9 +22,9 @@ void ACoreGameMode::BeginPlay()
 	}
 	if (NodeManager)
 	{
-		NodeManager->InitializeNodes();
+		/*NodeManager->InitializeNodes();
 		NodeManager->PositionNodes();
-		NodeManager->GenerateEdges();
+		NodeManager->GenerateEdges();*/
 		
 	}
 }
