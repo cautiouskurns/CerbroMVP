@@ -39,9 +39,20 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Font")
 	UFont* NodeFont;
 
+	// Parent topic of this node, null if this node is a topic
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
+	ANodeActorBase* ParentTopic;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
+	bool bIsHighlighted;
+
 	void SetNodeText(const FString& NewText);
 	void SetFontSize(float FontSize);
 	void SetFontColor(FColor Color);
 	void SetMaterial(UMaterialInterface* Material);
 	UStaticMeshComponent* GetStaticMeshComponent() const;
+
+	void Highlight();
+	void RestoreOpacity();
+	void LowerOpacity();
 };

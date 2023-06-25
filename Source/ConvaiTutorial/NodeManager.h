@@ -39,6 +39,11 @@ public:
 
 	void CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2);
 
+	bool IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode);
+
+	UFUNCTION(BlueprintCallable, Category = "Edge")
+	void HighlightTopic(ANodeActorBase* TopicNode);
+
 	// Positions NodeActors in a grid
 	void PositionNodes();
 

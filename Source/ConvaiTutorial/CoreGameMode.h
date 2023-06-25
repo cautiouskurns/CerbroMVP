@@ -24,9 +24,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Manager")
 	TSubclassOf<class ANodeManager> NodeManagerClass;
 	
-private:
-	UPROPERTY()
-	class ANodeManager* NodeManager;
+public:
+	UPROPERTY(BlueprintReadOnly, Category = "Node Manager")
+	ANodeManager* NodeManager;
 
 };
 

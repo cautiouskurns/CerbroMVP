@@ -260,8 +260,9 @@ void ANodeManager::InitializeNodesByTopic()
         {
             // Create a node for the Topic
             ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
-            TopicNode->SetFontColor(TopicFontColor);  // Set font color for topic
+            TopicNode->ParentTopic = nullptr;
 
+            TopicNode->SetFontColor(TopicFontColor);  // Set font color for topic
             NodeActors.Add(TopicNode);
 
            
@@ -270,6 +271,8 @@ void ANodeManager::InitializeNodesByTopic()
             for (const FSubtopic& Subtopic : Topic.Subtopics)
             {
                 ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
+                SubtopicNode->ParentTopic = TopicNode;
+                
                 SubtopicNode->SetFontColor(SubtopicFontColor);  // Set font color for subtopic
 
                 NodeActors.Add(SubtopicNode);
@@ -306,7 +309,8 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector&
 
             // Set the material based on whether this is a Topic or Subtopic node
             UMaterialInterface* Material = IsTopicNode ? TopicNodeMaterial : SubtopicNodeMaterial;
-            NodeActor->SetMaterial(Material);
+            UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(Material, NodeActor);
+            NodeActor->GetStaticMeshComponent()->SetMaterial(0, DynamicMaterial);
             return NodeActor;
         }
     }
@@ -386,4 +390,44 @@ void ANodeManager::CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2)
         EdgeActors.Add(EdgeActor);
     }
 }
+
+
+bool ANodeManager::IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode)
+{
+    return Node->ParentTopic == TopicNode;
+}
+
+
+void ANodeManager::HighlightTopic(ANodeActorBase* TopicNode)
+{
+    // If the selected node is already highlighted, unhighlight it and its subtopics, 
+    // and restore all other nodes to full opacity
+    if (TopicNode->bIsHighlighted)
+    {
+        for (ANodeActorBase* Node : NodeActors)
+        {
+            Node->RestoreOpacity();
+        }
+
+        TopicNode->bIsHighlighted = false;
+    }
+    else
+    {
+        for (ANodeActorBase* Node : NodeActors)
+        {
+            if (Node == TopicNode || IsSubtopicOf(Node, TopicNode))
+            {
+                Node->Highlight();
+            }
+            else
+            {
+                Node->LowerOpacity();
+            }
+        }
+
+        TopicNode->bIsHighlighted = true;
+    }
+}
+
+
 

@@ -27,6 +27,7 @@ ANodeActorBase::ANodeActorBase()
 	NodeTextComponent->SetupAttachment(RootComponent); // attach to the root component
 	NodeTextComponent->SetWorldSize(1000.0f); // sets the size of the text in the world
 
+	bIsHighlighted = false;
 }
 
 // Called when the game starts or when spawned
@@ -99,4 +100,52 @@ void ANodeActorBase::SetMaterial(UMaterialInterface* Material)
 UStaticMeshComponent* ANodeActorBase::GetStaticMeshComponent() const
 {
 	return FindComponentByClass<UStaticMeshComponent>();
+}
+
+
+void ANodeActorBase::Highlight()
+{
+	// Set the emissive color of the material to make it glow or stand out
+
+	if (NodeMesh)
+	{
+		UMaterialInstanceDynamic* DynamicMaterial = Cast<UMaterialInstanceDynamic>(GetStaticMeshComponent()->GetMaterial(0));
+		if (DynamicMaterial)
+		{
+			DynamicMaterial->SetVectorParameterValue(FName("EmissiveColor"), FLinearColor::White);
+		}
+	}
+
+}
+
+
+void ANodeActorBase::RestoreOpacity()
+{
+	//UStaticMeshComponent* StaticMeshComponent = GetStaticMeshComponent();
+	if (NodeMesh)
+	{
+		UMaterialInstanceDynamic* Material = NodeMesh->CreateDynamicMaterialInstance(0);
+		if (Material)
+		{
+			Material->SetScalarParameterValue(FName("Opacity"), 1.0f);  // restore to full opacity
+		}
+	}
+
+	bIsHighlighted = false;
+}
+
+
+void ANodeActorBase::LowerOpacity()
+{
+	//UStaticMeshComponent* StaticMeshComponent = GetStaticMeshComponent();
+	if (NodeMesh)
+	{
+		UMaterialInstanceDynamic* Material = NodeMesh->CreateDynamicMaterialInstance(0);
+		if (Material)
+		{
+			Material->SetScalarParameterValue(FName("Opacity"), 0.5f);  // lower opacity
+		}
+	}
+
+	bIsHighlighted = false;
 }
