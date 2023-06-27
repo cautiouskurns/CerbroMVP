@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "NodeActorBase.h"
 #include "EdgeActorBase.h"
+#include "ReadWriteJsonFile.h"
 #include "NodeManager.generated.h"
 
 
@@ -43,6 +44,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Edge")
 	void HighlightTopic(ANodeActorBase* TopicNode);
+
+	UFUNCTION(BlueprintCallable, Category = "MyCategory")
+	int32 CalculateTotalTimesAsked(FString SubtopicTitle);
 
 	// Positions NodeActors in a grid
 	void PositionNodes();

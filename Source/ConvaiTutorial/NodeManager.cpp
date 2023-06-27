@@ -1,4 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+
+// This class is responsible for creating, managing, and positioning nodes and edges.
 
 
 #include "NodeManager.h"
@@ -21,12 +22,13 @@ ANodeManager::ANodeManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-   /* StartPosition = FVector(-2230.000000, -360.000000, 0);*/
+    // The start position is set to (0, 0, 100) in the 3D space.
     StartPosition = FVector(0, 0, 100);
 
 }
 
-// Called when the game starts or when spawned
+// This function is called when the game starts or when the actor is spawned.
+// It sets a timer to call InitializeNodesByTopic function at the start of next tick.
 void ANodeManager::BeginPlay()
 {
 	Super::BeginPlay();
@@ -42,6 +44,8 @@ void ANodeManager::Tick(float DeltaTime)
 
 }
 
+
+// This function initializes the nodes by retrieving data from the GameInstance.
 void ANodeManager::InitializeNodes()
 {
     UWorld* World = GetWorld();
@@ -54,8 +58,7 @@ void ANodeManager::InitializeNodes()
     TArray<FSubtopic> GameInstanceSubTopicDataArray = GameInstance->SubTopicStructArray;
 
 
-    FString TestContent = GameInstanceSectionDataArray[0].Topics[0].Subtopics[0].Title;
-    UE_LOG(LogTemp, Warning, TEXT("TestContent: %s"), *TestContent);
+    // Create nodes based on the topics and subtopics in the GameInstance.
 
     int TotalSubTopics = 0;
 
@@ -75,13 +78,15 @@ void ANodeManager::InitializeNodes()
         UE_LOG(LogTemp, Warning, TEXT("TotalSubTopics: %d"), TotalSubTopics);
     }
 
-    
+
+    // Create a node for each subtopic
     for (int i = 0; i < TotalSubTopics; ++i)  // Create 10 nodes
     {
         FActorSpawnParameters SpawnParams;
 
         if (NodeBlueprintClass)
         {
+            // Spawn a node actor
             ANodeActorBase* NodeActor = World->SpawnActor<ANodeActorBase>(NodeBlueprintClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
             NodeActors.Add(NodeActor);
 
@@ -96,9 +101,10 @@ void ANodeManager::InitializeNodes()
 }
 
 
-
+// This function positions the nodes in a grid.
 void ANodeManager::PositionNodes()
 {
+    // For each node, calculate its position based on its index and place it in the world.
     int32 size = FMath::RoundToInt(FMath::Sqrt(static_cast<float>(NodeActors.Num())));  // the number of nodes along one edge of the grid
     float spacing = 1000.f / size;  // the distance between each node
 
@@ -122,7 +128,7 @@ void ANodeManager::PositionNodes()
     SetNodeText();
 }
 
-
+// This function generates an array of subtopic names.
 TArray<FString> ANodeManager::GenerateSubtopicNames()
 {
     TArray<FString> SubTopicNames;
@@ -131,6 +137,7 @@ TArray<FString> ANodeManager::GenerateSubtopicNames()
     if (GameInstance)
     {
         // First, flatten the structure into a list of subtopic names
+        // Generate a list of subtopic names from the GameInstance.
         for (FSectionStruct& Section : GameInstance->SectionDataArray)
         {
             for (FTopic& Topic : Section.Topics)
@@ -146,9 +153,10 @@ TArray<FString> ANodeManager::GenerateSubtopicNames()
     return SubTopicNames;
 }
 
-
+// This function sets the text for each node.
 void ANodeManager::SetNodeText()
 {
+    // Generate an array of subtopic names
     TArray<FString> SubTopicNames = GenerateSubtopicNames();
 
     for (int32 i = 0; i < NodeActors.Num(); i++)
@@ -159,6 +167,7 @@ void ANodeManager::SetNodeText()
         ANodeActorBase* NodeActorBase = Cast<ANodeActorBase>(NodeActor);
         if (NodeActorBase && i < SubTopicNames.Num())
         {
+            // Set the node's text to the corresponding subtopic name
             NodeActorBase->SetNodeText(SubTopicNames[i]);
         }
     }
@@ -429,5 +438,35 @@ void ANodeManager::HighlightTopic(ANodeActorBase* TopicNode)
     }
 }
 
+
+
+int32 ANodeManager::CalculateTotalTimesAsked(FString SubtopicTitle)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (!GameInstance) return 0;
+
+    int32 TotalTimesAsked = 0;
+
+    for (const FSectionStruct& Section : GameInstance->SectionDataArray)
+    {
+        for (const FTopic& Topic : Section.Topics)
+        {
+            for (const FSubtopic& Subtopic : Topic.Subtopics)
+            {
+
+                if (Subtopic.Title == SubtopicTitle)
+                {
+                    for (const FTest& Question : Subtopic.Questions)
+                    {
+                        TotalTimesAsked += Question.TimesTested;
+                    }
+                    return TotalTimesAsked;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
 
 
