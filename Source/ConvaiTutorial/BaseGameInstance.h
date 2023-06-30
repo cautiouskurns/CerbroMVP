@@ -12,7 +12,7 @@
 
 
 USTRUCT(BlueprintType)
-struct FFolderStruct : public FTableRowBase
+struct FSubjectStruct : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -34,7 +34,7 @@ public:
 	UBaseGameInstance();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
-	TArray<FFolderStruct> SubjectDataArray;
+	TArray<FSubjectStruct> SubjectDataArray;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FSectionStruct> SectionDataArray;
@@ -45,7 +45,7 @@ public:
 
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
-	FFolderStruct SubjectData;
+	FSubjectStruct SubjectData;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FTopic> TopicDataArray;
