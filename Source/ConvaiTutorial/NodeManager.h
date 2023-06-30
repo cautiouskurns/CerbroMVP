@@ -48,6 +48,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "MyCategory")
 	int32 CalculateTotalTimesAsked(FString SubtopicTitle);
 
+	UFUNCTION(BlueprintCallable, Category = "MyCategory")
+	int32 CalculateTotalTimesCorrect(FString SubtopicTitle);
+
 	// Positions NodeActors in a grid
 	void PositionNodes();
 

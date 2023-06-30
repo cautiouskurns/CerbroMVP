@@ -469,4 +469,33 @@ int32 ANodeManager::CalculateTotalTimesAsked(FString SubtopicTitle)
     return 0;
 }
 
+int32 ANodeManager::CalculateTotalTimesCorrect(FString SubtopicTitle)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (!GameInstance) return 0;
+
+    int32 TotalTimesCorrect = 0;
+
+    for (const FSectionStruct& Section : GameInstance->SectionDataArray)
+    {
+        for (const FTopic& Topic : Section.Topics)
+        {
+            for (const FSubtopic& Subtopic : Topic.Subtopics)
+            {
+
+                if (Subtopic.Title == SubtopicTitle)
+                {
+                    for (const FTest& Question : Subtopic.Questions)
+                    {
+                        TotalTimesCorrect += Question.TimesCorrect;
+                    }
+                    return TotalTimesCorrect;
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
 

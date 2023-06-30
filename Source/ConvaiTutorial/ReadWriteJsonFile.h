@@ -99,6 +99,24 @@ public:
 };
 
 
+USTRUCT(BlueprintType)
+struct FTreeViewItem
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 ID;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString Name;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<int32> ChildrenIDs;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 ParentID;
+};
+
 
 UCLASS()
 class CONVAITUTORIAL_API UReadWriteJsonFile : public UBlueprintFunctionLibrary
