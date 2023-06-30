@@ -9,9 +9,22 @@
 #include <Components/TreeView.h>
 #include "BaseGameInstance.generated.h"
 
-/**
- * 
- */
+
+
+USTRUCT(BlueprintType)
+struct FFolderStruct : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SubjectName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FSectionStruct> SubjectDetailsArray;
+};
+
+
 UCLASS()
 class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
 {
@@ -21,7 +34,18 @@ public:
 	UBaseGameInstance();
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	TArray<FFolderStruct> SubjectDataArray;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FSectionStruct> SectionDataArray;
+
+	UFUNCTION(BlueprintCallable, Category = "Data")
+	void InitializeSubjectDataArray();
+
+
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	FFolderStruct SubjectData;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FTopic> TopicDataArray;

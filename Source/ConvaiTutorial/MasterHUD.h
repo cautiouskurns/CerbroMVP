@@ -6,7 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/TreeView.h"
 #include "FolderWidget.h"
-#include "ListWidget.generated.h"
 #include "MasterHUD.generated.h"
 
 
@@ -19,10 +18,4 @@ class CONVAITUTORIAL_API UMasterHUD : public UUserWidget
 {
     GENERATED_BODY()
 
-public:
-    virtual void NativeConstruct() override;
-
-private:
-    UPROPERTY(meta = (BindWidget))
-    UListWidget* ListWidget;
 };

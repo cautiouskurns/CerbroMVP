@@ -4,44 +4,98 @@
 #include "BaseGameInstance.h"
 #include "ReadWriteJsonFile.h"
 #include "Json.h"
+#include <Components/TreeView.h>
 #include "JsonObjectConverter.h"
 #include "Misc/FileHelper.h"
 #include "FolderWidget.h"
-#include "ListViewItemBase.h"
 
 UBaseGameInstance::UBaseGameInstance()
 {
-    FTreeViewItem RootItem;
-    RootItem.ID = 0;
-    RootItem.ParentID = -1;
-    RootItem.Name = "Root";
-    RootItem.ChildrenIDs = {}; // or some suitable value if you have child IDs to set
+ 
+}
 
-    FTreeViewItem ChildItem1;
-    ChildItem1.ID = 1;
-    ChildItem1.ParentID = 0;
-    ChildItem1.Name = "Child 1";
-    ChildItem1.ChildrenIDs = {}; // or some suitable value if you have child IDs to set
+void UBaseGameInstance::InitializeSubjectDataArray()
+{
+    FFolderStruct Struct1;
+    Struct1.SubjectName = "Law";
+    SubjectDataArray.Add(Struct1);
 
-    FTreeViewItem ChildItem2;
-    ChildItem2.ID = 2;
-    ChildItem2.ParentID = 0;
-    ChildItem2.Name = "Child 2";
-    ChildItem2.ChildrenIDs = {}; // or some suitable value if you have child IDs to set
+    FFolderStruct Struct2;
+    Struct2.SubjectName = "Physics";
+    SubjectDataArray.Add(Struct2);
 
+    FFolderStruct Struct3;
+    Struct3.SubjectName = "Chemistry";
+    SubjectDataArray.Add(Struct3);
 
-    FTreeViewItem ChildItem3;
-    ChildItem3.ID = 3;
-    ChildItem3.ParentID = 0;
-    ChildItem3.Name = "Child 3";
-    ChildItem3.ChildrenIDs = {}; // or some suitable value if you have child IDs to set
+    FFolderStruct Struct4;
+    Struct4.SubjectName = "Biology";
+    SubjectDataArray.Add(Struct4);
 
+    FFolderStruct Struct5;
+    Struct5.SubjectName = "English";
+    SubjectDataArray.Add(Struct5);
 
-    // Add the test data to the array.
-    TreeDataArray.Add(RootItem);
-    TreeDataArray.Add(ChildItem1);
-    TreeDataArray.Add(ChildItem2);
-    TreeDataArray.Add(ChildItem3);
+    FFolderStruct Struct6;
+    Struct6.SubjectName = "French";
+    SubjectDataArray.Add(Struct6);
+
+    FFolderStruct Struct7;
+    Struct7.SubjectName = "German";
+    SubjectDataArray.Add(Struct7);
+
+    FFolderStruct Struct8;
+    Struct8.SubjectName = "Spanish";
+    SubjectDataArray.Add(Struct8);
+
+    FFolderStruct Struct9;
+    Struct9.SubjectName = "Economics";
+    SubjectDataArray.Add(Struct9);
+
+    FFolderStruct Struct10;
+    Struct10.SubjectName = "History";
+    SubjectDataArray.Add(Struct10);
+
+    FFolderStruct Struct11;
+
+    Struct11.SubjectName = "Geography";
+    SubjectDataArray.Add(Struct11);
+
+    FFolderStruct Struct12;
+    Struct12.SubjectName = "Computer Science";
+    SubjectDataArray.Add(Struct12);
+
+    FFolderStruct Struct13;
+    Struct13.SubjectName = "Philosophy";
+    SubjectDataArray.Add(Struct13);
+
+    FFolderStruct Struct14;
+    Struct14.SubjectName = "Psychology";
+    SubjectDataArray.Add(Struct14);
+
+    FFolderStruct Struct15;
+    Struct15.SubjectName = "Political Science";
+    SubjectDataArray.Add(Struct15);
+
+    FFolderStruct Struct16;
+    Struct16.SubjectName = "Sociology";
+    SubjectDataArray.Add(Struct16);
+
+    FFolderStruct Struct17;
+    Struct17.SubjectName = "Astronomy";
+    SubjectDataArray.Add(Struct17);
+
+    FFolderStruct Struct18;
+    Struct18.SubjectName = "Music";
+    SubjectDataArray.Add(Struct18);
+
+    FFolderStruct Struct19;
+    Struct19.SubjectName = "Art";
+    SubjectDataArray.Add(Struct19);
+
+    FFolderStruct Struct20;
+    Struct20.SubjectName = "Theatre";
+    SubjectDataArray.Add(Struct20);
 }
 
 

@@ -79,21 +79,8 @@ TArray<FSubtopic> ABasePlayerController::CreateTopicWidgets(const TArray<FTopic>
 
             CreateSubTopicWidgets(TopicData.Subtopics, TopicWidget, SubtopicWidgetClass);
 
-            //// Add the Subtopics data to the array
-            //for (FSubtopic SubtopicData : TopicData.Subtopics)
-            //{
-            //    SubtopicDataArray.Add(SubtopicData);
-
-            //}
         }
     }
-    //for (int32 i = 0; i < SubtopicDataArray.Num(); ++i)
-    //{
-    //    FString SubtopicName = SubtopicDataArray[i].Title;
-    //    FString SubtopicDescription = SubtopicDataArray[i].Content;
-    //    FString DebugMessage = FString::Printf(TEXT("Subtopic %d, Name: %s, Description: %s"), i, *SubtopicName, *SubtopicDescription);
-    //    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, DebugMessage);
-    //}
    return SubtopicDataArray;
 }
 
