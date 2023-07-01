@@ -19,7 +19,6 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void AddSectionWidgetToHUD(USectionWidget* SectionWidget);
 
-protected:
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
     UVerticalBox* SectionBox;
 	

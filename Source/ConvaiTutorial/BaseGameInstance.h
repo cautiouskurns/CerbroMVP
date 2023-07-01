@@ -71,6 +71,22 @@ public:
 	FTest QuestionStruct;
 
 
+public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Color Palette")
+	FColor PrimaryColor;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Color Palette")
+	FColor SecondaryColor;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Color Palette")
+	FColor TertiaryColor;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Color Palette")
+	FColor AccentColor;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Color Palette")
+	FColor BackgroundColor;
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FTreeViewItem> TreeDataArray;

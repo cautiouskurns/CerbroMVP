@@ -7,6 +7,8 @@
 #include "SubTopicWidget.h"
 #include "HUDWidgetTest.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/WidgetComponent.h"
+#include "Blueprint/WidgetTree.h"
 #include <Engine.h>
 
 
@@ -107,6 +109,28 @@ void ABasePlayerController::CreateSubTopicWidgets(const TArray<FSubtopic>& SubTo
 
                 // Add to the array
                 SubtopicDataArray.Add(SubtopicData);
+            }
+        }
+    }
+}
+
+
+void ABasePlayerController::RemoveAllChildrenFromWidget(UUserWidget* TargetWidget)
+{
+    if (TargetWidget)
+    {
+        // Cast to your specific widget class
+        UHUDWidgetTest* MyUserWidget = Cast<UHUDWidgetTest>(TargetWidget);
+
+        if (MyUserWidget && MyUserWidget->SectionBox)
+        {
+            TArray<UWidget*> ChildWidgets = MyUserWidget->SectionBox->GetAllChildren();
+            for (UWidget* Widget : ChildWidgets)
+            {
+                if (Widget)
+                {
+                    Widget->RemoveFromParent();
+                }
             }
         }
     }

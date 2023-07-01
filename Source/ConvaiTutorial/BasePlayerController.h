@@ -48,4 +48,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	void CreateSubTopicWidgets(const TArray<FSubtopic>& SubTopics, UTopicWidget* TopicWidget,
 		TSubclassOf<UUserWidget> SubtopicWidgetClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void RemoveAllChildrenFromWidget(UUserWidget* TargetWidget);
+
 };
