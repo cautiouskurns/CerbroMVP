@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "Engine/DataTable.h"
 #include "ReadWriteJsonFile.h"
 #include "Json.h"
+#include "JsonObjectConverter.h"
 #include <Components/TreeView.h>
 #include "BaseGameInstance.generated.h"
 
@@ -38,6 +41,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FSectionStruct> SectionDataArray;
+
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	//FSectionStruct SubjectStruct;
 
 	UFUNCTION(BlueprintCallable, Category = "Data")
 	void InitializeSubjectDataArray();
@@ -98,9 +104,9 @@ public:
 	//TArray<FListViewItem> GetListData();
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	int32 UpdateRandomQuestionTimesTested(int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex);
+	int32 UpdateRandomQuestionTimesTested(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	int32 UpdateTimesCorrect(int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer);
+	int32 UpdateTimesCorrect(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer);
 
 };

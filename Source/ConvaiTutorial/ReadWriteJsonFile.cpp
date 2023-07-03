@@ -7,6 +7,12 @@
 #include "JsonObjectConverter.h"
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
+#include "BaseGameInstance.h"
+#include "FolderWidget.h"
+#include "Engine/World.h"
+#include "Engine/DataTable.h"
+#include <Kismet/GameplayStatics.h>
+#include <Engine/GameEngine.h>
 
 // Read a JSON file and return a FJsonStruct object.
 FJsonStruct UReadWriteJsonFile::ReadStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage)
@@ -42,8 +48,10 @@ FJsonStruct UReadWriteJsonFile::ReadStructFromJsonFile(FString JsonFilePath, boo
 
 FSectionStruct UReadWriteJsonFile::ReadNestedStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage)
 {
-    JsonFilePath = FPaths::ProjectContentDir() + "JurisData1.json";
+    JsonFilePath = FPaths::ProjectContentDir() + "JSONStructTest1.json";
     bOutSuccess = true;
+
+
 
     // Reads a JSON file and attempts to deserialize it into a FJsonStruct object.
     TSharedPtr<FJsonObject> JsonObject = ReadJsonFileToJsonObject(JsonFilePath, bOutSuccess, OutInfoMessage);
@@ -64,6 +72,7 @@ FSectionStruct UReadWriteJsonFile::ReadNestedStructFromJsonFile(FString JsonFile
         OutInfoMessage = FString::Printf(TEXT("Failed to convert JSON object to struct"));
         return FSectionStruct();
     }
+   
 
     bOutSuccess = true;
     OutInfoMessage = FString::Printf(TEXT("Convert JSON object to struct"));

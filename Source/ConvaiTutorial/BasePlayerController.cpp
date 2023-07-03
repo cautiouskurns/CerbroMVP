@@ -58,9 +58,6 @@ TArray<FSubtopic> ABasePlayerController::CreateTopicWidgets(const TArray<FTopic>
     SectionWidgetReference = InSectionWidget;
     SubtopicDataArray.Empty();
 
-   // GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::Printf(TEXT("TopicArray Size: %d"), BlueprintTopicArray.Num()));
-
-
     for (const FTopic& TopicData : BlueprintTopicArray)
     {
         FString Title = TopicData.Title;

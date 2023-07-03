@@ -442,25 +442,29 @@ void ANodeManager::HighlightTopic(ANodeActorBase* TopicNode)
 
 int32 ANodeManager::CalculateTotalTimesAsked(FString SubtopicTitle)
 {
+
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
     if (!GameInstance) return 0;
 
     int32 TotalTimesAsked = 0;
 
-    for (const FSectionStruct& Section : GameInstance->SectionDataArray)
+    for (const FSubjectStruct& Subject : GameInstance->SubjectDataArray)
     {
-        for (const FTopic& Topic : Section.Topics)
+        for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
         {
-            for (const FSubtopic& Subtopic : Topic.Subtopics)
+            for (const FTopic& Topic : Section.Topics)
             {
-
-                if (Subtopic.Title == SubtopicTitle)
+                for (const FSubtopic& Subtopic : Topic.Subtopics)
                 {
-                    for (const FTest& Question : Subtopic.Questions)
+
+                    if (Subtopic.Title == SubtopicTitle)
                     {
-                        TotalTimesAsked += Question.TimesTested;
+                        for (const FTest& Question : Subtopic.Questions)
+                        {
+                            TotalTimesAsked += Question.TimesTested;
+                        }
+                        return TotalTimesAsked;
                     }
-                    return TotalTimesAsked;
                 }
             }
         }
@@ -468,6 +472,7 @@ int32 ANodeManager::CalculateTotalTimesAsked(FString SubtopicTitle)
 
     return 0;
 }
+
 
 int32 ANodeManager::CalculateTotalTimesCorrect(FString SubtopicTitle)
 {
@@ -476,20 +481,23 @@ int32 ANodeManager::CalculateTotalTimesCorrect(FString SubtopicTitle)
 
     int32 TotalTimesCorrect = 0;
 
-    for (const FSectionStruct& Section : GameInstance->SectionDataArray)
+    for (const FSubjectStruct& Subject : GameInstance->SubjectDataArray)
     {
-        for (const FTopic& Topic : Section.Topics)
+        for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
         {
-            for (const FSubtopic& Subtopic : Topic.Subtopics)
+            for (const FTopic& Topic : Section.Topics)
             {
-
-                if (Subtopic.Title == SubtopicTitle)
+                for (const FSubtopic& Subtopic : Topic.Subtopics)
                 {
-                    for (const FTest& Question : Subtopic.Questions)
+
+                    if (Subtopic.Title == SubtopicTitle)
                     {
-                        TotalTimesCorrect += Question.TimesCorrect;
+                        for (const FTest& Question : Subtopic.Questions)
+                        {
+                            TotalTimesCorrect += Question.TimesCorrect;
+                        }
+                        return TotalTimesCorrect;
                     }
-                    return TotalTimesCorrect;
                 }
             }
         }
@@ -497,5 +505,63 @@ int32 ANodeManager::CalculateTotalTimesCorrect(FString SubtopicTitle)
 
     return 0;
 }
+
+//int32 ANodeManager::CalculateTotalTimesAsked(FString SubtopicTitle)
+//{
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+//    if (!GameInstance) return 0;
+//
+//    int32 TotalTimesAsked = 0;
+//
+//    for (const FSectionStruct& Section : GameInstance->SectionDataArray)
+//    {
+//        for (const FTopic& Topic : Section.Topics)
+//        {
+//            for (const FSubtopic& Subtopic : Topic.Subtopics)
+//            {
+//
+//                if (Subtopic.Title == SubtopicTitle)
+//                {
+//                    for (const FTest& Question : Subtopic.Questions)
+//                    {
+//                        TotalTimesAsked += Question.TimesTested;
+//                    }
+//                    return TotalTimesAsked;
+//                }
+//            }
+//        }
+//    }
+//
+//    return 0;
+//}
+
+//int32 ANodeManager::CalculateTotalTimesCorrect(FString SubtopicTitle)
+//{
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+//    if (!GameInstance) return 0;
+//
+//    int32 TotalTimesCorrect = 0;
+//
+//    for (const FSectionStruct& Section : GameInstance->SectionDataArray)
+//    {
+//        for (const FTopic& Topic : Section.Topics)
+//        {
+//            for (const FSubtopic& Subtopic : Topic.Subtopics)
+//            {
+//
+//                if (Subtopic.Title == SubtopicTitle)
+//                {
+//                    for (const FTest& Question : Subtopic.Questions)
+//                    {
+//                        TotalTimesCorrect += Question.TimesCorrect;
+//                    }
+//                    return TotalTimesCorrect;
+//                }
+//            }
+//        }
+//    }
+//
+//    return 0;
+//}
 
 

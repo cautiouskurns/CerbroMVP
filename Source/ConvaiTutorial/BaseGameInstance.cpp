@@ -4,6 +4,10 @@
 #include "BaseGameInstance.h"
 #include "ReadWriteJsonFile.h"
 #include "Json.h"
+#include "Serialization/JsonSerializer.h"
+#include "JsonObjectConverter.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
 #include <Components/TreeView.h>
 #include "JsonObjectConverter.h"
 #include "Misc/FileHelper.h"
@@ -99,31 +103,28 @@ void UBaseGameInstance::InitializeSubjectDataArray()
 }
 
 
-int32 UBaseGameInstance::UpdateRandomQuestionTimesTested(int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex)
+int32 UBaseGameInstance::UpdateRandomQuestionTimesTested(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex)
 {
-    if (SectionDataArray.Num() > 0) // Check if there are any sections
+    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
+
+    if (SelectedSubject.SubjectDetailsArray.Num() > 0) // Check if there are any sections
     {
-        //int32 SectionIndex = FMath::RandRange(0, SectionDataArray.Num() - 1); // Randomly select a section
-        FSectionStruct& SelectedSection = SectionDataArray[SectionIndex];
+        FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
 
         if (SelectedSection.Topics.Num() > 0) // Check if there are any topics in the selected section
         {
-            //int32 TopicIndex = FMath::RandRange(0, SelectedSection.Topics.Num() - 1); // Randomly select a topic
             FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
 
             if (SelectedTopic.Subtopics.Num() > 0) // Check if there are any subtopics in the selected topic
             {
-                //int32 SubtopicIndex = FMath::RandRange(0, SelectedTopic.Subtopics.Num() - 1); // Randomly select a subtopic
                 FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
 
                 if (SelectedSubtopic.Questions.Num() > 0) // Check if there are any questions in the selected subtopic
                 {
-                    //int32 QuestionIndex = FMath::RandRange(0, SelectedSubtopic.Questions.Num() - 1); // Randomly select a question
                     FTest& SelectedQuestion = SelectedSubtopic.Questions[QuestionIndex];
 
                     // Increment the TimesTested property of the selected question
                     SelectedQuestion.TimesTested++;
-
 
                     // Return the updated TimesTested value
                     return SelectedQuestion.TimesTested;
@@ -138,45 +139,75 @@ int32 UBaseGameInstance::UpdateRandomQuestionTimesTested(int32 SectionIndex, int
 
 
 
-int32 UBaseGameInstance::UpdateTimesCorrect(int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer)
+int32 UBaseGameInstance::UpdateTimesCorrect(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer)
 {
-    if (SectionDataArray.IsValidIndex(SectionIndex)) // Check if the section index is valid
+    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
+
+    if (SelectedSubject.SubjectDetailsArray.Num() > 0) // Check if there are any topics in the selected section
     {
-        FSectionStruct& SelectedSection = SectionDataArray[SectionIndex];
+        FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
 
-        if (SelectedSection.Topics.IsValidIndex(TopicIndex)) // Check if the topic index is valid
-        {
-            FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
-
-            if (SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) // Check if the subtopic index is valid
+            if (SelectedSection.Topics.IsValidIndex(TopicIndex)) // Check if the topic index is valid
             {
-                FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
+                FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
 
-                if (SelectedSubtopic.Questions.IsValidIndex(QuestionIndex)) // Check if the question index is valid
+                if (SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) // Check if the subtopic index is valid
                 {
-                    FTest& SelectedQuestion = SelectedSubtopic.Questions[QuestionIndex];
+                    FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
 
-                    // print selected answer to screen
-                    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, SelectedAnswer);
-                    //print correct answer to screen
-                    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, SelectedQuestion.CorrectAnswer);
-
-                    // If the selected answer matches the correct answer, increment the TimesCorrect member
-                    if (SelectedAnswer == SelectedQuestion.CorrectAnswer)
+                    if (SelectedSubtopic.Questions.IsValidIndex(QuestionIndex)) // Check if the question index is valid
                     {
-                        // print that answers are the same to screen
-                        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "Answers are the same");
-                        SelectedQuestion.TimesCorrect++;
-                        return SelectedQuestion.TimesCorrect;
+                        FTest& SelectedQuestion = SelectedSubtopic.Questions[QuestionIndex];
 
+                        // If the selected answer matches the correct answer, increment the TimesCorrect member
+                        if (SelectedAnswer == SelectedQuestion.CorrectAnswer)
+                        {
+                            // print that answers are the same to screen
+                            SelectedQuestion.TimesCorrect++;
+                            return SelectedQuestion.TimesCorrect;
+
+                        }
                     }
                 }
-            }
         }
     }
     // Return false if any of the indices are invalid or the answer is incorrect
     return 0;
 }
+
+
+//FSubjectStruct UReadWriteJsonFile::ReadNestedStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage)
+//{
+//    JsonFilePath = FPaths::ProjectContentDir() + "JSONStructTest1.json";
+//    bOutSuccess = true;
+//
+//
+//    // Reads a JSON file and attempts to deserialize it into a FJsonStruct object.
+//    TSharedPtr<FJsonObject> JsonObject = ReadJsonFileToJsonObject(JsonFilePath, bOutSuccess, OutInfoMessage);
+//    if (!bOutSuccess)
+//    {
+//        OutInfoMessage = FString::Printf(TEXT("JSON file not read successfully"));
+//
+//        // Deserialize the JSON data into a FJsonStruct object.
+//        return FSubjectStruct();
+//    }
+//
+//    // Convert a JsonObject into a FJsonStruct instance.
+//    // If we failed to serialize the JSON data, then we return an empty FJsonStruct object.
+//    FSubjectStruct StructToReturn;
+//    if (!FJsonObjectConverter::JsonObjectToUStruct<FSubjectStruct>(JsonObject.ToSharedRef(), &StructToReturn, 0, 0))
+//    {
+//        bOutSuccess = false;
+//        OutInfoMessage = FString::Printf(TEXT("Failed to convert JSON object to struct"));
+//        return FSubjectStruct();
+//    }
+//
+//
+//    bOutSuccess = true;
+//    OutInfoMessage = FString::Printf(TEXT("Convert JSON object to struct"));
+//    return StructToReturn;
+//}
+
 
 
 //void UBaseGameInstance::PopulateTreeView(UTreeView* TreeView)
