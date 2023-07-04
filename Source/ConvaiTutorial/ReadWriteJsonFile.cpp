@@ -9,6 +9,7 @@
 #include "Misc/Paths.h"
 #include "BaseGameInstance.h"
 #include "FolderWidget.h"
+#include "JsonUtilities.h"
 #include "Engine/World.h"
 #include "Engine/DataTable.h"
 #include <Kismet/GameplayStatics.h>
@@ -48,7 +49,7 @@ FJsonStruct UReadWriteJsonFile::ReadStructFromJsonFile(FString JsonFilePath, boo
 
 FSectionStruct UReadWriteJsonFile::ReadNestedStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage)
 {
-    JsonFilePath = FPaths::ProjectContentDir() + "JSONStructTest1.json";
+    JsonFilePath = FPaths::ProjectContentDir() + "JSONStructTestSecton.json";
     bOutSuccess = true;
 
 

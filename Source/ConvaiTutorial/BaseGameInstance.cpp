@@ -10,7 +10,9 @@
 #include "Misc/Paths.h"
 #include <Components/TreeView.h>
 #include "JsonObjectConverter.h"
+#include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
+#include "Engine/DataTable.h"
 #include "FolderWidget.h"
 
 UBaseGameInstance::UBaseGameInstance()
@@ -24,82 +26,7 @@ void UBaseGameInstance::InitializeSubjectDataArray()
     //Struct1.SubjectName = "Law";
     //SubjectDataArray.Add(Struct1);
 
-    //FFolderStruct Struct2;
-    //Struct2.SubjectName = "Physics";
-    //SubjectDataArray.Add(Struct2);
-
-    //FFolderStruct Struct3;
-    //Struct3.SubjectName = "Chemistry";
-    //SubjectDataArray.Add(Struct3);
-
-    //FFolderStruct Struct4;
-    //Struct4.SubjectName = "Biology";
-    //SubjectDataArray.Add(Struct4);
-
-    //FFolderStruct Struct5;
-    //Struct5.SubjectName = "English";
-    //SubjectDataArray.Add(Struct5);
-
-    //FFolderStruct Struct6;
-    //Struct6.SubjectName = "French";
-    //SubjectDataArray.Add(Struct6);
-
-    //FFolderStruct Struct7;
-    //Struct7.SubjectName = "German";
-    //SubjectDataArray.Add(Struct7);
-
-    //FFolderStruct Struct8;
-    //Struct8.SubjectName = "Spanish";
-    //SubjectDataArray.Add(Struct8);
-
-    //FFolderStruct Struct9;
-    //Struct9.SubjectName = "Economics";
-    //SubjectDataArray.Add(Struct9);
-
-    //FFolderStruct Struct10;
-    //Struct10.SubjectName = "History";
-    //SubjectDataArray.Add(Struct10);
-
-    //FFolderStruct Struct11;
-
-    //Struct11.SubjectName = "Geography";
-    //SubjectDataArray.Add(Struct11);
-
-    //FFolderStruct Struct12;
-    //Struct12.SubjectName = "Computer Science";
-    //SubjectDataArray.Add(Struct12);
-
-    //FFolderStruct Struct13;
-    //Struct13.SubjectName = "Philosophy";
-    //SubjectDataArray.Add(Struct13);
-
-    //FFolderStruct Struct14;
-    //Struct14.SubjectName = "Psychology";
-    //SubjectDataArray.Add(Struct14);
-
-    //FFolderStruct Struct15;
-    //Struct15.SubjectName = "Political Science";
-    //SubjectDataArray.Add(Struct15);
-
-    //FFolderStruct Struct16;
-    //Struct16.SubjectName = "Sociology";
-    //SubjectDataArray.Add(Struct16);
-
-    //FFolderStruct Struct17;
-    //Struct17.SubjectName = "Astronomy";
-    //SubjectDataArray.Add(Struct17);
-
-    //FFolderStruct Struct18;
-    //Struct18.SubjectName = "Music";
-    //SubjectDataArray.Add(Struct18);
-
-    //FFolderStruct Struct19;
-    //Struct19.SubjectName = "Art";
-    //SubjectDataArray.Add(Struct19);
-
-    //FFolderStruct Struct20;
-    //Struct20.SubjectName = "Theatre";
-    //SubjectDataArray.Add(Struct20);
+    /*FString FilePath = FPaths::ProjectContentDir() + "StructTest.json";*/
 }
 
 
@@ -176,77 +103,39 @@ int32 UBaseGameInstance::UpdateTimesCorrect(int32 SubjectIndex, int32 SectionInd
 }
 
 
-//FSubjectStruct UReadWriteJsonFile::ReadNestedStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage)
-//{
-//    JsonFilePath = FPaths::ProjectContentDir() + "JSONStructTest1.json";
-//    bOutSuccess = true;
-//
-//
-//    // Reads a JSON file and attempts to deserialize it into a FJsonStruct object.
-//    TSharedPtr<FJsonObject> JsonObject = ReadJsonFileToJsonObject(JsonFilePath, bOutSuccess, OutInfoMessage);
-//    if (!bOutSuccess)
-//    {
-//        OutInfoMessage = FString::Printf(TEXT("JSON file not read successfully"));
-//
-//        // Deserialize the JSON data into a FJsonStruct object.
-//        return FSubjectStruct();
-//    }
-//
-//    // Convert a JsonObject into a FJsonStruct instance.
-//    // If we failed to serialize the JSON data, then we return an empty FJsonStruct object.
-//    FSubjectStruct StructToReturn;
-//    if (!FJsonObjectConverter::JsonObjectToUStruct<FSubjectStruct>(JsonObject.ToSharedRef(), &StructToReturn, 0, 0))
-//    {
-//        bOutSuccess = false;
-//        OutInfoMessage = FString::Printf(TEXT("Failed to convert JSON object to struct"));
-//        return FSubjectStruct();
-//    }
-//
-//
-//    bOutSuccess = true;
-//    OutInfoMessage = FString::Printf(TEXT("Convert JSON object to struct"));
-//    return StructToReturn;
-//}
+FSubjectStruct UBaseGameInstance::LoadJsonFromFile(FString FilePath)
+{
+    FString JsonContent;
+    if (!FFileHelper::LoadFileToString(JsonContent, *FilePath))
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
+        // Return an empty struct on failure
+        return FSubjectStruct();
+    }
+
+    TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject());
+    TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonContent);
+
+    if (!FJsonSerializer::Deserialize(Reader, JsonObject) || !JsonObject.IsValid())
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to parse the JSON in file: %s"), *FilePath);
+        // Return an empty struct on failure
+        return FSubjectStruct();
+    }
+
+    FSubjectStruct LoadedStruct;
+
+    if (!FJsonObjectConverter::JsonObjectToUStruct(JsonObject.ToSharedRef(), &LoadedStruct, 0, 0))
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to convert JSON to struct: %s"), *FilePath);
+        // Return an empty struct on failure
+        return FSubjectStruct();
+    }
+
+    // If everything goes well, return the populated struct
+    return LoadedStruct;
+}
 
 
 
-//void UBaseGameInstance::PopulateTreeView(UTreeView* TreeView)
-//{
-//    TMap<int32, UFolderWidget*> WidgetMap;
-//
-//    for (FTreeViewItem& Item : TreeDataArray)
-//    {
-//        USubjectWidget* NewWidget = CreateWidget<USubjectWidget>(this, USubjectWidget::StaticClass());
-//        NewWidget->SetData(Item);
-//        TreeView->AddItem(NewWidget);
-//    }
-//
-//    // Add the root items to the TreeView and the rest to their parents.
-//    for (FTreeViewItem& Item : TreeDataArray)
-//    {
-//        UFolderWidget* ThisWidget = WidgetMap.FindRef(Item.ID);
-//        if (Item.ParentID == -1)  // This is a root item
-//        {
-//            TreeView->AddItem(ThisWidget);
-//        }
-//        else  // This is a child item
-//        {
-//            UFolderWidget* ParentWidget = WidgetMap.FindRef(Item.ParentID);
-//            if (ParentWidget)
-//            {
-//                ParentWidget->AddChild(ThisWidget);
-//            }
-//        }
-//    }
-//}
-//
-//
-//TArray<FListViewItem> UBaseGameInstance::GetListData()
-//{
-//    TArray<FListViewItem> ListData;
-//
-//    // Populate ListData with your data here...
-//
-//    return ListData;
-//}
 

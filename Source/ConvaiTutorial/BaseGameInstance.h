@@ -10,9 +10,13 @@
 #include "Json.h"
 #include "JsonObjectConverter.h"
 #include <Components/TreeView.h>
+#include "Misc/Paths.h"
+
+#include "Misc/FileHelper.h"
+
 #include "BaseGameInstance.generated.h"
 
-
+class FJsonObject;
 
 USTRUCT(BlueprintType)
 struct FSubjectStruct : public FTableRowBase
@@ -27,6 +31,48 @@ public:
 	TArray<FSectionStruct> SubjectDetailsArray;
 };
 
+USTRUCT(BlueprintType)
+struct FSubjectStructBasic : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SubjectName;
+};
+
+
+
+
+USTRUCT(BlueprintType)
+struct FTopicStruct : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString TopicName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FString> Subtopics;
+};
+
+USTRUCT(BlueprintType)
+struct FSubjectStructComplex : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SubjectName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<FTopicStruct> Topics;
+};
+
+
+
+
 
 UCLASS()
 class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
@@ -35,6 +81,8 @@ class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
 	
 public:
 	UBaseGameInstance();
+
+
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FSubjectStruct> SubjectDataArray;
@@ -108,5 +156,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 UpdateTimesCorrect(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	FSubjectStruct LoadJsonFromFile(FString FilePath);
+
+	//static TSharedPtr<FJsonObject> ReadJsonFileToJsonObject(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage);
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//FSubjectStructBasic ReadNestedStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage);
 
 };
