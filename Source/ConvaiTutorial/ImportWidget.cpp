@@ -3,6 +3,7 @@
 
 #include "ImportWidget.h"
 #include "Engine/Engine.h"
+#include "BaseGameInstance.h"
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
 
@@ -55,3 +56,193 @@ FString UImportWidget::LoadJsonAsString(FString FilePath)
     // Return the JSON content as a string
     return JsonContent;
 }
+
+
+bool UImportWidget::UpdateSubjectName(const FString& SubjectName, const FString& NewSubjectName)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return false;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            Subject.SubjectName = NewSubjectName;
+            return true;
+        }
+    }
+
+    return false; // Subject with given name not found
+}
+
+
+
+
+// Function to add a new section to an existing subject
+void UImportWidget::AddSectionToSubject(FString SubjectName, FSectionStruct NewSection)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            // Add the new section to the subject details array
+            Subject.SubjectDetailsArray.Add(NewSection);
+            return;
+        }
+    }
+}
+
+bool UImportWidget::UpdateSectionName(const FString& SubjectName, const FString& SectionName, const FString& NewSectionName)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return false;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            for (auto& Section : Subject.SubjectDetailsArray)
+            {
+                if (Section.SectionName == SectionName)
+                {
+                    Section.SectionName = NewSectionName;
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false; // Subject or section with given name not found
+}
+
+
+
+
+void UImportWidget::AddTopicToSectionInSubject(FString SubjectName, FString SectionName, FTopic NewTopic)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            for (auto& Section : Subject.SubjectDetailsArray)
+            {
+                if (Section.SectionName == SectionName)
+                {
+                    // Here, instead of trying to find a matching topic and updating it,
+                    // we just add the new topic to the topics array
+                    Section.Topics.Add(NewTopic);
+                    return;
+                }
+            }
+        }
+    }
+}
+
+bool UImportWidget::UpdateTopicName(const FString& SubjectName, const FString& SectionName, const FString& TopicName, const FString& NewTopicName)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return false;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            for (auto& Section : Subject.SubjectDetailsArray)
+            {
+                if (Section.SectionName == SectionName)
+                {
+                    for (auto& Topic : Section.Topics)
+                    {
+                        if (Topic.Title == TopicName)
+                        {
+                            Topic.Title = NewTopicName;
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false; // Subject, section, or topic with given name not found
+}
+
+
+
+
+// Function to add a new subtopic to an existing topic
+void UImportWidget::AddSubtopicToTopicInSection(FString SubjectName, FString SectionName, FString TopicName, FSubtopic NewSubtopic)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            for (auto& Section : Subject.SubjectDetailsArray)
+            {
+                if (Section.SectionName == SectionName)
+                {
+                    for (auto& Topic : Section.Topics)
+                    {
+                        if (Topic.Title == TopicName)
+                        {
+                            // Add the new subtopic to the subtopics array
+                            Topic.Subtopics.Add(NewSubtopic);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+bool UImportWidget::AddSubtopicToTopic(const FString& SubjectName, const FString& SectionName, const FString& TopicName, const FString& NewSubtopicName, const FString& NewSubtopicContent)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return false;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            for (auto& Section : Subject.SubjectDetailsArray)
+            {
+                if (Section.SectionName == SectionName)
+                {
+                    for (auto& Topic : Section.Topics)
+                    {
+                        if (Topic.Title == TopicName)
+                        {
+                            FSubtopic NewSubtopic;
+                            NewSubtopic.Title = NewSubtopicName;
+                            NewSubtopic.Content = NewSubtopicContent;
+
+                            Topic.Subtopics.Add(NewSubtopic);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false; // Subject, section, or topic with given name not found
+}
+

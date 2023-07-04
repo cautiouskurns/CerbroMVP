@@ -26,5 +26,27 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	FString SelectedFilePath;
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	bool UpdateSubjectName(const FString& SubjectName, const FString& NewSubjectName);
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	void AddSectionToSubject(FString SubjectName, FSectionStruct NewSection);
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	bool UpdateSectionName(const FString& SubjectName, const FString& SectionName, const FString& NewSectionName);
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	void AddTopicToSectionInSubject(FString SubjectName, FString SectionName, FTopic NewTopic);
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	bool UpdateTopicName(const FString& SubjectName, const FString& SectionName, const FString& TopicName, const FString& NewTopicName);
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	void AddSubtopicToTopicInSection(FString SubjectName, FString SectionName, FString TopicName, FSubtopic NewSubtopic);
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	bool AddSubtopicToTopic(const FString& SubjectName, const FString& SectionName, const FString& TopicName, const FString& NewSubtopicName, const FString& NewSubtopicContent);
+
 	
 };
