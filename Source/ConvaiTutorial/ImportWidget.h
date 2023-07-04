@@ -46,6 +46,9 @@ public:
 	void AddSubtopicToTopicInSection(FString SubjectName, FString SectionName, FString TopicName, FSubtopic NewSubtopic);
 
 	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+	void AddOrUpdateSubtopicInTopicInSection(FString SubjectName, FString SectionName, FString TopicName, FSubtopic NewSubtopic);
+
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
 	bool AddSubtopicToTopic(const FString& SubjectName, const FString& SectionName, const FString& TopicName, const FString& NewSubtopicName, const FString& NewSubtopicContent);
 
 	

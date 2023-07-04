@@ -211,6 +211,46 @@ void UImportWidget::AddSubtopicToTopicInSection(FString SubjectName, FString Sec
     }
 }
 
+void UImportWidget::AddOrUpdateSubtopicInTopicInSection(FString SubjectName, FString SectionName, FString TopicName, FSubtopic NewSubtopic)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return;
+
+    for (auto& Subject : GameInstance->SubjectDataArray)
+    {
+        if (Subject.SubjectName == SubjectName)
+        {
+            for (auto& Section : Subject.SubjectDetailsArray)
+            {
+                if (Section.SectionName == SectionName)
+                {
+                    for (auto& Topic : Section.Topics)
+                    {
+                        if (Topic.Title == TopicName)
+                        {
+                            // Iterate over the Subtopics to see if one with the same title already exists
+                            for (auto& Subtopic : Topic.Subtopics)
+                            {
+                                if (Subtopic.Title == NewSubtopic.Title)
+                                {
+                                    // Append the new content to the existing Subtopic
+                                    Subtopic.Content += NewSubtopic.Content;
+                                    return;
+                                }
+                            }
+
+                            // If no existing Subtopic is found, add the new Subtopic
+                            Topic.Subtopics.Add(NewSubtopic);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 bool UImportWidget::AddSubtopicToTopic(const FString& SubjectName, const FString& SectionName, const FString& TopicName, const FString& NewSubtopicName, const FString& NewSubtopicContent)
 {
