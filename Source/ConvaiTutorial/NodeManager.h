@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "NodeActorBase.h"
+#include "BaseGameInstance.h"
 #include "EdgeActorBase.h"
 #include "ReadWriteJsonFile.h"
 #include "NodeManager.generated.h"
@@ -30,7 +31,11 @@ public:
 	// Populates NodeActors array with instances of NodeActorBase
 	void InitializeNodes();
 
-	void InitializeNodesByTopic();
+	UFUNCTION(BlueprintCallable, Category = "Interaction Logic")
+	void SubjectSwitch(const FString& NewSubjectName);
+
+	void InitializeNodesBySubject();
+
 
 	ANodeActorBase* CreateNode(const FString& NodeName, const FVector& Position, bool IsTopicNode);
 
@@ -88,5 +93,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Config")
 	FColor SubtopicFontColor;
+
+protected: // or private:
+	UPROPERTY()
+	FSubjectStruct CurrentSubject;
 
 };

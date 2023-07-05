@@ -33,8 +33,10 @@ void ANodeManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+    SubjectSwitch("Physics");
+
     // This ensures that the nodes and edges are created after the GameInstance data is populated
-    GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesByTopic);
+    //GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
 }
 
 // Called every frame
@@ -127,6 +129,8 @@ void ANodeManager::PositionNodes()
     // Set Node Text
     SetNodeText();
 }
+
+
 
 // This function generates an array of subtopic names.
 TArray<FString> ANodeManager::GenerateSubtopicNames()
@@ -244,7 +248,8 @@ void ANodeManager::GenerateEdges()
 //    }
 //}
 
-void ANodeManager::InitializeNodesByTopic()
+
+void ANodeManager::SubjectSwitch(const FString& NewSubjectName)
 {
     UWorld* World = GetWorld();
     if (!World) return;
@@ -252,18 +257,71 @@ void ANodeManager::InitializeNodesByTopic()
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
     if (!GameInstance) return;
 
-    TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
+    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
+
+    // Find the new subject
+    for (const FSubjectStruct& Subject : GameInstanceSubjectDataArray)
+    {
+        if (Subject.SubjectName == NewSubjectName)
+        {
+            // Clear current nodes and edges
+            for (ANodeActorBase* Node : NodeActors)
+            {
+                if (Node != nullptr)
+                {
+                    Node->Destroy();
+                }
+            }
+            NodeActors.Empty();
+
+            for (AEdgeActorBase* Edge : EdgeActors)
+            {
+                if (Edge != nullptr)
+                {
+                    Edge->Destroy();
+                }
+            }
+            EdgeActors.Empty();
+
+            // Set the current subject and initialize nodes and edges for new subject
+            CurrentSubject = Subject;
+            GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
+
+
+            return;
+        }
+    }
+}
+
+
+void ANodeManager::InitializeNodesBySubject()
+{
+    UWorld* World = GetWorld();
+    if (!World) return;
+
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+    if (!GameInstance) return;
+
+    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
+
+    //if (GameInstanceSubjectDataArray.Num() > 0) {
+    //    CurrentSubject = GameInstanceSubjectDataArray[0];  // This is an example. Update it to select the appropriate subject
+    //}
 
     // Determine total number of topics across all sections
     int32 TotalNumberOfTopics = 0;
-    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
+
+ 
+    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
     {
         TotalNumberOfTopics += Section.Topics.Num();
     }
+ 
 
     // Generate Nodes for Topics and Subtopics
     int32 TopicIndex = 0;
-    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
+
+    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
     {
         for (const FTopic& Topic : Section.Topics)
         {
@@ -274,14 +332,14 @@ void ANodeManager::InitializeNodesByTopic()
             TopicNode->SetFontColor(TopicFontColor);  // Set font color for topic
             NodeActors.Add(TopicNode);
 
-           
+
             // Create a node for each Subtopic
             int32 SubtopicIndex = 0;
             for (const FSubtopic& Subtopic : Topic.Subtopics)
             {
                 ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
                 SubtopicNode->ParentTopic = TopicNode;
-                
+
                 SubtopicNode->SetFontColor(SubtopicFontColor);  // Set font color for subtopic
 
                 NodeActors.Add(SubtopicNode);
@@ -295,6 +353,59 @@ void ANodeManager::InitializeNodesByTopic()
         }
     }
 }
+
+// Temp copy
+//void ANodeManager::InitializeNodesByTopic()
+//{
+//    UWorld* World = GetWorld();
+//    if (!World) return;
+//
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+//    if (!GameInstance) return;
+//
+//    TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
+//
+//    // Determine total number of topics across all sections
+//    int32 TotalNumberOfTopics = 0;
+//    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
+//    {
+//        TotalNumberOfTopics += Section.Topics.Num();
+//    }
+//
+//    // Generate Nodes for Topics and Subtopics
+//    int32 TopicIndex = 0;
+//    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
+//    {
+//        for (const FTopic& Topic : Section.Topics)
+//        {
+//            // Create a node for the Topic
+//            ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
+//            TopicNode->ParentTopic = nullptr;
+//
+//            TopicNode->SetFontColor(TopicFontColor);  // Set font color for topic
+//            NodeActors.Add(TopicNode);
+//
+//
+//            // Create a node for each Subtopic
+//            int32 SubtopicIndex = 0;
+//            for (const FSubtopic& Subtopic : Topic.Subtopics)
+//            {
+//                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
+//                SubtopicNode->ParentTopic = TopicNode;
+//
+//                SubtopicNode->SetFontColor(SubtopicFontColor);  // Set font color for subtopic
+//
+//                NodeActors.Add(SubtopicNode);
+//
+//                CreateEdge(TopicNode, SubtopicNode);
+//
+//                SubtopicIndex++;
+//            }
+//
+//            TopicIndex++;
+//        }
+//    }
+//}
 
 ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector& Position, bool IsTopicNode)
 {
