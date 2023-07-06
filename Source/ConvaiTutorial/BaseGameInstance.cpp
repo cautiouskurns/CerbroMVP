@@ -14,11 +14,27 @@
 #include "Misc/FileHelper.h"
 #include "Engine/DataTable.h"
 #include "FolderWidget.h"
+#include "DataProvider.h"
 
 UBaseGameInstance::UBaseGameInstance()
 {
  
 }
+
+void UBaseGameInstance::Init()
+{
+    Super::Init();
+
+    // Create an instance of UDataProvider
+    DataProvider = NewObject<UDataProvider>(this);
+
+    // Call the ConstructHierarchy function
+    DataProvider->ConstructHierarchy();
+
+    // Store the DataProvider in a property if you need to access it later
+    this->DataProvider = DataProvider;
+}
+
 
 void UBaseGameInstance::InitializeSubjectDataArray()
 {

@@ -16,8 +16,8 @@ class CONVAITUTORIAL_API USubjectWidget : public UUserWidget
     GENERATED_BODY()
 
 public:
-    UFUNCTION(BlueprintCallable, Category = "Tree Widget")
-    void SetData(const FTreeViewItem& Item);
+    //UFUNCTION(BlueprintCallable, Category = "Tree Widget")
+    //void SetData(const FTreeViewItem& Item);
 
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
     UTextBlock* NameText;

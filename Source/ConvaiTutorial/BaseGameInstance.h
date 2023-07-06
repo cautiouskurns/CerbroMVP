@@ -11,10 +11,10 @@
 #include "JsonObjectConverter.h"
 #include <Components/TreeView.h>
 #include "Misc/Paths.h"
-
 #include "Misc/FileHelper.h"
 
 #include "BaseGameInstance.generated.h"
+
 
 class FJsonObject;
 
@@ -110,7 +110,7 @@ public:
 };
 
 
-
+class UDataProvider;
 
 UCLASS()
 class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
@@ -119,6 +119,8 @@ class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
 	
 public:
 	UBaseGameInstance();
+
+	void Init();
 
 
 
@@ -184,8 +186,8 @@ public:
 	FColor BackgroundColor;
 
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
-	TArray<FTreeViewItem> TreeDataArray;
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	//TArray<FTreeViewItem> TreeDataArray;
 
 	//UFUNCTION(BlueprintCallable, Category = "Information Structs")
 	//void PopulateTreeView(UTreeView* TreeView);
@@ -207,4 +209,6 @@ public:
 	//UFUNCTION(BlueprintCallable, Category = "Widgets")
 	//FSubjectStructBasic ReadNestedStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
+	UDataProvider* DataProvider;
 };
