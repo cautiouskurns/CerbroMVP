@@ -5,11 +5,18 @@
 #include "TopicWidget.h"
 #include "SectionWidget.h"
 #include "SubTopicWidget.h"
+#include "NodeManager.h"
+#include "NodeActorBase.h"
+#include "CoreGameMode.h"
 #include "HUDWidgetTest.h"
+#include "BaseGameInstance.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetTree.h"
 #include <Engine.h>
+#include "NodeActorBase.h"
+
+
 
 
 
@@ -17,6 +24,54 @@ void ABasePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+    // Find the central actor in the world
+    for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+    {
+        if (ActorItr->GetName().Equals("BP_InteractLookTarget"))
+        {
+            CentralActor = *ActorItr;
+            break;
+        }
+    }
+
+}
+
+
+void ABasePlayerController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    // If we're moving to a node, gradually move and rotate the pawn towards the target position and orientation
+    if (bMovingToNode)
+    {
+        APawn* ControlledPawn = GetPawn();
+        if (ControlledPawn != nullptr)
+        {
+            FVector CurrentPosition = ControlledPawn->GetActorLocation();
+            FRotator CurrentOrientation = ControlledPawn->GetActorRotation();
+
+            FVector NewPosition = FMath::VInterpTo(CurrentPosition, TargetPosition, DeltaTime, 1.0f); // adjust the speed as needed
+            FRotator NewOrientation = FMath::RInterpTo(CurrentOrientation, TargetOrientation, DeltaTime, 1.0f); // adjust the speed as needed
+
+            ControlledPawn->SetActorLocationAndRotation(NewPosition, NewOrientation);
+
+            // If we're close enough to the target position and orientation, stop moving
+            if (FVector::DistSquared(NewPosition, TargetPosition) < FMath::Square(500.0f) // adjust the tolerance as needed
+                && FMath::Abs((NewOrientation - TargetOrientation).GetNormalized().Yaw) < 1.0f) // adjust the tolerance as needed
+            {
+                bMovingToNode = false;
+            }
+        }
+    }
+}
+
+
+void ABasePlayerController::SetupInputComponent()
+{
+    Super::SetupInputComponent();
+
+    // Bind the OnLeftMouseClick function to the left mouse button click event
+    InputComponent->BindAction("RightMouseClick", IE_Pressed, this, &ABasePlayerController::OnRightMouseClick);
 }
 
     
@@ -132,3 +187,120 @@ void ABasePlayerController::RemoveAllChildrenFromWidget(UUserWidget* TargetWidge
         }
     }
 }
+
+    
+
+
+
+void ABasePlayerController::MoveCameraToNode(ANodeActorBase* Node)
+{
+   
+    // Store the target position and orientation as member variables
+    TargetPosition = Node->GetActorLocation() - FVector(0, 500, -500); // adjust this as needed
+    TargetOrientation = (Node->GetActorLocation() - TargetPosition).Rotation();
+
+    // Set a flag to indicate that we're moving to a node
+    bMovingToNode = true;
+
+    //ACoreGameMode* GameMode = Cast<ACoreGameMode>(GetWorld()->GetAuthGameMode());
+    //if (GameMode != nullptr && GameMode->NodeManager != nullptr)
+    //{
+    //    // Access the NodeActors array
+    //    TArray<ANodeActorBase*> AllNodes = GameMode->NodeManager->NodeActors;
+
+    //// Calculate the target camera position and orientation
+    //    FVector TargetPosition = Node->GetActorLocation() - FVector(0, 0, -1000); // adjust this as needed
+
+    //    // Calculate the target camera orientation based on the position of CentralActor
+    //    //FRotator TargetOrientation = (FVector((0.000000, -99.000000, 0.000000)) - TargetPosition).Rotation();
+
+
+    //    FRotator TargetOrientationNode = (Node->GetActorLocation() - TargetPosition).Rotation();
+
+    //    // Set a flag to indicate that we're moving to a node
+    //    bMovingToNode = true;
+
+    //    // Calculate the center of mass of all nodes
+    //    FVector CenterOfMass = FVector::ZeroVector;
+    //    for (ANodeActorBase* OtherNode : AllNodes) // Replace AllNodes with your array of all nodes
+    //    {
+    //        CenterOfMass += OtherNode->GetActorLocation();
+    //    }
+    //    CenterOfMass /= AllNodes.Num(); // Calculate the average location
+
+
+
+    //    // Calculate the rotation towards the center of mass
+    //    FRotator TargetOrientationCenter = (CenterOfMass - TargetPosition).Rotation();
+    //    FRotator TargetOrientation = FMath::Lerp(TargetOrientationNode, TargetOrientationCenter, 0.5f);
+
+    //    // Move the camera to the target position and orientation
+    //    // Get the controlled pawn
+    //    APawn* ControlledPawn = GetPawn();
+    //    if (ControlledPawn != nullptr)
+    //    {
+    //        // Move the controlled pawn to the target position and orientation
+    //        ControlledPawn->SetActorLocationAndRotation(TargetPosition, TargetOrientationNode);
+    //    }
+    //}
+}
+
+void ABasePlayerController::OnRightMouseClick()
+{
+    // Perform a raycast under the cursor
+    FHitResult HitResult;
+    GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, HitResult);
+
+    // If the raycast hit a node, move the camera to that node
+    AActor* HitActor = HitResult.GetActor();
+    if (HitActor != nullptr && HitActor->IsA<ANodeActorBase>())
+    {
+        // print the name of the hit actor
+        MoveCameraToNode(Cast<ANodeActorBase>(HitActor));
+    }
+}
+
+//void ABasePlayerController::MoveCameraToNode(ANodeActorBase* Node)
+//{
+//    // Check if Node or CentralActor is null
+//    if (!Node || !CentralActor)
+//    {
+//        return;
+//    }
+//
+//    // Calculate the target camera position and orientation
+//    FVector TargetPosition = Node->GetActorLocation() - FVector(0, 0, -1000); // adjust this as needed
+//    //FRotator TargetOrientation = (Node->GetActorLocation() - TargetPosition).Rotation();
+//
+//    // Calculate the target camera orientation based on the position of CentralActor
+//    //FRotator TargetOrientation = (CentralActor->GetActorLocation() - TargetPosition).Rotation();
+//    FRotator TargetOrientation = (FVector((0.000000, -99.000000, 0.000000)) - TargetPosition).Rotation();
+//
+//
+//
+//    // Move the camera to the target position and orientation
+//    //SetViewTargetWithBlend(Node, 1.0f); // 1 second blend time
+//
+//    // Move the camera to the target position and orientation
+//    // Get the controlled pawn
+//    APawn* ControlledPawn = GetPawn();
+//    if (ControlledPawn != nullptr)
+//    {
+//        // Move the controlled pawn to the target position and orientation
+//        ControlledPawn->SetActorLocationAndRotation(TargetPosition, TargetOrientation);
+//    }
+//}
+//
+//void ABasePlayerController::OnLeftMouseClick()
+//{
+//    // Perform a raycast under the cursor
+//    FHitResult HitResult;
+//    GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, HitResult);
+//
+//    // If the raycast hit a node, move the camera to that node
+//    AActor* HitActor = HitResult.GetActor();
+//    if (HitActor != nullptr && HitActor->IsA<ANodeActorBase>())
+//    {
+//        MoveCameraToNode(Cast<ANodeActorBase>(HitActor));
+//    }
+//}

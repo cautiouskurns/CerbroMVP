@@ -45,6 +45,8 @@ public:
 
 	void CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2);
 
+	void CreateEdgeToSurface(ANodeActorBase* Node1, ANodeActorBase* Node2);
+
 	bool IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode);
 
 	UFUNCTION(BlueprintCallable, Category = "Edge")

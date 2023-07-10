@@ -65,6 +65,13 @@ void ANodeActorBase::SetNodeSize(float NodeSize)
 {
 	// Assuming the sphere's scale is 1:1:1, you can simply adjust the scale based on the radius
 	NodeMesh->SetWorldScale3D(FVector(NodeSize));
+
+	// Adjust the position of the node to keep its center at the same height
+	float OriginalScale = 1.0f; // replace this with the actual original scale if it's not 1
+	float DeltaHeight = 0.5f * (OriginalScale - NodeSize);
+	FVector Pos = GetActorLocation();
+	Pos.Z += 100 * DeltaHeight;
+	SetActorLocation(Pos);
 }
 
 

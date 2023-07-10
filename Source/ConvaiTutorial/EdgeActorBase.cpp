@@ -30,15 +30,16 @@ void AEdgeActorBase::SetNodes(ANodeActorBase* StartNode, ANodeActorBase* EndNode
 	{
 		float Radius = GetStaticMeshComponentRadius(StartNode->NodeMesh);
 
-		NodeOffset = FVector(0, 0, Radius);
+		NodeOffsetStart = FVector(0, 0, Radius);
+		NodeOffsetEnd = FVector(0, 0, Radius * 0.5);
 
-		FVector StartPos = StartNode->NodeMesh->GetComponentLocation() + NodeOffset;
-		FVector EndPos = EndNode->NodeMesh->GetComponentLocation() + NodeOffset;
+		FVector StartPos = StartNode->NodeMesh->GetComponentLocation() + NodeOffsetStart;
+		FVector EndPos = EndNode->NodeMesh->GetComponentLocation() + NodeOffsetEnd;
 
 		// Position
 		FVector MidPoint = (StartPos + EndPos) / 2;
 		SetActorLocation(StartPos);
-		/*SetActorLocation(MidPoint);*/
+		//SetActorLocation(MidPoint);
 
 		// Rotation
 		FVector Direction = (EndPos - StartPos).GetSafeNormal();
@@ -52,6 +53,28 @@ void AEdgeActorBase::SetNodes(ANodeActorBase* StartNode, ANodeActorBase* EndNode
 		EdgeMesh->SetWorldScale3D(Scale);
 	}
 }
+
+void AEdgeActorBase::SetStartEndNodes(const FVector& StartPos, const FVector& EndPos)
+{
+	if (EdgeMesh)
+	{
+		// Position
+		FVector MidPoint = (StartPos + EndPos) / 2;
+		SetActorLocation(MidPoint);
+
+		// Rotation
+		FVector Direction = (EndPos - StartPos).GetSafeNormal();
+		FRotator Rotation = Direction.Rotation();
+		SetActorRotation(Rotation);
+
+		// Scale
+		float Distance = FVector::Dist(StartPos, EndPos);
+		float ScalingFactor = 0.01f; // adjust this value as needed
+		FVector Scale = FVector(0.05, 0.05, Distance * ScalingFactor);  // adjust the 1s as needed for your edge's width and height
+		EdgeMesh->SetWorldScale3D(Scale);
+	}
+}
+
 
 float AEdgeActorBase::GetStaticMeshComponentRadius(UStaticMeshComponent* StaticMeshComponent)
 {

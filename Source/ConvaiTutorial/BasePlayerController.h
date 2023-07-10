@@ -6,6 +6,9 @@
 #include "GameFramework/PlayerController.h"
 #include "TopicWidget.h"
 #include "SectionWidget.h"
+#include "NodeActorBase.h"
+#include "BaseGameInstance.h"
+#include "Blueprint/UserWidget.h"
 #include "SubTopicWidget.h"
 #include "HUDWidgetTest.h"
 #include "BasePlayerController.generated.h"
@@ -20,6 +23,14 @@ class CONVAITUTORIAL_API ABasePlayerController : public APlayerController
 
 public:
     virtual void BeginPlay() override;
+
+	void Tick(float DeltaTime);
+
+	void SetupInputComponent();
+
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	AActor* CentralActor;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
 	TArray<FTopic> TopicArray;
@@ -51,5 +62,20 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	void RemoveAllChildrenFromWidget(UUserWidget* TargetWidget);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void MoveCameraToNode(ANodeActorBase* Node);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void OnRightMouseClick();
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	bool bMovingToNode;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	FVector TargetPosition;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	FRotator TargetOrientation;
 
 };

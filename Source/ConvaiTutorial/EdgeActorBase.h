@@ -29,6 +29,9 @@ public:
 	void SetNodes(ANodeActorBase* StartNode, ANodeActorBase* EndNode);
 
 	UFUNCTION(BlueprintCallable, Category = "Edge")
+	void SetStartEndNodes(const FVector& StartPos, const FVector& EndPos);
+
+	UFUNCTION(BlueprintCallable, Category = "Edge")
 	float GetStaticMeshComponentRadius(UStaticMeshComponent* StaticMeshComponent);
 
 protected:
@@ -45,6 +48,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeManager")
 	FVector NodeOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeManager")
+	FVector NodeOffsetStart;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "NodeManager")
+	FVector NodeOffsetEnd;
 
 
 

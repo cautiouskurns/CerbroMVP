@@ -345,6 +345,7 @@ void ANodeManager::InitializeNodesBySubject()
                 NodeActors.Add(SubtopicNode);
 
                 CreateEdge(TopicNode, SubtopicNode);
+                //CreateEdgeToSurface(TopicNode, SubtopicNode);
 
                 SubtopicIndex++;
             }
@@ -511,6 +512,40 @@ void ANodeManager::CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2)
     if (EdgeActor)
     {
         EdgeActor->SetNodes(Node1, Node2);
+        EdgeActors.Add(EdgeActor);
+    }
+}
+
+
+void ANodeManager::CreateEdgeToSurface(ANodeActorBase* Node1, ANodeActorBase* Node2)
+{
+    // Ensure the world exists
+    UWorld* World = GetWorld();
+    if (!World) return;
+
+    // Ensure the Edge blueprint class is set
+    if (!EdgeBlueprintClass) return;
+
+    // Spawn params
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.Owner = this;
+
+    FVector Pos1 = Node1->GetActorLocation();
+    FVector Pos2 = Node2->GetActorLocation();
+
+    FVector Dir = (Pos2 - Pos1).GetSafeNormal();
+
+    float Radius1 = Node1->GetStaticMeshComponent()->Bounds.SphereRadius * Node1->GetActorScale().X;
+    float Radius2 = Node2->GetStaticMeshComponent()->Bounds.SphereRadius * Node2->GetActorScale().X;
+
+    FVector EdgeStartPos = Pos1 + Dir * Radius1;
+    FVector EdgeEndPos = Pos2 - Dir * Radius2;
+
+    // Create edge between Node1 and Node2
+    AEdgeActorBase* EdgeActor = World->SpawnActor<AEdgeActorBase>(EdgeBlueprintClass, (EdgeStartPos + EdgeEndPos) / 2, FRotator::ZeroRotator, SpawnParams);
+    if (EdgeActor)
+    {
+        EdgeActor->SetStartEndNodes(EdgeStartPos, EdgeEndPos); // This is a new method you need to create
         EdgeActors.Add(EdgeActor);
     }
 }
