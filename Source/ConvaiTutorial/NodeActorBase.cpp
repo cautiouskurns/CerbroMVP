@@ -60,6 +60,15 @@ void ANodeActorBase::SetNodeText(const FString& NewText)
 	}
 }
 
+
+void ANodeActorBase::SetNodeSize(float NodeSize)
+{
+	// Assuming the sphere's scale is 1:1:1, you can simply adjust the scale based on the radius
+	NodeMesh->SetWorldScale3D(FVector(NodeSize));
+}
+
+
+
 void ANodeActorBase::SetFontSize(float FontSize)
 {
 	if (NodeTextComponent)
@@ -143,7 +152,7 @@ void ANodeActorBase::LowerOpacity()
 		UMaterialInstanceDynamic* Material = NodeMesh->CreateDynamicMaterialInstance(0);
 		if (Material)
 		{
-			Material->SetScalarParameterValue(FName("Opacity"), 0.5f);  // lower opacity
+			Material->SetScalarParameterValue(FName("Opacity"), 0.05f);  // lower opacity
 		}
 	}
 

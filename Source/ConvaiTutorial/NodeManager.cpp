@@ -412,6 +412,10 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector&
     float TopicFontSize = 28.0f;
     float SubtopicFontSize = 18.0f;
 
+    float TopicNodeSize = 1.0f;
+    float SubTopicNodeSize = 0.5f;
+
+
     UWorld* World = GetWorld();
     if (!World) return nullptr;
 
@@ -424,7 +428,7 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector&
             // Set font size based on whether it's a topic node
             NodeActor->SetFontSize(IsTopicNode ? TopicFontSize : SubtopicFontSize);
             NodeActor->SetNodeText(NodeName);
-
+            NodeActor->SetNodeSize(IsTopicNode ? TopicNodeSize : SubTopicNodeSize);
             
 
             // Set the material based on whether this is a Topic or Subtopic node

@@ -26,6 +26,9 @@ public:
     FTest GetCurrentQuestion();
 
     UFUNCTION(BlueprintCallable, Category = "Widgets")
+    FString GetCurrentQuestionContent();
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
     void ResetIndices();
 
     UFUNCTION(BlueprintCallable, Category = "Widgets")

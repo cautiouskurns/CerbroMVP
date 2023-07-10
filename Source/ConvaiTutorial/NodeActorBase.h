@@ -47,6 +47,7 @@ public:
 	bool bIsHighlighted;
 
 	void SetNodeText(const FString& NewText);
+	void SetNodeSize(float NodeSize);
 	void SetFontSize(float FontSize);
 	void SetFontColor(FColor Color);
 	void SetMaterial(UMaterialInterface* Material);

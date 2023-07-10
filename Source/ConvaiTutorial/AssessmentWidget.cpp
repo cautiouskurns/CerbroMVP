@@ -38,6 +38,40 @@ FTest UAssessmentWidget::GetCurrentQuestion()
     return GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics[QuestionSelector.TopicIndex].Subtopics[QuestionSelector.SubTopicIndex].Questions[QuestionSelector.QuestionIndex];
 }
 
+FString UAssessmentWidget::GetCurrentQuestionContent()
+{
+	FString EmptyString;
+
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance) EmptyString;
+
+	TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
+
+	// If Free selection is active, randomize the QuestionIndex before getting the question.
+	if (QuestionSelector.RandomizationLevel == 0)
+	{
+		if (QuestionSelector.SubjectIndex < GameInstanceSubjectDataArray.Num() &&
+			QuestionSelector.SectionIndex < GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray.Num() &&
+			QuestionSelector.TopicIndex < GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics.Num() &&
+			QuestionSelector.SubTopicIndex < GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics[QuestionSelector.TopicIndex].Subtopics.Num())
+		{
+			QuestionSelector.QuestionIndex = FMath::RandRange(0, GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics[QuestionSelector.TopicIndex].Subtopics[QuestionSelector.SubTopicIndex].Questions.Num() - 1);
+		}
+	}
+
+	if (QuestionSelector.SubjectIndex < 0 || QuestionSelector.SubjectIndex >= GameInstanceSubjectDataArray.Num() ||
+		QuestionSelector.SectionIndex < 0 || QuestionSelector.SectionIndex >= GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray.Num() ||
+		QuestionSelector.TopicIndex < 0 || QuestionSelector.TopicIndex >= GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics.Num() ||
+		QuestionSelector.SubTopicIndex < 0 || QuestionSelector.SubTopicIndex >= GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics[QuestionSelector.TopicIndex].Subtopics.Num() ||
+		QuestionSelector.QuestionIndex < 0 || QuestionSelector.QuestionIndex >= GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics[QuestionSelector.TopicIndex].Subtopics[QuestionSelector.SubTopicIndex].Questions.Num())
+	{
+		// One or more indices are not set or out of bounds. Handle this error case as appropriate for your game.
+		return EmptyString;
+	}
+
+	return GameInstanceSubjectDataArray[QuestionSelector.SubjectIndex].SubjectDetailsArray[QuestionSelector.SectionIndex].Topics[QuestionSelector.TopicIndex].Subtopics[QuestionSelector.SubTopicIndex].Content;
+}
+
 
 
 void UAssessmentWidget::ResetIndices()

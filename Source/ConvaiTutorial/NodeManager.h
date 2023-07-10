@@ -63,6 +63,7 @@ public:
 
 	void SetNodeText();
 
+
 	UFUNCTION(BlueprintCallable, Category = "Edge")
 	void GenerateEdges();
 
@@ -97,5 +98,9 @@ public:
 protected: // or private:
 	UPROPERTY()
 	FSubjectStruct CurrentSubject;
+
+private:
+	static const float TOPIC_RADIUS;
+	static const float SUBTOPIC_RADIUS;
 
 };
