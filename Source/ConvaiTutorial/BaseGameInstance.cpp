@@ -38,11 +38,7 @@ void UBaseGameInstance::Init()
 
 void UBaseGameInstance::InitializeSubjectDataArray()
 {
-    //FFolderStruct Struct1;
-    //Struct1.SubjectName = "Law";
-    //SubjectDataArray.Add(Struct1);
 
-    /*FString FilePath = FPaths::ProjectContentDir() + "StructTest.json";*/
 }
 
 

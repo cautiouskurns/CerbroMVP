@@ -21,14 +21,8 @@ void ACoreGameMode::BeginPlay()
 	{
 		NodeManager = GetWorld()->SpawnActor<ANodeManager>(NodeManagerClass);
 	}
-	if (NodeManager)
-	{
-	
-		
-	}
 
 	// Initialize the AssessmentMetricsCalculator
-
-	//AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>(this, UAssessmentMetricsCalculator::StaticClass());
+	AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>(this, UAssessmentMetricsCalculator::StaticClass());
 
 }

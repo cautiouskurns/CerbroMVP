@@ -29,8 +29,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Node Manager")
 	ANodeManager* NodeManager;
 
-	/*UPROPERTY(BlueprintReadWrite, Category = "Assessment")
-	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;*/
+	UPROPERTY(BlueprintReadWrite, Category = "Assessment")
+	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
 
 };
 

@@ -64,6 +64,13 @@ void ANodeActorBase::SetNodeText(const FString& NewText)
 	}
 }
 
+// Set the node text and content
+void ANodeActorBase::SetNodeTextAndContent(const FString& Text, const FString& Content)
+{
+	SetNodeText(Text);
+	SubtopicContent = Content;
+}
+
 
 // Set the font size of the node
 void ANodeActorBase::SetNodeTextFontSize(float FontSize)

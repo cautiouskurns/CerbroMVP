@@ -53,10 +53,36 @@ public:
 	int32 CalculateTimesAskedForSubject(const FSubjectStruct& Subject);
 
 
+	// Helper function to calculate total times correct for a set of questions
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForQuestions(const TArray<FTest>& Questions);
+
+	// Calculate total times questions have been answered correctly in a subtopic
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSubtopic(const FSubtopic& Subtopic);
+
+	// Calculate total times questions have been answered correctly in a topic
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForTopic(const FTopic& Topic);
+
+	// Calculate total times questions have been answered correctly in a section
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSection(const FSectionStruct& Section);
+
+	// Calculate total times questions have been answered correctly in a subject
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSubject(const FSubjectStruct& Subject);
+
+
 
 // INCREMENTAL REFACTORING FUNCTIONS
 public:
+	// Calculate total times questions have been answered for a specific subtopic, given its title
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle, const TArray<FSubjectStruct>& SubjectDataArray);
+
+	// Calculate total times questions have been answered correctly for a specific subtopic, given its title
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle, const TArray<FSubjectStruct>& SubjectDataArray);
 	
 };

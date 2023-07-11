@@ -54,6 +54,7 @@ public:
 
 
 	void SetNodeText(const FString& NewText);
+	void SetNodeTextAndContent(const FString& Text, const FString& Content);
 	void SetNodeTextFontSize(float FontSize);
 	
 	void SetNodeSize(float NodeSize);
