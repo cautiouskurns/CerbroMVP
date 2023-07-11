@@ -7,6 +7,7 @@
 #include "TopicWidget.h"
 #include "SectionWidget.h"
 #include "NodeActorBase.h"
+#include "InteractWidget.h"
 #include "BaseGameInstance.h"
 #include "Blueprint/UserWidget.h"
 #include "SubTopicWidget.h"
@@ -16,6 +17,8 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRightMouseClickedSignature);
+
 UCLASS()
 class CONVAITUTORIAL_API ABasePlayerController : public APlayerController
 {
@@ -78,4 +81,37 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
 	FRotator TargetOrientation;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Widgets")
+	TSubclassOf<UUserWidget> InteractWidgetClass;
+
+	UPROPERTY()
+	UInteractWidget* InteractWidget;
+
+public:
+	void SetInteractWidget(UInteractWidget* NewWidget);
+
+
+private:
+	FString LastClickedNodeContent;  // Declare a member variable to store the content
+	FString LastClickedNodeTitle;  // Declare a member variable to store the title
+
+
+public:
+	// Getter function to retrieve the content
+	UFUNCTION(BlueprintPure, Category = "Node Content")
+	FString GetLastClickedNodeContent() const { return LastClickedNodeContent; }
+
+	// Getter function to retrieve the content
+	UFUNCTION(BlueprintPure, Category = "Node Content")
+	FString GetLastClickedNodeTitle() const { return LastClickedNodeTitle; }
+
+public:
+	// We want this public so our UI can access it to subscribe to it
+	// Also adding BlueprintAssignable makes it accessible by blueprints
+	UPROPERTY(BlueprintAssignable)
+	FOnRightMouseClickedSignature OnRightMouseClickedDelegate;
+
+
+	UFUNCTION(BlueprintCallable, Category = "Data")
+	void TestDataTable(FName RowName);
 };

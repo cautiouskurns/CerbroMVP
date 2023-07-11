@@ -61,6 +61,7 @@ void ANodeActorBase::SetNodeText(const FString& NewText)
 }
 
 
+
 void ANodeActorBase::SetNodeSize(float NodeSize)
 {
 	// Assuming the sphere's scale is 1:1:1, you can simply adjust the scale based on the radius

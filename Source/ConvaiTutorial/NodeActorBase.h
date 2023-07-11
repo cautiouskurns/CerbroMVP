@@ -46,6 +46,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
 	bool bIsHighlighted;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Subtopic")
+	FString SubtopicContent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Subtopic")
+	FString SubtopicTitle;
+
 	void SetNodeText(const FString& NewText);
 	void SetNodeSize(float NodeSize);
 	void SetFontSize(float FontSize);

@@ -10,11 +10,14 @@
 #include "CoreGameMode.h"
 #include "HUDWidgetTest.h"
 #include "BaseGameInstance.h"
+#include "Testwidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetTree.h"
 #include <Engine.h>
 #include "NodeActorBase.h"
+#include <Blueprint/WidgetBlueprintLibrary.h>
+#include "InteractWidget.h"
 
 
 
@@ -23,16 +26,6 @@
 void ABasePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
-    // Find the central actor in the world
-    for (TActorIterator<AActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-    {
-        if (ActorItr->GetName().Equals("BP_InteractLookTarget"))
-        {
-            CentralActor = *ActorItr;
-            break;
-        }
-    }
 
 }
 
@@ -50,13 +43,13 @@ void ABasePlayerController::Tick(float DeltaTime)
             FVector CurrentPosition = ControlledPawn->GetActorLocation();
             FRotator CurrentOrientation = ControlledPawn->GetActorRotation();
 
-            FVector NewPosition = FMath::VInterpTo(CurrentPosition, TargetPosition, DeltaTime, 1.0f); // adjust the speed as needed
-            FRotator NewOrientation = FMath::RInterpTo(CurrentOrientation, TargetOrientation, DeltaTime, 1.0f); // adjust the speed as needed
+            FVector NewPosition = FMath::VInterpTo(CurrentPosition, TargetPosition, DeltaTime, 0.5f); // adjust the speed as needed
+            FRotator NewOrientation = FMath::RInterpTo(CurrentOrientation, TargetOrientation, DeltaTime, 0.5f); // adjust the speed as needed
 
             ControlledPawn->SetActorLocationAndRotation(NewPosition, NewOrientation);
 
             // If we're close enough to the target position and orientation, stop moving
-            if (FVector::DistSquared(NewPosition, TargetPosition) < FMath::Square(500.0f) // adjust the tolerance as needed
+            if (FVector::DistSquared(NewPosition, TargetPosition) < FMath::Square(100.0f) // adjust the tolerance as needed
                 && FMath::Abs((NewOrientation - TargetOrientation).GetNormalized().Yaw) < 1.0f) // adjust the tolerance as needed
             {
                 bMovingToNode = false;
@@ -202,48 +195,17 @@ void ABasePlayerController::MoveCameraToNode(ANodeActorBase* Node)
     // Set a flag to indicate that we're moving to a node
     bMovingToNode = true;
 
-    //ACoreGameMode* GameMode = Cast<ACoreGameMode>(GetWorld()->GetAuthGameMode());
-    //if (GameMode != nullptr && GameMode->NodeManager != nullptr)
-    //{
-    //    // Access the NodeActors array
-    //    TArray<ANodeActorBase*> AllNodes = GameMode->NodeManager->NodeActors;
-
-    //// Calculate the target camera position and orientation
-    //    FVector TargetPosition = Node->GetActorLocation() - FVector(0, 0, -1000); // adjust this as needed
-
-    //    // Calculate the target camera orientation based on the position of CentralActor
-    //    //FRotator TargetOrientation = (FVector((0.000000, -99.000000, 0.000000)) - TargetPosition).Rotation();
-
-
-    //    FRotator TargetOrientationNode = (Node->GetActorLocation() - TargetPosition).Rotation();
-
-    //    // Set a flag to indicate that we're moving to a node
-    //    bMovingToNode = true;
-
-    //    // Calculate the center of mass of all nodes
-    //    FVector CenterOfMass = FVector::ZeroVector;
-    //    for (ANodeActorBase* OtherNode : AllNodes) // Replace AllNodes with your array of all nodes
-    //    {
-    //        CenterOfMass += OtherNode->GetActorLocation();
-    //    }
-    //    CenterOfMass /= AllNodes.Num(); // Calculate the average location
-
-
-
-    //    // Calculate the rotation towards the center of mass
-    //    FRotator TargetOrientationCenter = (CenterOfMass - TargetPosition).Rotation();
-    //    FRotator TargetOrientation = FMath::Lerp(TargetOrientationNode, TargetOrientationCenter, 0.5f);
-
-    //    // Move the camera to the target position and orientation
-    //    // Get the controlled pawn
-    //    APawn* ControlledPawn = GetPawn();
-    //    if (ControlledPawn != nullptr)
-    //    {
-    //        // Move the controlled pawn to the target position and orientation
-    //        ControlledPawn->SetActorLocationAndRotation(TargetPosition, TargetOrientationNode);
-    //    }
-    //}
 }
+
+
+void ABasePlayerController::SetInteractWidget(UInteractWidget* NewWidget)
+{
+    InteractWidget = NewWidget;
+}
+
+
+
+
 
 void ABasePlayerController::OnRightMouseClick()
 {
@@ -253,12 +215,63 @@ void ABasePlayerController::OnRightMouseClick()
 
     // If the raycast hit a node, move the camera to that node
     AActor* HitActor = HitResult.GetActor();
+
     if (HitActor != nullptr && HitActor->IsA<ANodeActorBase>())
     {
-        // print the name of the hit actor
-        MoveCameraToNode(Cast<ANodeActorBase>(HitActor));
+        ANodeActorBase* NodeActorBase = Cast<ANodeActorBase>(HitActor);
+        if (NodeActorBase)  // Check that NodeActorBase is not null
+        {
+            MoveCameraToNode(NodeActorBase);
+
+            LastClickedNodeContent = NodeActorBase->SubtopicContent;
+
+            LastClickedNodeTitle = NodeActorBase->SubtopicTitle;
+
+            // Trigger the delegate
+            OnRightMouseClickedDelegate.Broadcast();
+
+        }
+        else
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NodeActorBase is null"));
+        }
+
     }
+
 }
+
+
+void ABasePlayerController::TestDataTable(FName RowName)
+{
+    // Replace "PathToYourDataTable" with the path to your data table
+    UDataTable* DataTable = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), NULL, TEXT("DataTable'/Game/Data/DT_ImageTestData.DT_ImageTestData'")));
+   
+    // Check if the data table was loaded
+    if (!DataTable)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Data table not found"));
+        return;
+    }
+
+    // Get a row from the data table
+    FImageTestStruct* Row = DataTable->FindRow<FImageTestStruct>(RowName, TEXT(""));
+
+    // Check if the row was found
+    if (!Row)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Row not found in data table"));
+        return;
+    }
+
+    // Print the fields of the row
+    // print row name and texture name to screen using engine function
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Row->ImageName);
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Row->TestTexture->GetName());
+
+}
+
+
+
 
 //void ABasePlayerController::MoveCameraToNode(ANodeActorBase* Node)
 //{

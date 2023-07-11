@@ -33,7 +33,7 @@ void ANodeManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-    SubjectSwitch("Physics");
+    SubjectSwitch("Law");
 
     // This ensures that the nodes and edges are created after the GameInstance data is populated
     //GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
@@ -157,11 +157,42 @@ TArray<FString> ANodeManager::GenerateSubtopicNames()
     return SubTopicNames;
 }
 
+
+TArray<FString> ANodeManager::GenerateSubtopicContents()
+{
+    TArray<FString> SubTopicContent;
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+
+    if (GameInstance)
+    {
+        // First, flatten the structure into a list of subtopic names
+        // Generate a list of subtopic names from the GameInstance.
+        for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
+        {
+            for (const FTopic& Topic : Section.Topics)
+            {
+                for (const FSubtopic& Subtopic : Topic.Subtopics)
+                {
+                    SubTopicContent.Add(Subtopic.Content);
+
+                    // print to screen the content
+                    UE_LOG(LogTemp, Warning, TEXT("Subtopic Content: %s"), *Subtopic.Content);
+                }
+            }
+        }
+    }
+    return SubTopicContent;
+}
+
+
 // This function sets the text for each node.
 void ANodeManager::SetNodeText()
 {
+    // print to screen the content
+    UE_LOG(LogTemp, Warning, TEXT("SetNodeText()"));
     // Generate an array of subtopic names
     TArray<FString> SubTopicNames = GenerateSubtopicNames();
+    TArray<FString> SubTopicContents = GenerateSubtopicContents();  // New function to generate contents
 
     for (int32 i = 0; i < NodeActors.Num(); i++)
     {
@@ -169,10 +200,16 @@ void ANodeManager::SetNodeText()
         if (!NodeActor) continue;  // skip if the pointer is null
 
         ANodeActorBase* NodeActorBase = Cast<ANodeActorBase>(NodeActor);
-        if (NodeActorBase && i < SubTopicNames.Num())
+        if (NodeActorBase && i < SubTopicNames.Num() && i < SubTopicContents.Num())
         {
             // Set the node's text to the corresponding subtopic name
             NodeActorBase->SetNodeText(SubTopicNames[i]);
+
+            // Set the node's content to the corresponding subtopic content
+            NodeActorBase->SubtopicContent = SubTopicContents[i];
+
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, NodeActorBase->SubtopicContent);
+
         }
     }
 }
@@ -304,10 +341,6 @@ void ANodeManager::InitializeNodesBySubject()
 
     TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
 
-    //if (GameInstanceSubjectDataArray.Num() > 0) {
-    //    CurrentSubject = GameInstanceSubjectDataArray[0];  // This is an example. Update it to select the appropriate subject
-    //}
-
     // Determine total number of topics across all sections
     int32 TotalNumberOfTopics = 0;
 
@@ -326,7 +359,7 @@ void ANodeManager::InitializeNodesBySubject()
         for (const FTopic& Topic : Section.Topics)
         {
             // Create a node for the Topic
-            ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
+            ANodeActorBase* TopicNode = CreateNode(Topic.Title, "", CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
             TopicNode->ParentTopic = nullptr;
 
             TopicNode->SetFontColor(TopicFontColor);  // Set font color for topic
@@ -337,7 +370,7 @@ void ANodeManager::InitializeNodesBySubject()
             int32 SubtopicIndex = 0;
             for (const FSubtopic& Subtopic : Topic.Subtopics)
             {
-                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
+                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, Subtopic.Content, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
                 SubtopicNode->ParentTopic = TopicNode;
 
                 SubtopicNode->SetFontColor(SubtopicFontColor);  // Set font color for subtopic
@@ -408,7 +441,7 @@ void ANodeManager::InitializeNodesBySubject()
 //    }
 //}
 
-ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector& Position, bool IsTopicNode)
+ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FString& NodeContent, const FVector& Position, bool IsTopicNode)
 {
     float TopicFontSize = 28.0f;
     float SubtopicFontSize = 18.0f;
@@ -430,7 +463,13 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FVector&
             NodeActor->SetFontSize(IsTopicNode ? TopicFontSize : SubtopicFontSize);
             NodeActor->SetNodeText(NodeName);
             NodeActor->SetNodeSize(IsTopicNode ? TopicNodeSize : SubTopicNodeSize);
+            NodeActor->SubtopicContent = NodeContent; // Set the subtopic content
+            NodeActor->SubtopicTitle = NodeName; // Set the subtopic content
+
             
+
+            //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, NodeActor->SubtopicContent);
+
 
             // Set the material based on whether this is a Topic or Subtopic node
             UMaterialInterface* Material = IsTopicNode ? TopicNodeMaterial : SubtopicNodeMaterial;

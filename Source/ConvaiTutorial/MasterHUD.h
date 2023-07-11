@@ -18,4 +18,6 @@ class CONVAITUTORIAL_API UMasterHUD : public UUserWidget
 {
     GENERATED_BODY()
 
+    void NativeConstruct();
+
 };

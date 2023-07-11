@@ -37,7 +37,7 @@ public:
 	void InitializeNodesBySubject();
 
 
-	ANodeActorBase* CreateNode(const FString& NodeName, const FVector& Position, bool IsTopicNode);
+	ANodeActorBase* CreateNode(const FString& NodeName, const FString& NodeContent, const FVector& Position, bool IsTopicNode);
 
 	FVector CalculateTopicPosition(int32 TopicIndex, int32 TotalNumberOfTopics);
 
@@ -62,6 +62,8 @@ public:
 	void PositionNodes();
 
 	TArray<FString> GenerateSubtopicNames();
+
+	TArray<FString> GenerateSubtopicContents();
 
 	void SetNodeText();
 

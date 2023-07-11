@@ -19,6 +19,20 @@
 class FJsonObject;
 
 USTRUCT(BlueprintType)
+struct FImageTestStruct : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ImageName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTexture2D* TestTexture;
+};
+
+
+USTRUCT(BlueprintType)
 struct FSubjectStruct : public FTableRowBase
 {
 	GENERATED_BODY()
