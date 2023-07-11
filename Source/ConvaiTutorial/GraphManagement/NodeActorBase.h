@@ -52,14 +52,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Subtopic")
 	FString SubtopicTitle;
 
+
 	void SetNodeText(const FString& NewText);
+	void SetNodeTextFontSize(float FontSize);
+	
 	void SetNodeSize(float NodeSize);
-	void SetFontSize(float FontSize);
-	void SetFontColor(FColor Color);
-	void SetMaterial(UMaterialInterface* Material);
+
+	void SetNodeTextFontColor(FColor Color);
+	void SetNodeMaterial(UMaterialInterface* Material);
 	UStaticMeshComponent* GetStaticMeshComponent() const;
 
-	void Highlight();
-	void RestoreOpacity();
-	void LowerOpacity();
+	void HighlightNode();
+	void RestoreNodeOpacity();
+	void LowerNodeOpacity();
 };

@@ -23,10 +23,12 @@ ANodeActorBase::ANodeActorBase()
 	NodeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NodeMesh"));
 	NodeMesh->SetupAttachment(RootComponent);
 
+	// Create the TextRenderComponent and attach it to the Root (we don't want it to move around with the camera)
 	NodeTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("NodeText"));
 	NodeTextComponent->SetupAttachment(RootComponent); // attach to the root component
 	NodeTextComponent->SetWorldSize(1000.0f); // sets the size of the text in the world
 
+	// Set the default font
 	bIsHighlighted = false;
 }
 
@@ -52,6 +54,8 @@ void ANodeActorBase::Tick(float DeltaTime)
 
 }
 
+
+// Set NodeTextComponent text to NewText for this node
 void ANodeActorBase::SetNodeText(const FString& NewText)
 {
 	if (NodeTextComponent)
@@ -61,23 +65,8 @@ void ANodeActorBase::SetNodeText(const FString& NewText)
 }
 
 
-
-void ANodeActorBase::SetNodeSize(float NodeSize)
-{
-	// Assuming the sphere's scale is 1:1:1, you can simply adjust the scale based on the radius
-	NodeMesh->SetWorldScale3D(FVector(NodeSize));
-
-	// Adjust the position of the node to keep its center at the same height
-	float OriginalScale = 1.0f; // replace this with the actual original scale if it's not 1
-	float DeltaHeight = 0.5f * (OriginalScale - NodeSize);
-	FVector Pos = GetActorLocation();
-	Pos.Z += 100 * DeltaHeight;
-	SetActorLocation(Pos);
-}
-
-
-
-void ANodeActorBase::SetFontSize(float FontSize)
+// Set the font size of the node
+void ANodeActorBase::SetNodeTextFontSize(float FontSize)
 {
 	if (NodeTextComponent)
 	{
@@ -96,7 +85,9 @@ void ANodeActorBase::SetFontSize(float FontSize)
 	}
 }
 
-void ANodeActorBase::SetFontColor(FColor Color)
+
+// Set the font of the node text
+void ANodeActorBase::SetNodeTextFontColor(FColor Color)
 {
 	if (NodeTextComponent)
 	{
@@ -105,7 +96,25 @@ void ANodeActorBase::SetFontColor(FColor Color)
 }
 
 
-void ANodeActorBase::SetMaterial(UMaterialInterface* Material)
+
+// Set the size of the node
+void ANodeActorBase::SetNodeSize(float NodeSize)
+{
+	// Assuming the sphere's scale is 1:1:1, you can simply adjust the scale based on the radius
+	NodeMesh->SetWorldScale3D(FVector(NodeSize));
+
+	// Adjust the position of the node to keep its center at the same height
+	float OriginalScale = 1.0f; // replace this with the actual original scale if it's not 1
+	float DeltaHeight = 0.5f * (OriginalScale - NodeSize);
+	FVector Pos = GetActorLocation();
+	Pos.Z += 100 * DeltaHeight;
+	SetActorLocation(Pos);
+}
+
+
+
+// Set the material of the node
+void ANodeActorBase::SetNodeMaterial(UMaterialInterface* Material)
 {
 	UStaticMeshComponent* MeshComponent = GetStaticMeshComponent();
 	if (MeshComponent)
@@ -114,15 +123,17 @@ void ANodeActorBase::SetMaterial(UMaterialInterface* Material)
 	}
 }
 
+
+// Get the StaticMeshComponent of the node
 UStaticMeshComponent* ANodeActorBase::GetStaticMeshComponent() const
 {
 	return FindComponentByClass<UStaticMeshComponent>();
 }
 
 
-void ANodeActorBase::Highlight()
+// Set the emissive color of the node to make it glow or stand out
+void ANodeActorBase::HighlightNode()
 {
-	// Set the emissive color of the material to make it glow or stand out
 
 	if (NodeMesh)
 	{
@@ -136,9 +147,9 @@ void ANodeActorBase::Highlight()
 }
 
 
-void ANodeActorBase::RestoreOpacity()
+// Set opacity of the node to make it transparent
+void ANodeActorBase::RestoreNodeOpacity()
 {
-	//UStaticMeshComponent* StaticMeshComponent = GetStaticMeshComponent();
 	if (NodeMesh)
 	{
 		UMaterialInstanceDynamic* Material = NodeMesh->CreateDynamicMaterialInstance(0);
@@ -152,9 +163,9 @@ void ANodeActorBase::RestoreOpacity()
 }
 
 
-void ANodeActorBase::LowerOpacity()
+// Set opacity of the node to make it transparent
+void ANodeActorBase::LowerNodeOpacity()
 {
-	//UStaticMeshComponent* StaticMeshComponent = GetStaticMeshComponent();
 	if (NodeMesh)
 	{
 		UMaterialInstanceDynamic* Material = NodeMesh->CreateDynamicMaterialInstance(0);

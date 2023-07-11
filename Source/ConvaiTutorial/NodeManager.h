@@ -9,6 +9,7 @@
 #include "GraphManagement/EdgeActorBase.h"
 #include "ReadWriteJsonFile.h"
 #include "AssessmentMetricsCalculator.h"
+#include "NodeDataLoader.h"
 #include "NodeManager.generated.h"
 
 
@@ -49,8 +50,6 @@ public:
 	FVector CalculateSubTopicPosition(int32 TopicIndex, int32 SubTopicIndex, int32 TotalNumberOfSubTopics, int32 TotalNumberOfTopics);
 
 	void CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2);
-
-	void CreateEdgeToSurface(ANodeActorBase* Node1, ANodeActorBase* Node2);
 
 	bool IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode);
 
@@ -103,6 +102,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Config")
 	FColor SubtopicFontColor;
+
+
+	// Add a pointer to UNodeDataLoader
+	UNodeDataLoader* NodeDataLoader;
 
 protected: // or private:
 	UPROPERTY()

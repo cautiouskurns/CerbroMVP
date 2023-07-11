@@ -13,6 +13,7 @@
 #include "Components/SceneComponent.h"
 #include "Engine/Engine.h"
 #include "BaseGameInstance.h"
+#include "NodeDataLoader.h"
 #include <Kismet/GameplayStatics.h>
 
 
@@ -25,13 +26,13 @@ ANodeManager::ANodeManager()
     // The start position is set to (0, 0, 100) in the 3D space.
     StartPosition = FVector(0, 0, 100);
 
-    // Initialize the AssessmentMetricsCalculator
- /*   AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
-    if (UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance()))
-    {
-        AssessmentMetricsCalculator->SetGameInstance(GameInstance);
-    }*/
+    NodeDataLoader = NewObject<UNodeDataLoader>();
 
+    if (NodeDataLoader)
+    {
+        UWorld* World = GetWorld();
+        NodeDataLoader->SetWorld(World);
+    }
 }
 
 // This function is called when the game starts or when the actor is spawned.
@@ -41,9 +42,6 @@ void ANodeManager::BeginPlay()
 	Super::BeginPlay();
 
     SubjectSwitch("Law");
-
-    // This ensures that the nodes and edges are created after the GameInstance data is populated
-    //GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
 }
 
 // Called every frame
@@ -198,8 +196,11 @@ void ANodeManager::SetNodeText()
     // print to screen the content
     UE_LOG(LogTemp, Warning, TEXT("SetNodeText()"));
     // Generate an array of subtopic names
-    TArray<FString> SubTopicNames = GenerateSubtopicNames();
-    TArray<FString> SubTopicContents = GenerateSubtopicContents();  // New function to generate contents
+    //TArray<FString> SubTopicNames = GenerateSubtopicNames();
+    //TArray<FString> SubTopicContents = GenerateSubtopicContents();  // New function to generate contents
+
+    TArray<FString> SubTopicNames = NodeDataLoader->GenerateSubtopicNames();
+    TArray<FString> SubTopicContents = NodeDataLoader->GenerateSubtopicContents(CurrentSubject);
 
     for (int32 i = 0; i < NodeActors.Num(); i++)
     {
@@ -331,7 +332,7 @@ void ANodeManager::InitializeNodesBySubject()
             ANodeActorBase* TopicNode = CreateNode(Topic.Title, "", CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
             TopicNode->ParentTopic = nullptr;
 
-            TopicNode->SetFontColor(TopicFontColor);  // Set font color for topic
+            TopicNode->SetNodeTextFontColor(TopicFontColor);  // Set font color for topic
             NodeActors.Add(TopicNode);
 
 
@@ -342,7 +343,7 @@ void ANodeManager::InitializeNodesBySubject()
                 ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, Subtopic.Content, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
                 SubtopicNode->ParentTopic = TopicNode;
 
-                SubtopicNode->SetFontColor(SubtopicFontColor);  // Set font color for subtopic
+                SubtopicNode->SetNodeTextFontColor(SubtopicFontColor);  // Set font color for subtopic
 
                 NodeActors.Add(SubtopicNode);
 
@@ -429,16 +430,11 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FString&
         if (NodeActor)
         {
             // Set font size based on whether it's a topic node
-            NodeActor->SetFontSize(IsTopicNode ? TopicFontSize : SubtopicFontSize);
+            NodeActor->SetNodeTextFontSize(IsTopicNode ? TopicFontSize : SubtopicFontSize);
             NodeActor->SetNodeText(NodeName);
             NodeActor->SetNodeSize(IsTopicNode ? TopicNodeSize : SubTopicNodeSize);
             NodeActor->SubtopicContent = NodeContent; // Set the subtopic content
             NodeActor->SubtopicTitle = NodeName; // Set the subtopic content
-
-            
-
-            //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, NodeActor->SubtopicContent);
-
 
             // Set the material based on whether this is a Topic or Subtopic node
             UMaterialInterface* Material = IsTopicNode ? TopicNodeMaterial : SubtopicNodeMaterial;
@@ -525,40 +521,6 @@ void ANodeManager::CreateEdge(ANodeActorBase* Node1, ANodeActorBase* Node2)
 }
 
 
-void ANodeManager::CreateEdgeToSurface(ANodeActorBase* Node1, ANodeActorBase* Node2)
-{
-    // Ensure the world exists
-    UWorld* World = GetWorld();
-    if (!World) return;
-
-    // Ensure the Edge blueprint class is set
-    if (!EdgeBlueprintClass) return;
-
-    // Spawn params
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.Owner = this;
-
-    FVector Pos1 = Node1->GetActorLocation();
-    FVector Pos2 = Node2->GetActorLocation();
-
-    FVector Dir = (Pos2 - Pos1).GetSafeNormal();
-
-    float Radius1 = Node1->GetStaticMeshComponent()->Bounds.SphereRadius * Node1->GetActorScale().X;
-    float Radius2 = Node2->GetStaticMeshComponent()->Bounds.SphereRadius * Node2->GetActorScale().X;
-
-    FVector EdgeStartPos = Pos1 + Dir * Radius1;
-    FVector EdgeEndPos = Pos2 - Dir * Radius2;
-
-    // Create edge between Node1 and Node2
-    AEdgeActorBase* EdgeActor = World->SpawnActor<AEdgeActorBase>(EdgeBlueprintClass, (EdgeStartPos + EdgeEndPos) / 2, FRotator::ZeroRotator, SpawnParams);
-    if (EdgeActor)
-    {
-        EdgeActor->SetStartEndNodes(EdgeStartPos, EdgeEndPos); // This is a new method you need to create
-        EdgeActors.Add(EdgeActor);
-    }
-}
-
-
 bool ANodeManager::IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode)
 {
     return Node->ParentTopic == TopicNode;
@@ -573,7 +535,7 @@ void ANodeManager::HighlightTopic(ANodeActorBase* TopicNode)
     {
         for (ANodeActorBase* Node : NodeActors)
         {
-            Node->RestoreOpacity();
+            Node->RestoreNodeOpacity();
         }
 
         TopicNode->bIsHighlighted = false;
@@ -584,11 +546,11 @@ void ANodeManager::HighlightTopic(ANodeActorBase* TopicNode)
         {
             if (Node == TopicNode || IsSubtopicOf(Node, TopicNode))
             {
-                Node->Highlight();
+                Node->HighlightNode();
             }
             else
             {
-                Node->LowerOpacity();
+                Node->LowerNodeOpacity();
             }
         }
 
