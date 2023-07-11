@@ -6,7 +6,7 @@
 #include "SectionWidget.h"
 #include "SubTopicWidget.h"
 #include "NodeManager.h"
-#include "NodeActorBase.h"
+#include "GraphManagement/NodeActorBase.h"
 #include "CoreGameMode.h"
 #include "HUDWidgetTest.h"
 #include "BaseGameInstance.h"
@@ -15,7 +15,7 @@
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetTree.h"
 #include <Engine.h>
-#include "NodeActorBase.h"
+#include "GraphManagement/NodeActorBase.h"
 #include <Blueprint/WidgetBlueprintLibrary.h>
 #include "InteractWidget.h"
 

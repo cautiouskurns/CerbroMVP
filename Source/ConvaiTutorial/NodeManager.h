@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "NodeActorBase.h"
+#include "GraphManagement/NodeActorBase.h"
 #include "BaseGameInstance.h"
-#include "EdgeActorBase.h"
+#include "GraphManagement/EdgeActorBase.h"
 #include "ReadWriteJsonFile.h"
+#include "AssessmentMetricsCalculator.h"
 #include "NodeManager.generated.h"
 
 
@@ -15,10 +16,14 @@ UCLASS()
 class CONVAITUTORIAL_API ANodeManager : public AActor
 {
 	GENERATED_BODY()
-	
+
+private:
+	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
+
 public:	
 	// Sets default values for this actor's properties
 	ANodeManager();
+
 
 protected:
 	// Called when the game starts or when spawned

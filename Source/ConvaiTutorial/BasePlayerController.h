@@ -6,7 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "TopicWidget.h"
 #include "SectionWidget.h"
-#include "NodeActorBase.h"
+#include "GraphManagement/NodeActorBase.h"
 #include "InteractWidget.h"
 #include "BaseGameInstance.h"
 #include "Blueprint/UserWidget.h"

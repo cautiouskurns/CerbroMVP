@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "AssessmentMetricsCalculator.h"
 #include "CoreGameMode.generated.h"
 
 /**
@@ -27,6 +28,9 @@ public:
 public:
 	UPROPERTY(BlueprintReadOnly, Category = "Node Manager")
 	ANodeManager* NodeManager;
+
+	/*UPROPERTY(BlueprintReadWrite, Category = "Assessment")
+	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;*/
 
 };
 

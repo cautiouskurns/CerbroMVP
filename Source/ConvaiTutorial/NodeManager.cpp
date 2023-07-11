@@ -3,7 +3,7 @@
 
 
 #include "NodeManager.h"
-#include "NodeActorBase.h"
+#include "GraphManagement/NodeActorBase.h"
 #include "ReadWriteJsonFile.h"
 #include "Engine/World.h"
 #include "Engine/StaticMesh.h"
@@ -24,6 +24,13 @@ ANodeManager::ANodeManager()
 
     // The start position is set to (0, 0, 100) in the 3D space.
     StartPosition = FVector(0, 0, 100);
+
+    // Initialize the AssessmentMetricsCalculator
+ /*   AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+    if (UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance()))
+    {
+        AssessmentMetricsCalculator->SetGameInstance(GameInstance);
+    }*/
 
 }
 
@@ -246,44 +253,6 @@ void ANodeManager::GenerateEdges()
 
 
 
-
-
-
-//void ANodeManager::InitializeNodesByTopic()
-//{
-//    UWorld* World = GetWorld();
-//    if (!World) return;
-//
-//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-//    if (!GameInstance) return;
-//
-//    TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
-//
-//    // Generate Nodes for Topics and Subtopics
-//    int32 TopicIndex = 0;
-//    for (const FSectionStruct& Section : GameInstanceSectionDataArray)
-//    {
-//        for (const FTopic& Topic : Section.Topics)
-//        {
-//            // Create a node for the Topic
-//            ANodeActorBase* TopicNode = CreateNode(Topic.Title, CalculateTopicPosition(TopicIndex));
-//            NodeActors.Add(TopicNode);
-//            TopicIndex++;
-//
-//            // Create a node for each Subtopic
-//            int32 SubtopicIndex = 0;
-//            for (const FSubtopic& Subtopic : Topic.Subtopics)
-//            {
-//                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, CalculateSubTopicPosition(TopicIndex, SubtopicIndex));
-//                NodeActors.Add(SubtopicNode);
-//
-//                CreateEdge(TopicNode, SubtopicNode);
-//
-//                SubtopicIndex++;
-//            }
-//        }
-//    }
-//}
 
 
 void ANodeManager::SubjectSwitch(const FString& NewSubjectName)

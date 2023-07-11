@@ -8,6 +8,7 @@
 ACoreGameMode::ACoreGameMode()
 {
 	NodeManager = nullptr;
+	//AssessmentMetricsCalculator = nullptr;
 }
 
 void ACoreGameMode::BeginPlay()
@@ -22,9 +23,12 @@ void ACoreGameMode::BeginPlay()
 	}
 	if (NodeManager)
 	{
-		/*NodeManager->InitializeNodes();
-		NodeManager->PositionNodes();
-		NodeManager->GenerateEdges();*/
+	
 		
 	}
+
+	// Initialize the AssessmentMetricsCalculator
+
+	//AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>(this, UAssessmentMetricsCalculator::StaticClass());
+
 }
