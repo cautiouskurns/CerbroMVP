@@ -7,7 +7,7 @@
 #include "Json.h"
 #include "JsonObjectConverter.h"
 #include "Misc/Paths.h"
-
+#include "KnowledgeStructs.h"
 #include "Misc/FileHelper.h"
 #include "Engine/DataTable.h"   // Include this
 #include "ReadWriteJsonFile.generated.h"
@@ -28,96 +28,6 @@ public:
 };
 
 class FJsonObject;
-
-USTRUCT(BlueprintType)
-struct FTest
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Question;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FString> Answers;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString CorrectAnswer;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int TimesTested;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int TimesCorrect;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float ProficiencyScore;
-};
-
-
-
-USTRUCT(BlueprintType)
-struct FSubtopic
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Title;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Content;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FTest> Questions;
-};
-
-
-USTRUCT(BlueprintType)
-struct FTopic
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Title;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FSubtopic> Subtopics;
-};
-
-USTRUCT(BlueprintType)
-struct FSectionStruct : public FTableRowBase
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString SectionName;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FTopic> Topics;
-};
-
-
-//USTRUCT(BlueprintType)
-//struct FTreeViewItem
-//{
-//    GENERATED_BODY()
-//
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//    int32 ID;
-//
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//    FString Name;
-//
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//    TArray<int32> ChildrenIDs;
-//
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-//    int32 ParentID;
-//};
-
 
 UCLASS()
 class CONVAITUTORIAL_API UReadWriteJsonFile : public UBlueprintFunctionLibrary

@@ -12,6 +12,7 @@
 #include <Components/TreeView.h>
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
+#include "KnowledgeStructs.h"
 #include "BaseGameInstance.generated.h"
 
 
@@ -31,18 +32,9 @@ public:
 };
 
 
-USTRUCT(BlueprintType)
-struct FSubjectStruct : public FTableRowBase
-{
-	GENERATED_BODY()
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString SubjectName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FSectionStruct> SubjectDetailsArray;
-};
+
 
 USTRUCT(BlueprintType)
 struct FSubjectStructBasic : public FTableRowBase
@@ -79,6 +71,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FTopicStruct> Topics;
 };
+
+
 
 
 
