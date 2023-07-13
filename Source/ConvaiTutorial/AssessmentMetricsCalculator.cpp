@@ -379,19 +379,11 @@ FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 SubjectIndex, int32
     FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
     for (FTest& Question : SelectedSubtopic.Questions)
     {
-       /* FString DebugMessage = FString::Printf(TEXT("Question: %s, Answer: %s"), *Question.Question, *SubmittedAnswer);
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);*/
-
+       
         if (Question.Question == QuestionText)
         {
-            //FString DebugMessage = FString::Printf(TEXT("Questions are equal"));
-            //GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
-
+            
             Question.TimesTested++;
-
-            // print times tested
-            FString DebugMessage = FString::Printf(TEXT("Times Tested: %d"), Question.TimesTested);
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
 
             if (SubmittedAnswer == Question.CorrectAnswer)
             {
