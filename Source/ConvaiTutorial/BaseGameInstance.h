@@ -12,7 +12,6 @@
 #include <Components/TreeView.h>
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
-
 #include "BaseGameInstance.generated.h"
 
 
@@ -126,6 +125,7 @@ public:
 
 
 class UDataProvider;
+class UAssessmentMetricsCalculator;
 
 UCLASS()
 class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
@@ -183,6 +183,9 @@ public:
 	UPROPERTY()
 	FQuestionSelector CurrentQuestionSelector;
 
+	//UPROPERTY()
+	//UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
+
 
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Color Palette")
@@ -201,15 +204,6 @@ public:
 	FColor BackgroundColor;
 
 
-	//UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
-	//TArray<FTreeViewItem> TreeDataArray;
-
-	//UFUNCTION(BlueprintCallable, Category = "Information Structs")
-	//void PopulateTreeView(UTreeView* TreeView);
-
-	//UFUNCTION(BlueprintCallable, Category = "Information Structs")
-	//TArray<FListViewItem> GetListData();
-
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 UpdateRandomQuestionTimesTested(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex);
 
@@ -217,12 +211,41 @@ public:
 	int32 UpdateTimesCorrect(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 CalculateTimesAskedForQuestionIR(const FString& SubtopicTitle);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle);
+
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	FTest UpdateTimesTestedAndCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, const FString& SelectedAnswer);
+
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	FString SubmitAnswer(const FString& AnswerText);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	FTest UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 GetTimesCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
+
+	UAssessmentMetricsCalculator* AssessmentMetricsCalculatorGlobal;
+
+	
+
+	/*UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 UpdateTimesCorrect(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer);*/
+
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	FSubjectStruct LoadJsonFromFile(FString FilePath);
-
-	//static TSharedPtr<FJsonObject> ReadJsonFileToJsonObject(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage);
-
-	//UFUNCTION(BlueprintCallable, Category = "Widgets")
-	//FSubjectStructBasic ReadNestedStructFromJsonFile(FString JsonFilePath, bool& bOutSuccess, FString& OutInfoMessage);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
 	UDataProvider* DataProvider;
