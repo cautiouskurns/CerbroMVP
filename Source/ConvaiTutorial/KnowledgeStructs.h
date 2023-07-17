@@ -181,6 +181,45 @@ public:
 };
 
 
+USTRUCT(BlueprintType)
+struct FSubjectGroupStruct : public FTableRowBase
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString SubjectGroupName;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FSubjectStruct> Subjects;
+};
+
+USTRUCT(BlueprintType)
+struct FAreaStruct : public FTableRowBase
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString AreaName;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FSubjectGroupStruct> SubjectGroups;
+};
+
+USTRUCT(BlueprintType)
+struct FFieldStruct : public FTableRowBase
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString FieldName;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<FAreaStruct> Areas;
+};
+
 
 
 

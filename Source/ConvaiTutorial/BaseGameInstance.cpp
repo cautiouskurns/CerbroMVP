@@ -17,6 +17,8 @@
 #include "DataProvider.h"
 #include "DirectoryHierarchyManager.h" 
 #include "AssessmentMetricsCalculator.h"
+#include "MySaveGame.h"
+#include <Kismet/GameplayStatics.h>
 
 UBaseGameInstance::UBaseGameInstance()
 {
@@ -31,8 +33,7 @@ void UBaseGameInstance::Init()
 
     UWorld* World = GetWorld();  // Assuming this is called within an actor or component
 
-       
-
+      
     // Create an instance of UDataProvider
     DataProvider = NewObject<UDataProvider>(this);
 
@@ -41,45 +42,6 @@ void UBaseGameInstance::Init()
 
     // Store the DataProvider in a property if you need to access it later
     this->DataProvider = DataProvider;
-
-    // Generate some resources
-    TArray<FResourceStruct> resources;
-    for (int i = 1; i <= 3; i++)
-    {
-        FResourceStruct resource;
-        resource.Name = FString::Printf(TEXT("Resource%d"), i);
-        resources.Add(resource);
-    }
-
-    // Generate some subjects, each with the same set of resources
-    TArray<FHierarchySubjectStruct> subjects;
-    for (int i = 1; i <= 3; i++)
-    {
-        FHierarchySubjectStruct subject;
-        subject.Name = FString::Printf(TEXT("Subject%d"), i);
-        subject.Resources = resources;  // Each subject gets a copy of the list of resources
-        subjects.Add(subject);
-    }
-
-    // Generate some areas, each with the same set of subjects
-    TArray<FAreaStruct> areas;
-    for (int i = 1; i <= 3; i++)
-    {
-        FAreaStruct area;
-        area.Name = FString::Printf(TEXT("Area%d"), i);
-        area.Subjects = subjects;  // Each area gets a copy of the list of subjects
-        areas.Add(area);
-    }
-
-    // Generate some fields, each with the same set of areas
-    TArray<FFieldStruct> fields;
-    for (int i = 1; i <= 3; i++)
-    {
-        FFieldStruct field;
-        field.Name = FString::Printf(TEXT("Field%d"), i);
-        field.Areas = areas;  // Each field gets a copy of the list of areas
-        fields.Add(field);
-    }
 }
 
 
@@ -88,6 +50,185 @@ void UBaseGameInstance::InitializeSubjectDataArray()
 
 }
 
+
+void UBaseGameInstance::PopulateFieldDataArrayFromDataTable(UDataTable* DataTable)
+{
+    // Load the data table
+    //UDataTable* DataTable = LoadObject<UDataTable>(NULL, TEXT("/Game/YourPath/YourDataTable.YourDataTable"));
+    if (DataTable == nullptr)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Data table not found!"));
+        return;
+    }
+
+    // Get all row names
+    TArray<FName> RowNames = DataTable->GetRowNames();
+
+    // Iterate over each row
+    for (const FName& RowName : RowNames)
+    {
+        static const FString ContextString(TEXT("GENERAL"));
+        FFieldStruct* Row = DataTable->FindRow<FFieldStruct>(RowName, ContextString);
+        if (Row == nullptr)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Row not found!"));
+            continue;
+        }
+
+        // Add the row data to FieldDataArray
+        FieldDataArray.Add(*Row);
+    }
+}
+
+
+//void UBaseGameInstance::SaveGameData()
+//{
+//    UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+//
+//    for (const FFieldStruct& FieldData : FieldDataArray)
+//    {
+//        FFieldStructSaveData FieldDataSave;
+//        FieldDataSave.FieldName = FieldData.FieldName;
+//        for (const FAreaStruct& AreaData : FieldData.Areas)
+//        {
+//            FAreaStructSaveData AreaDataSave;
+//            AreaDataSave.AreaName = AreaData.AreaName;
+//            for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+//            {
+//                FSubjectGroupStructSaveData SubjectGroupDataSave;
+//                SubjectGroupDataSave.SubjectGroupName = SubjectGroupData.SubjectGroupName;
+//                for (const FSubjectStruct& NewSubjectData : SubjectGroupData.Subjects)
+//                {
+//                    FSubjectStructSaveData SubjectDataSave;
+//                    SubjectDataSave.SubjectName = NewSubjectData.SubjectName;
+//
+//                    SubjectGroupDataSave.SubjectsSaveData.Add(SubjectDataSave);
+//                }
+//                AreaDataSave.SubjectGroupsSaveData.Add(SubjectGroupDataSave);
+//            }
+//            FieldDataSave.AreasSaveData.Add(AreaDataSave);
+//        }
+//        SaveGameObject->FieldDataArraySaveData.Add(FieldDataSave);
+//    }
+//
+//    UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
+//}
+
+void UBaseGameInstance::SaveGameData()
+{
+    UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+
+    for (const FFieldStruct& FieldData : FieldDataArray)
+    {
+        FFieldStructSaveData FieldDataSave;
+        FieldDataSave.FieldName = FieldData.FieldName;
+
+        for (const FAreaStruct& AreaData : FieldData.Areas)
+        {
+            FAreaStructSaveData AreaDataSave;
+            AreaDataSave.AreaName = AreaData.AreaName;
+
+            for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+            {
+                FSubjectGroupStructSaveData SubjectGroupDataSave;
+                SubjectGroupDataSave.SubjectGroupName = SubjectGroupData.SubjectGroupName;
+
+                for (const FSubjectStruct& SubjectDataNew : SubjectGroupData.Subjects)
+                {
+                    FSubjectStructSaveData SubjectDataSave;
+                    SubjectDataSave.SubjectName = SubjectDataNew.SubjectName;
+                    SubjectDataSave.InputType = SubjectDataNew.InputType;
+                    SubjectDataSave.InteractionMetadataArray = SubjectDataNew.InteractionMetadataArray;
+
+                    for (const FSectionStruct& SectionData : SubjectDataNew.SubjectDetailsArray)
+                    {
+                        FSectionStructSaveData SectionDataSave;
+                        SectionDataSave.SectionName = SectionData.SectionName;
+
+                        for (const FTopic& TopicData : SectionData.Topics)
+                        {
+                            FTopicSaveData TopicDataSave;
+                            TopicDataSave.Title = TopicData.Title;
+
+                            for (const FSubtopic& SubtopicData : TopicData.Subtopics)
+                            {
+                                FSubtopicSaveData SubtopicDataSave;
+                                SubtopicDataSave.Title = SubtopicData.Title;
+                                SubtopicDataSave.Content = SubtopicData.Content;
+
+                                for (const FTest& TestData : SubtopicData.Questions)
+                                {
+                                    FTestSaveData TestDataSave;
+                                    TestDataSave.Question = TestData.Question;
+                                    TestDataSave.CorrectAnswer = TestData.CorrectAnswer;
+                                    TestDataSave.TimesTested = TestData.TimesTested;
+                                    TestDataSave.TimesCorrect = TestData.TimesCorrect;
+                                    TestDataSave.ProficiencyScore = TestData.ProficiencyScore;
+
+                                    SubtopicDataSave.QuestionsSaveData.Add(TestDataSave);
+                                }
+
+                                TopicDataSave.SubtopicsSaveData.Add(SubtopicDataSave);
+                            }
+
+                            SectionDataSave.TopicsSaveData.Add(TopicDataSave);
+                        }
+
+                        SubjectDataSave.SubjectDetailsArraySaveData.Add(SectionDataSave);
+                    }
+
+                    SubjectGroupDataSave.SubjectsSaveData.Add(SubjectDataSave);
+                }
+
+                AreaDataSave.SubjectGroupsSaveData.Add(SubjectGroupDataSave);
+            }
+
+            FieldDataSave.AreasSaveData.Add(AreaDataSave);
+        }
+
+        SaveGameObject->FieldDataArraySaveData.Add(FieldDataSave);
+    }
+
+    UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
+}
+
+void UBaseGameInstance::LoadGameData()
+{
+    if (UGameplayStatics::DoesSaveGameExist(TEXT("YourSaveSlot"), 0))
+    {
+        UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("YourSaveSlot"), 0));
+
+        if (SaveGameObject)
+        {
+            FieldDataArray.Empty();
+            for (const FFieldStructSaveData& FieldDataSave : SaveGameObject->FieldDataArraySaveData)
+            {
+                FFieldStruct FieldData;
+                FieldData.FieldName = FieldDataSave.FieldName;
+                for (const FAreaStructSaveData& AreaDataSave : FieldDataSave.AreasSaveData)
+                {
+                    FAreaStruct AreaData;
+                    AreaData.AreaName = AreaDataSave.AreaName;
+                    for (const FSubjectGroupStructSaveData& SubjectGroupDataSave : AreaDataSave.SubjectGroupsSaveData)
+                    {
+                        FSubjectGroupStruct SubjectGroupData;
+                        SubjectGroupData.SubjectGroupName = SubjectGroupDataSave.SubjectGroupName;
+                        for (const FSubjectStructSaveData& SubjectDataSave : SubjectGroupDataSave.SubjectsSaveData)
+                        {
+                            FSubjectStruct NewSubjectData;
+                            NewSubjectData.SubjectName = SubjectDataSave.SubjectName;
+                            // ... copy other data ...
+                            SubjectGroupData.Subjects.Add(NewSubjectData);
+                        }
+                        AreaData.SubjectGroups.Add(SubjectGroupData);
+                    }
+                    FieldData.Areas.Add(AreaData);
+                }
+                FieldDataArray.Add(FieldData);
+            }
+        }
+    }
+}
 
 
 

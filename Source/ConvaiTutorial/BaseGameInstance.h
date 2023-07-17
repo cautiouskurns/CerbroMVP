@@ -21,6 +21,196 @@
 
 class FJsonObject;
 
+
+
+USTRUCT()
+struct FTestSaveData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+		FString Question;
+
+	UPROPERTY()
+		TArray<FString> Answers;
+
+	UPROPERTY()
+		FString CorrectAnswer;
+
+	UPROPERTY()
+		int TimesTested;
+
+	UPROPERTY()
+		int TimesCorrect;
+
+	UPROPERTY()
+		float ProficiencyScore;
+};
+
+
+USTRUCT()
+struct FInteractionMetadataSaveData
+{
+	GENERATED_BODY()
+
+public:
+	// The text of the question that was asked
+	UPROPERTY()
+	FString QuestionText;
+
+	// The user's answer to the question
+	UPROPERTY()
+	FString UserAnswer;
+
+	// Was the user's answer correct?
+	UPROPERTY()
+	bool bIsCorrect;
+
+	// When did the user answer the question?
+	UPROPERTY()
+	FDateTime ResponseTime;
+
+	// Which AI instructor was being used?
+	UPROPERTY()
+	FString AIInstructor;
+
+	// Which section was the user in when this interaction occurred?
+	UPROPERTY()
+	FString SectionName;
+
+	// Which topic was the user studying when this interaction occurred?
+	UPROPERTY()
+	FString TopicName;
+
+	// Which subtopic was the user studying when this interaction occurred?
+	UPROPERTY()
+	FString SubtopicName;
+
+	// Was this interaction part of a test or free study?
+	UPROPERTY()
+	FString StudyMode;
+
+	// How long did the user spend on this question?
+	UPROPERTY()
+	float TimeSpent;
+};
+
+
+USTRUCT()
+struct FSubtopicSaveData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString Title;
+
+	UPROPERTY()
+	FString Content;
+
+	UPROPERTY()
+	TArray<FTestSaveData> QuestionsSaveData;
+
+};
+
+
+USTRUCT(BlueprintType)
+struct FTopicSaveData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString Title;
+
+	UPROPERTY()
+	TArray<FSubtopicSaveData> SubtopicsSaveData;
+};
+
+
+USTRUCT(BlueprintType)
+struct FSectionStructSaveData : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString SectionName;
+
+	UPROPERTY()
+	TArray<FTopicSaveData> TopicsSaveData;
+};
+
+
+USTRUCT()
+struct FSubjectStructSaveData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString SubjectName;
+
+	UPROPERTY()
+	TArray<FInteractionMetadata> InteractionMetadataArray;
+
+	UPROPERTY()
+	TArray<FSectionStructSaveData> SubjectDetailsArraySaveData;
+
+	UPROPERTY()
+	EInputType InputType;
+};
+
+
+USTRUCT()
+struct FSubjectGroupStructSaveData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString SubjectGroupName;
+
+	UPROPERTY()
+	TArray<FSubjectStructSaveData> SubjectsSaveData;
+};
+
+
+USTRUCT()
+struct FAreaStructSaveData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString AreaName;
+
+	UPROPERTY()
+	TArray<FSubjectGroupStructSaveData> SubjectGroupsSaveData;
+};
+
+USTRUCT()
+struct FFieldStructSaveData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY()
+	FString FieldName;
+
+	UPROPERTY()
+	TArray<FAreaStructSaveData> AreasSaveData;
+};
+
+
+
+
+
+
+
+
+
 USTRUCT(BlueprintType)
 struct FImageTestStruct : public FTableRowBase
 {
@@ -141,16 +331,34 @@ public:
 
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	TArray<FFieldStruct> FieldDataArray;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	TArray<FAreaStruct> AreaDataArray;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	TArray<FSubjectGroupStruct> SubjectGroupDataArray;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FSubjectStruct> SubjectDataArray;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FSectionStruct> SectionDataArray;
 
-	//UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
-	//FSectionStruct SubjectStruct;
+
+
 
 	UFUNCTION(BlueprintCallable, Category = "Data")
 	void InitializeSubjectDataArray();
+
+	UFUNCTION(BlueprintCallable, Category = "YourCategory")
+	void PopulateFieldDataArrayFromDataTable(UDataTable* DataTable);
+
+	UFUNCTION(BlueprintCallable, Category = "YourCategory")
+	void SaveGameData();
+
+	UFUNCTION(BlueprintCallable, Category = "YourCategory")
+	void LoadGameData();
 
 
 
@@ -184,8 +392,7 @@ public:
 	UPROPERTY()
 	FQuestionSelector CurrentQuestionSelector;
 
-	//UPROPERTY()
-	//UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
+
 
 
 public:

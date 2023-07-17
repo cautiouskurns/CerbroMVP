@@ -297,7 +297,7 @@ void ABasePlayerController::CreateDirectoryHierarchyWidgets(
 
         if (FieldWidget)
         {
-            FieldWidget->SetName(FieldData.Name);
+            FieldWidget->SetName(FieldData.FieldName);
             CreateAreaWidgets(FieldData.Areas, FieldWidget, AreaWidgetClass, SubjectWidgetClass, ResourceWidgetClass);
 
             // Add FieldWidget to the main UI
@@ -330,8 +330,8 @@ void ABasePlayerController::CreateAreaWidgets(
         UAreaWidget* AreaWidget = CreateWidget<UAreaWidget>(GetWorld(), AreaWidgetClass);
         if (AreaWidget)
         {
-            AreaWidget->SetName(AreaData.Name);
-            CreateSubjectWidgets(AreaData.Subjects, AreaWidget, SubjectWidgetClass, ResourceWidgetClass);
+            AreaWidget->SetName(AreaData.AreaName);
+            CreateSubjectGroupWidgets(AreaData.SubjectGroups, AreaWidget, SubjectWidgetClass, ResourceWidgetClass);
             ParentWidget->AddChildWidget(AreaWidget);
 
             if (FieldWidgetReference)
@@ -343,21 +343,21 @@ void ABasePlayerController::CreateAreaWidgets(
 }
 
 
-void ABasePlayerController::CreateSubjectWidgets(
-    const TArray<FHierarchySubjectStruct>& SubjectDataArray,
+void ABasePlayerController::CreateSubjectGroupWidgets(
+    const TArray<FSubjectGroupStruct>& SubjectDataArray,
     UAreaWidget* ParentWidget,
     TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
     TSubclassOf<UResourceWidget> ResourceWidgetClass)
 {
     AreaWidgetReference = ParentWidget;
 
-    for (const FHierarchySubjectStruct& SubjectData : SubjectDataArray)
+    for (const FSubjectGroupStruct& SubjectData : SubjectDataArray)
     {
         UHierarchySubjectWidget* SubjectWidget = CreateWidget<UHierarchySubjectWidget>(GetWorld(), SubjectWidgetClass);
         if (SubjectWidget)
         {
-            SubjectWidget->SetName(SubjectData.Name);
-            CreateResourceWidgets(SubjectData.Resources, SubjectWidget, ResourceWidgetClass);
+            SubjectWidget->SetName(SubjectData.SubjectGroupName);
+            CreateSubjectWidgets(SubjectData.Subjects, SubjectWidget, ResourceWidgetClass);
             ParentWidget->AddChildWidget(SubjectWidget);
 
             if (AreaWidgetReference)
@@ -368,19 +368,19 @@ void ABasePlayerController::CreateSubjectWidgets(
     }
 }
 
-void ABasePlayerController::CreateResourceWidgets(
-    const TArray<FResourceStruct>& ResourceDataArray,
+void ABasePlayerController::CreateSubjectWidgets(
+    const TArray<FSubjectStruct>& ResourceDataArray,
     UHierarchySubjectWidget* ParentWidget,
     TSubclassOf<UResourceWidget> ResourceWidgetClass)
 {
     HierarchySubjectWidgetReference = ParentWidget;
 
-    for (const FResourceStruct& ResourceData : ResourceDataArray)
+    for (const FSubjectStruct& ResourceData : ResourceDataArray)
     {
         UResourceWidget* ResourceWidget = CreateWidget<UResourceWidget>(GetWorld(), ResourceWidgetClass);
         if (ResourceWidget)
         {
-            ResourceWidget->SetName(ResourceData.Name);
+            ResourceWidget->SetName(ResourceData.SubjectName);
             ParentWidget->AddChildWidget(ResourceWidget);
 
             if (AreaWidgetReference)
@@ -390,3 +390,116 @@ void ABasePlayerController::CreateResourceWidgets(
         }
     }
 }
+
+
+//
+//
+//void ABasePlayerController::CreateDirectoryHierarchyWidgets(
+//    const TArray<FFieldStruct>& FieldDataArray,
+//    TSubclassOf<UFieldWidget> FieldWidgetClass,
+//    TSubclassOf<UAreaWidget> AreaWidgetClass,
+//    TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
+//    TSubclassOf<UResourceWidget> ResourceWidgetClass,
+//    UDirectoryWidget* MainUIDirectory)
+//{
+//    DirectoryWidgetReference = MainUIDirectory;
+//
+//    for (const FFieldStruct& FieldData : FieldDataArray)
+//    {
+//        UFieldWidget* FieldWidget = CreateWidget<UFieldWidget>(GetWorld(), FieldWidgetClass);
+//
+//        if (FieldWidget)
+//        {
+//            FieldWidget->SetName(FieldData.Name);
+//            CreateAreaWidgets(FieldData.Areas, FieldWidget, AreaWidgetClass, SubjectWidgetClass, ResourceWidgetClass);
+//
+//            // Add FieldWidget to the main UI
+//            if (MainUIDirectory != nullptr)
+//            {
+//                MainUIDirectory->AddFieldWidget(FieldWidget);
+//            }
+//
+//            // Check if the cast was successful
+//            if (DirectoryWidgetReference)
+//            {
+//                DirectoryWidgetReference->AddFieldWidget(FieldWidget);
+//            }
+//        }
+//    }
+//}
+//
+//
+//void ABasePlayerController::CreateAreaWidgets(
+//    const TArray<FAreaStruct>& AreaDataArray,
+//    UFieldWidget* ParentWidget,
+//    TSubclassOf<UAreaWidget> AreaWidgetClass,
+//    TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
+//    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+//{
+//    FieldWidgetReference = ParentWidget;
+//
+//    for (const FAreaStruct& AreaData : AreaDataArray)
+//    {
+//        UAreaWidget* AreaWidget = CreateWidget<UAreaWidget>(GetWorld(), AreaWidgetClass);
+//        if (AreaWidget)
+//        {
+//            AreaWidget->SetName(AreaData.Name);
+//            CreateSubjectWidgets(AreaData.Subjects, AreaWidget, SubjectWidgetClass, ResourceWidgetClass);
+//            ParentWidget->AddChildWidget(AreaWidget);
+//
+//            if (FieldWidgetReference)
+//            {
+//                FieldWidgetReference->AddAreaWidget(AreaWidget);
+//            }
+//        }
+//    }
+//}
+//
+//
+//void ABasePlayerController::CreateSubjectWidgets(
+//    const TArray<FHierarchySubjectStruct>& SubjectDataArray,
+//    UAreaWidget* ParentWidget,
+//    TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
+//    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+//{
+//    AreaWidgetReference = ParentWidget;
+//
+//    for (const FHierarchySubjectStruct& SubjectData : SubjectDataArray)
+//    {
+//        UHierarchySubjectWidget* SubjectWidget = CreateWidget<UHierarchySubjectWidget>(GetWorld(), SubjectWidgetClass);
+//        if (SubjectWidget)
+//        {
+//            SubjectWidget->SetName(SubjectData.Name);
+//            CreateResourceWidgets(SubjectData.Resources, SubjectWidget, ResourceWidgetClass);
+//            ParentWidget->AddChildWidget(SubjectWidget);
+//
+//            if (AreaWidgetReference)
+//            {
+//                AreaWidgetReference->AddHierarchySubjectWidget(SubjectWidget);
+//            }
+//        }
+//    }
+//}
+//
+//void ABasePlayerController::CreateResourceWidgets(
+//    const TArray<FResourceStruct>& ResourceDataArray,
+//    UHierarchySubjectWidget* ParentWidget,
+//    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+//{
+//    HierarchySubjectWidgetReference = ParentWidget;
+//
+//    for (const FResourceStruct& ResourceData : ResourceDataArray)
+//    {
+//        UResourceWidget* ResourceWidget = CreateWidget<UResourceWidget>(GetWorld(), ResourceWidgetClass);
+//        if (ResourceWidget)
+//        {
+//            ResourceWidget->SetName(ResourceData.Name);
+//            ParentWidget->AddChildWidget(ResourceWidget);
+//
+//            if (AreaWidgetReference)
+//            {
+//                HierarchySubjectWidgetReference->AddResourcesWidget(ResourceWidget);
+//            }
+//        }
+//    }
+//}

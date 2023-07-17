@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "TopicWidget.h"
 #include "SectionWidget.h"
+#include "KnowledgeStructs.h"
 #include "GraphManagement/NodeActorBase.h"
 #include "InteractWidget.h"
 #include "BaseGameInstance.h"
@@ -126,10 +127,10 @@ public:
 	void CreateAreaWidgets(const TArray<FAreaStruct>& AreaDataArray, UFieldWidget* ParentWidget, TSubclassOf<UAreaWidget> AreaWidgetClass, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	void CreateSubjectWidgets(const TArray<FHierarchySubjectStruct>& SubjectDataArray, UAreaWidget* ParentWidget, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+	void CreateSubjectGroupWidgets(const TArray<FSubjectGroupStruct>& SubjectGroupDataArray, UAreaWidget* ParentWidget, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	void CreateResourceWidgets(const TArray<FResourceStruct>& ResourceDataArray, UHierarchySubjectWidget* ParentWidget, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+	void CreateSubjectWidgets(const TArray<FSubjectStruct>& SubjectDataArray, UHierarchySubjectWidget* ParentWidget, TSubclassOf<UResourceWidget> ResourceWidgetClass);
 
 
 

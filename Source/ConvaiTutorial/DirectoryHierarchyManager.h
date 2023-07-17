@@ -14,54 +14,54 @@
 
 
 
-USTRUCT(BlueprintType)
-struct FResourceStruct
-{
-    GENERATED_BODY()
+//USTRUCT(BlueprintType)
+//struct FResourceStruct
+//{
+//    GENERATED_BODY()
+//
+//public:
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    FString Name;
+//};
+//
+//USTRUCT(BlueprintType)
+//struct FHierarchySubjectStruct
+//{
+//    GENERATED_BODY()
+//
+//public:
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    FString Name;
+//
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    TArray<FResourceStruct> Resources;
+//};
 
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Name;
-};
-
-USTRUCT(BlueprintType)
-struct FHierarchySubjectStruct
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Name;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FResourceStruct> Resources;
-};
-
-USTRUCT(BlueprintType)
-struct FAreaStruct
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Name;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FHierarchySubjectStruct> Subjects;
-};
-
-USTRUCT(BlueprintType)
-struct FFieldStruct
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FString Name;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<FAreaStruct> Areas;
-};
+//USTRUCT(BlueprintType)
+//struct FAreaStruct
+//{
+//    GENERATED_BODY()
+//
+//public:
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    FString Name;
+//
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    TArray<FHierarchySubjectStruct> Subjects;
+//};
+//
+//USTRUCT(BlueprintType)
+//struct FFieldStruct
+//{
+//    GENERATED_BODY()
+//
+//public:
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    FString Name;
+//
+//    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+//    TArray<FAreaStruct> Areas;
+//};
 
 
 
