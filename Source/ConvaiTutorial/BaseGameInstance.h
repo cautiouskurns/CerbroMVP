@@ -13,7 +13,10 @@
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
 #include "KnowledgeStructs.h"
+#include "FieldWidget.h"
+#include "DirectoryHierarchyManager.h"
 #include "BaseGameInstance.generated.h"
+
 
 
 class FJsonObject;
@@ -77,6 +80,7 @@ public:
 
 
 
+
 USTRUCT(BlueprintType)
 struct FQuestionSelector
 {
@@ -129,8 +133,11 @@ class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
 public:
 	UBaseGameInstance();
 
-	void Init();
+	//void Init();
 
+	virtual void Init() override;
+
+	TArray<FFieldStruct> Fields;
 
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
@@ -243,4 +250,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
 	UDataProvider* DataProvider;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Directory")
+	UDirectoryHierarchyManager* DirectoryManager;
 };

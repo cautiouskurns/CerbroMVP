@@ -114,4 +114,34 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Data")
 	void TestDataTable(FName RowName);
+
+public:
+
+
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void CreateDirectoryHierarchyWidgets(const TArray<FFieldStruct>& FieldDataArray, TSubclassOf<UFieldWidget> FieldWidgetClass, TSubclassOf<UAreaWidget> AreaWidgetClass, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass, UDirectoryWidget* MainUIDirectory);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void CreateAreaWidgets(const TArray<FAreaStruct>& AreaDataArray, UFieldWidget* ParentWidget, TSubclassOf<UAreaWidget> AreaWidgetClass, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void CreateSubjectWidgets(const TArray<FHierarchySubjectStruct>& SubjectDataArray, UAreaWidget* ParentWidget, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void CreateResourceWidgets(const TArray<FResourceStruct>& ResourceDataArray, UHierarchySubjectWidget* ParentWidget, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+
+
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	UDirectoryWidget* DirectoryWidgetReference;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	UFieldWidget* FieldWidgetReference;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	UAreaWidget* AreaWidgetReference;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	UHierarchySubjectWidget* HierarchySubjectWidgetReference;
 };

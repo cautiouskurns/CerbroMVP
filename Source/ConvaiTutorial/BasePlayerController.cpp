@@ -15,6 +15,12 @@
 #include "Components/WidgetComponent.h"
 #include "Blueprint/WidgetTree.h"
 #include <Engine.h>
+#include "DirectoryHierarchyManager.h"
+#include "FieldWidget.h"
+#include "AreaWidget.h"
+#include "SubjectWidget.h"
+#include "ResourceWidget.h"
+#include "DirectoryWidget.h"
 #include "GraphManagement/NodeActorBase.h"
 #include <Blueprint/WidgetBlueprintLibrary.h>
 #include "InteractWidget.h"
@@ -273,47 +279,114 @@ void ABasePlayerController::TestDataTable(FName RowName)
 
 
 
-//void ABasePlayerController::MoveCameraToNode(ANodeActorBase* Node)
-//{
-//    // Check if Node or CentralActor is null
-//    if (!Node || !CentralActor)
-//    {
-//        return;
-//    }
-//
-//    // Calculate the target camera position and orientation
-//    FVector TargetPosition = Node->GetActorLocation() - FVector(0, 0, -1000); // adjust this as needed
-//    //FRotator TargetOrientation = (Node->GetActorLocation() - TargetPosition).Rotation();
-//
-//    // Calculate the target camera orientation based on the position of CentralActor
-//    //FRotator TargetOrientation = (CentralActor->GetActorLocation() - TargetPosition).Rotation();
-//    FRotator TargetOrientation = (FVector((0.000000, -99.000000, 0.000000)) - TargetPosition).Rotation();
-//
-//
-//
-//    // Move the camera to the target position and orientation
-//    //SetViewTargetWithBlend(Node, 1.0f); // 1 second blend time
-//
-//    // Move the camera to the target position and orientation
-//    // Get the controlled pawn
-//    APawn* ControlledPawn = GetPawn();
-//    if (ControlledPawn != nullptr)
-//    {
-//        // Move the controlled pawn to the target position and orientation
-//        ControlledPawn->SetActorLocationAndRotation(TargetPosition, TargetOrientation);
-//    }
-//}
-//
-//void ABasePlayerController::OnLeftMouseClick()
-//{
-//    // Perform a raycast under the cursor
-//    FHitResult HitResult;
-//    GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, HitResult);
-//
-//    // If the raycast hit a node, move the camera to that node
-//    AActor* HitActor = HitResult.GetActor();
-//    if (HitActor != nullptr && HitActor->IsA<ANodeActorBase>())
-//    {
-//        MoveCameraToNode(Cast<ANodeActorBase>(HitActor));
-//    }
-//}
+
+
+void ABasePlayerController::CreateDirectoryHierarchyWidgets(
+    const TArray<FFieldStruct>& FieldDataArray,
+    TSubclassOf<UFieldWidget> FieldWidgetClass,
+    TSubclassOf<UAreaWidget> AreaWidgetClass,
+    TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
+    TSubclassOf<UResourceWidget> ResourceWidgetClass,
+    UDirectoryWidget* MainUIDirectory)
+{
+    DirectoryWidgetReference = MainUIDirectory;
+
+    for (const FFieldStruct& FieldData : FieldDataArray)
+    {
+        UFieldWidget* FieldWidget = CreateWidget<UFieldWidget>(GetWorld(), FieldWidgetClass);
+
+        if (FieldWidget)
+        {
+            FieldWidget->SetName(FieldData.Name);
+            CreateAreaWidgets(FieldData.Areas, FieldWidget, AreaWidgetClass, SubjectWidgetClass, ResourceWidgetClass);
+
+            // Add FieldWidget to the main UI
+            if (MainUIDirectory != nullptr)
+            {
+                MainUIDirectory->AddFieldWidget(FieldWidget);
+            }
+
+            // Check if the cast was successful
+            if (DirectoryWidgetReference)
+            {
+                DirectoryWidgetReference->AddFieldWidget(FieldWidget);
+            }
+        }
+    }
+}
+
+
+void ABasePlayerController::CreateAreaWidgets(
+    const TArray<FAreaStruct>& AreaDataArray,
+    UFieldWidget* ParentWidget,
+    TSubclassOf<UAreaWidget> AreaWidgetClass,
+    TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
+    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+{
+    FieldWidgetReference = ParentWidget;
+
+    for (const FAreaStruct& AreaData : AreaDataArray)
+    {
+        UAreaWidget* AreaWidget = CreateWidget<UAreaWidget>(GetWorld(), AreaWidgetClass);
+        if (AreaWidget)
+        {
+            AreaWidget->SetName(AreaData.Name);
+            CreateSubjectWidgets(AreaData.Subjects, AreaWidget, SubjectWidgetClass, ResourceWidgetClass);
+            ParentWidget->AddChildWidget(AreaWidget);
+
+            if (FieldWidgetReference)
+            {
+                FieldWidgetReference->AddAreaWidget(AreaWidget);
+            }
+        }
+    }
+}
+
+
+void ABasePlayerController::CreateSubjectWidgets(
+    const TArray<FHierarchySubjectStruct>& SubjectDataArray,
+    UAreaWidget* ParentWidget,
+    TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
+    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+{
+    AreaWidgetReference = ParentWidget;
+
+    for (const FHierarchySubjectStruct& SubjectData : SubjectDataArray)
+    {
+        UHierarchySubjectWidget* SubjectWidget = CreateWidget<UHierarchySubjectWidget>(GetWorld(), SubjectWidgetClass);
+        if (SubjectWidget)
+        {
+            SubjectWidget->SetName(SubjectData.Name);
+            CreateResourceWidgets(SubjectData.Resources, SubjectWidget, ResourceWidgetClass);
+            ParentWidget->AddChildWidget(SubjectWidget);
+
+            if (AreaWidgetReference)
+            {
+                AreaWidgetReference->AddHierarchySubjectWidget(SubjectWidget);
+            }
+        }
+    }
+}
+
+void ABasePlayerController::CreateResourceWidgets(
+    const TArray<FResourceStruct>& ResourceDataArray,
+    UHierarchySubjectWidget* ParentWidget,
+    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+{
+    HierarchySubjectWidgetReference = ParentWidget;
+
+    for (const FResourceStruct& ResourceData : ResourceDataArray)
+    {
+        UResourceWidget* ResourceWidget = CreateWidget<UResourceWidget>(GetWorld(), ResourceWidgetClass);
+        if (ResourceWidget)
+        {
+            ResourceWidget->SetName(ResourceData.Name);
+            ParentWidget->AddChildWidget(ResourceWidget);
+
+            if (AreaWidgetReference)
+            {
+                HierarchySubjectWidgetReference->AddResourcesWidget(ResourceWidget);
+            }
+        }
+    }
+}

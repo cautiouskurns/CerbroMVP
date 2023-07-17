@@ -15,16 +15,23 @@
 #include "Engine/DataTable.h"
 #include "FolderWidget.h"
 #include "DataProvider.h"
+#include "DirectoryHierarchyManager.h" 
 #include "AssessmentMetricsCalculator.h"
 
 UBaseGameInstance::UBaseGameInstance()
 {
-    //UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+    //DirectoryManager = NewObject<UDirectoryHierarchyManager>(this);
+    DirectoryManager = CreateDefaultSubobject<UDirectoryHierarchyManager>(TEXT("DirectoryManager"));
+
 }
 
 void UBaseGameInstance::Init()
 {
     Super::Init();
+
+    UWorld* World = GetWorld();  // Assuming this is called within an actor or component
+
+       
 
     // Create an instance of UDataProvider
     DataProvider = NewObject<UDataProvider>(this);
@@ -34,6 +41,45 @@ void UBaseGameInstance::Init()
 
     // Store the DataProvider in a property if you need to access it later
     this->DataProvider = DataProvider;
+
+    // Generate some resources
+    TArray<FResourceStruct> resources;
+    for (int i = 1; i <= 3; i++)
+    {
+        FResourceStruct resource;
+        resource.Name = FString::Printf(TEXT("Resource%d"), i);
+        resources.Add(resource);
+    }
+
+    // Generate some subjects, each with the same set of resources
+    TArray<FHierarchySubjectStruct> subjects;
+    for (int i = 1; i <= 3; i++)
+    {
+        FHierarchySubjectStruct subject;
+        subject.Name = FString::Printf(TEXT("Subject%d"), i);
+        subject.Resources = resources;  // Each subject gets a copy of the list of resources
+        subjects.Add(subject);
+    }
+
+    // Generate some areas, each with the same set of subjects
+    TArray<FAreaStruct> areas;
+    for (int i = 1; i <= 3; i++)
+    {
+        FAreaStruct area;
+        area.Name = FString::Printf(TEXT("Area%d"), i);
+        area.Subjects = subjects;  // Each area gets a copy of the list of subjects
+        areas.Add(area);
+    }
+
+    // Generate some fields, each with the same set of areas
+    TArray<FFieldStruct> fields;
+    for (int i = 1; i <= 3; i++)
+    {
+        FFieldStruct field;
+        field.Name = FString::Printf(TEXT("Field%d"), i);
+        field.Areas = areas;  // Each field gets a copy of the list of areas
+        fields.Add(field);
+    }
 }
 
 
@@ -43,39 +89,7 @@ void UBaseGameInstance::InitializeSubjectDataArray()
 }
 
 
-//int32 UBaseGameInstance::UpdateRandomQuestionTimesTested(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex)
-//{
-//    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
-//
-//    if (SelectedSubject.SubjectDetailsArray.Num() > 0) // Check if there are any sections
-//    {
-//        FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
-//
-//        if (SelectedSection.Topics.Num() > 0) // Check if there are any topics in the selected section
-//        {
-//            FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
-//
-//            if (SelectedTopic.Subtopics.Num() > 0) // Check if there are any subtopics in the selected topic
-//            {
-//                FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
-//
-//                if (SelectedSubtopic.Questions.Num() > 0) // Check if there are any questions in the selected subtopic
-//                {
-//                    FTest& SelectedQuestion = SelectedSubtopic.Questions[QuestionIndex];
-//
-//                    // Increment the TimesTested property of the selected question
-//                    SelectedQuestion.TimesTested++;
-//
-//                    // Return the updated TimesTested value
-//                    return SelectedQuestion.TimesTested;
-//                }
-//            }
-//        }
-//    }
-//
-//    // Return -1 if any of the indices are invalid
-//    return -1;
-//}
+
 
 int32 UBaseGameInstance::UpdateRandomQuestionTimesTested(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex)
 {
@@ -155,8 +169,6 @@ int32 UBaseGameInstance::GetTimesCorrectForQuestion(int32 SubjectIndex, int32 Se
     }
     return AssessmentMetricsCalculatorGlobal->GetTimesCorrectForQuestion(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, SubjectDataArray);
 }
-
-
 
 
 

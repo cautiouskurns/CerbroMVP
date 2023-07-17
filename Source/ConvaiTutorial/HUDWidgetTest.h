@@ -21,5 +21,9 @@ public:
 
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
     UVerticalBox* SectionBox;
+
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString SubjectName;
 	
 };
