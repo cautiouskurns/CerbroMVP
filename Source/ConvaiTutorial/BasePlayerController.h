@@ -68,6 +68,9 @@ public:
 	void RemoveAllChildrenFromWidget(UUserWidget* TargetWidget);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void RemoveAllChildrenFromDirectoryWidget(UUserWidget* TargetWidget);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	void MoveCameraToNode(ANodeActorBase* Node);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
@@ -87,6 +90,11 @@ public:
 
 	UPROPERTY()
 	UInteractWidget* InteractWidget;
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	FSubjectStruct FindSubjectByName(FString TargetSubjectName);
+
+	void OnButtonClicked(UResourceWidget* ClickedWidget);
 
 public:
 	void SetInteractWidget(UInteractWidget* NewWidget);

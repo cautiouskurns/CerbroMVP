@@ -20,6 +20,7 @@
 #include "AreaWidget.h"
 #include "SubjectWidget.h"
 #include "ResourceWidget.h"
+#include "BaseGameInstance.h"
 #include "DirectoryWidget.h"
 #include "GraphManagement/NodeActorBase.h"
 #include <Blueprint/WidgetBlueprintLibrary.h>
@@ -187,6 +188,26 @@ void ABasePlayerController::RemoveAllChildrenFromWidget(UUserWidget* TargetWidge
     }
 }
 
+void ABasePlayerController::RemoveAllChildrenFromDirectoryWidget(UUserWidget* TargetWidget)
+{
+    if (TargetWidget)
+    {
+        // Cast to your specific widget class
+        UDirectoryWidget* MyUserWidget = Cast<UDirectoryWidget>(TargetWidget);
+
+        if (MyUserWidget && MyUserWidget->FieldBox)
+        {
+            TArray<UWidget*> ChildWidgets = MyUserWidget->FieldBox->GetAllChildren();
+            for (UWidget* Widget : ChildWidgets)
+            {
+                if (Widget)
+                {
+                    Widget->RemoveFromParent();
+                }
+            }
+        }
+    }
+}
     
 
 
@@ -268,11 +289,6 @@ void ABasePlayerController::TestDataTable(FName RowName)
         UE_LOG(LogTemp, Error, TEXT("Row not found in data table"));
         return;
     }
-
-    // Print the fields of the row
-    // print row name and texture name to screen using engine function
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Row->ImageName);
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Row->TestTexture->GetName());
 
 }
 
@@ -378,8 +394,11 @@ void ABasePlayerController::CreateSubjectWidgets(
     for (const FSubjectStruct& ResourceData : ResourceDataArray)
     {
         UResourceWidget* ResourceWidget = CreateWidget<UResourceWidget>(GetWorld(), ResourceWidgetClass);
+        ResourceWidget->AssociatedSubject.SubjectName = ResourceData.SubjectName;
+
         if (ResourceWidget)
         {
+
             ResourceWidget->SetName(ResourceData.SubjectName);
             ParentWidget->AddChildWidget(ResourceWidget);
 
@@ -391,6 +410,46 @@ void ABasePlayerController::CreateSubjectWidgets(
     }
 }
 
+void ABasePlayerController::OnButtonClicked(UResourceWidget* ClickedWidget)
+{
+    if (ClickedWidget)
+    {
+        FString TargetSubjectName = ClickedWidget->AssociatedSubject.SubjectName;
+        FSubjectStruct FoundSubject = FindSubjectByName(TargetSubjectName);
+
+        // Do something with FoundSubject
+    }
+}
+
+
+FSubjectStruct ABasePlayerController::FindSubjectByName(FString TargetSubjectName)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+    if (GameInstance)
+    {
+        for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+        {
+            for (const FAreaStruct& AreaData : FieldData.Areas)
+            {
+                for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+                {
+                    for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+                    {
+                        if (SubjectData.SubjectName == TargetSubjectName)
+                        {
+                            // You found the subject data you're looking for.
+                            // Return the subject data
+                            return SubjectData;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // If no subject with the given name is found, return an empty FSubjectStruct
+    return FSubjectStruct();
+}
 
 //
 //

@@ -192,6 +192,45 @@ void UBaseGameInstance::SaveGameData()
     UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
 }
 
+//void UBaseGameInstance::LoadGameData()
+//{
+//    if (UGameplayStatics::DoesSaveGameExist(TEXT("YourSaveSlot"), 0))
+//    {
+//        UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("YourSaveSlot"), 0));
+//
+//        if (SaveGameObject)
+//        {
+//            FieldDataArray.Empty();
+//            for (const FFieldStructSaveData& FieldDataSave : SaveGameObject->FieldDataArraySaveData)
+//            {
+//                FFieldStruct FieldData;
+//                FieldData.FieldName = FieldDataSave.FieldName;
+//                for (const FAreaStructSaveData& AreaDataSave : FieldDataSave.AreasSaveData)
+//                {
+//                    FAreaStruct AreaData;
+//                    AreaData.AreaName = AreaDataSave.AreaName;
+//                    for (const FSubjectGroupStructSaveData& SubjectGroupDataSave : AreaDataSave.SubjectGroupsSaveData)
+//                    {
+//                        FSubjectGroupStruct SubjectGroupData;
+//                        SubjectGroupData.SubjectGroupName = SubjectGroupDataSave.SubjectGroupName;
+//                        for (const FSubjectStructSaveData& SubjectDataSave : SubjectGroupDataSave.SubjectsSaveData)
+//                        {
+//                            FSubjectStruct NewSubjectData;
+//                            NewSubjectData.SubjectName = SubjectDataSave.SubjectName;
+//                            // ... copy other data ...
+//                            SubjectGroupData.Subjects.Add(NewSubjectData);
+//                        }
+//                        AreaData.SubjectGroups.Add(SubjectGroupData);
+//                    }
+//                    FieldData.Areas.Add(AreaData);
+//                }
+//                FieldDataArray.Add(FieldData);
+//            }
+//        }
+//    }
+//}
+
+
 void UBaseGameInstance::LoadGameData()
 {
     if (UGameplayStatics::DoesSaveGameExist(TEXT("YourSaveSlot"), 0))
@@ -200,36 +239,86 @@ void UBaseGameInstance::LoadGameData()
 
         if (SaveGameObject)
         {
+            // Clear existing data
             FieldDataArray.Empty();
+
+            // Load all data from SaveGameObject->FieldDataArraySaveData to FieldDataArray
             for (const FFieldStructSaveData& FieldDataSave : SaveGameObject->FieldDataArraySaveData)
             {
                 FFieldStruct FieldData;
                 FieldData.FieldName = FieldDataSave.FieldName;
+
                 for (const FAreaStructSaveData& AreaDataSave : FieldDataSave.AreasSaveData)
                 {
                     FAreaStruct AreaData;
                     AreaData.AreaName = AreaDataSave.AreaName;
+
                     for (const FSubjectGroupStructSaveData& SubjectGroupDataSave : AreaDataSave.SubjectGroupsSaveData)
                     {
                         FSubjectGroupStruct SubjectGroupData;
                         SubjectGroupData.SubjectGroupName = SubjectGroupDataSave.SubjectGroupName;
+
                         for (const FSubjectStructSaveData& SubjectDataSave : SubjectGroupDataSave.SubjectsSaveData)
                         {
-                            FSubjectStruct NewSubjectData;
-                            NewSubjectData.SubjectName = SubjectDataSave.SubjectName;
-                            // ... copy other data ...
-                            SubjectGroupData.Subjects.Add(NewSubjectData);
+                            FSubjectStruct SubjectDataNew;
+                            SubjectDataNew.SubjectName = SubjectDataSave.SubjectName;
+                            SubjectDataNew.InputType = SubjectDataSave.InputType;
+                            SubjectDataNew.InteractionMetadataArray = SubjectDataSave.InteractionMetadataArray;
+
+                            for (const FSectionStructSaveData& SectionDataSave : SubjectDataSave.SubjectDetailsArraySaveData)
+                            {
+                                FSectionStruct SectionData;
+                                SectionData.SectionName = SectionDataSave.SectionName;
+
+                                for (const FTopicSaveData& TopicDataSave : SectionDataSave.TopicsSaveData)
+                                {
+                                    FTopic TopicData;
+                                    TopicData.Title = TopicDataSave.Title;
+
+                                    for (const FSubtopicSaveData& SubtopicDataSave : TopicDataSave.SubtopicsSaveData)
+                                    {
+                                        FSubtopic SubtopicData;
+                                        SubtopicData.Title = SubtopicDataSave.Title;
+                                        SubtopicData.Content = SubtopicDataSave.Content;
+
+                                        // Convert each FTestSaveData to FTest
+                                        for (const FTestSaveData& TestSaveData : SubtopicDataSave.QuestionsSaveData)
+                                        {
+                                            FTest Test;
+                                            Test.Question = TestSaveData.Question;
+                                            Test.Answers = TestSaveData.Answers;
+                                            Test.CorrectAnswer = TestSaveData.CorrectAnswer;
+                                            Test.TimesTested = TestSaveData.TimesTested;
+                                            Test.TimesCorrect = TestSaveData.TimesCorrect;
+                                            Test.ProficiencyScore = TestSaveData.ProficiencyScore;
+
+                                            // Add the converted FTest to SubtopicData.Questions
+                                            SubtopicData.Questions.Add(Test);
+                                        }
+
+                                        TopicData.Subtopics.Add(SubtopicData);
+                                    }
+
+                                    SectionData.Topics.Add(TopicData);
+                                }
+
+                                SubjectData.SubjectDetailsArray.Add(SectionData);
+                            }
+
+                            SubjectGroupData.Subjects.Add(SubjectData);
                         }
+
                         AreaData.SubjectGroups.Add(SubjectGroupData);
                     }
+
                     FieldData.Areas.Add(AreaData);
                 }
+
                 FieldDataArray.Add(FieldData);
             }
         }
     }
 }
-
 
 
 int32 UBaseGameInstance::UpdateRandomQuestionTimesTested(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex)

@@ -21,4 +21,6 @@ public:
 
     UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
     UTextBlock* NameText;
+
 };
+

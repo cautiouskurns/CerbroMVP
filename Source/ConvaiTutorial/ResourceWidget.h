@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "KnowledgeStructs.h"
+#include <Components/Button.h>
 #include "ResourceWidget.generated.h"
 
 /**
@@ -24,13 +26,17 @@ private:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
     FString Name;
 
-//public:
-//    UFUNCTION(BlueprintCallable, Category = "Custom")
-//    void AddChildWidget(UAreaWidget* NewChildWidget);
-//
-//    // Other widget code...
-//
-//private:
-//    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-//    TArray<UAreaWidget*> ChildWidgets;
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+    FSubjectStruct AssociatedSubject;
+
+    void NativeConstruct();
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    void ButtonClicked();
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    int32 FindMatchingSubjectIndex();
+
+    UButton* MyButton;
 };

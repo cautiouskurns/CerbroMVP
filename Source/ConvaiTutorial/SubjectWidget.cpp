@@ -5,12 +5,5 @@
 #include "ReadWriteJsonFile.h"
 #include "BaseGameInstance.h"
 #include "Components/TextBlock.h"
+#include <Components/Button.h>
 
-//void USubjectWidget::SetData(const FTreeViewItem& Item)
-//{
-//	// Assuming you have a UTextBlock in your widget that should display the name.
-//	if (NameText)
-//	{
-//		NameText->SetText(FText::FromString(Item.Name));
-//	}
-//}
