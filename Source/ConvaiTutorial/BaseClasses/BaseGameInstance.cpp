@@ -58,8 +58,6 @@ void UBaseGameInstance::InitializeSubjectDataArray()
 
 void UBaseGameInstance::PopulateFieldDataArrayFromDataTable(UDataTable* DataTable)
 {
-    // Load the data table
-    //UDataTable* DataTable = LoadObject<UDataTable>(NULL, TEXT("/Game/YourPath/YourDataTable.YourDataTable"));
     if (DataTable == nullptr)
     {
         UE_LOG(LogTemp, Warning, TEXT("Data table not found!"));
@@ -85,39 +83,6 @@ void UBaseGameInstance::PopulateFieldDataArrayFromDataTable(UDataTable* DataTabl
     }
 }
 
-
-//void UBaseGameInstance::SaveGameData()
-//{
-//    UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
-//
-//    for (const FFieldStruct& FieldData : FieldDataArray)
-//    {
-//        FFieldStructSaveData FieldDataSave;
-//        FieldDataSave.FieldName = FieldData.FieldName;
-//        for (const FAreaStruct& AreaData : FieldData.Areas)
-//        {
-//            FAreaStructSaveData AreaDataSave;
-//            AreaDataSave.AreaName = AreaData.AreaName;
-//            for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
-//            {
-//                FSubjectGroupStructSaveData SubjectGroupDataSave;
-//                SubjectGroupDataSave.SubjectGroupName = SubjectGroupData.SubjectGroupName;
-//                for (const FSubjectStruct& NewSubjectData : SubjectGroupData.Subjects)
-//                {
-//                    FSubjectStructSaveData SubjectDataSave;
-//                    SubjectDataSave.SubjectName = NewSubjectData.SubjectName;
-//
-//                    SubjectGroupDataSave.SubjectsSaveData.Add(SubjectDataSave);
-//                }
-//                AreaDataSave.SubjectGroupsSaveData.Add(SubjectGroupDataSave);
-//            }
-//            FieldDataSave.AreasSaveData.Add(AreaDataSave);
-//        }
-//        SaveGameObject->FieldDataArraySaveData.Add(FieldDataSave);
-//    }
-//
-//    UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
-//}
 
 void UBaseGameInstance::SaveGameData()
 {
@@ -197,43 +162,6 @@ void UBaseGameInstance::SaveGameData()
     UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
 }
 
-//void UBaseGameInstance::LoadGameData()
-//{
-//    if (UGameplayStatics::DoesSaveGameExist(TEXT("YourSaveSlot"), 0))
-//    {
-//        UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("YourSaveSlot"), 0));
-//
-//        if (SaveGameObject)
-//        {
-//            FieldDataArray.Empty();
-//            for (const FFieldStructSaveData& FieldDataSave : SaveGameObject->FieldDataArraySaveData)
-//            {
-//                FFieldStruct FieldData;
-//                FieldData.FieldName = FieldDataSave.FieldName;
-//                for (const FAreaStructSaveData& AreaDataSave : FieldDataSave.AreasSaveData)
-//                {
-//                    FAreaStruct AreaData;
-//                    AreaData.AreaName = AreaDataSave.AreaName;
-//                    for (const FSubjectGroupStructSaveData& SubjectGroupDataSave : AreaDataSave.SubjectGroupsSaveData)
-//                    {
-//                        FSubjectGroupStruct SubjectGroupData;
-//                        SubjectGroupData.SubjectGroupName = SubjectGroupDataSave.SubjectGroupName;
-//                        for (const FSubjectStructSaveData& SubjectDataSave : SubjectGroupDataSave.SubjectsSaveData)
-//                        {
-//                            FSubjectStruct NewSubjectData;
-//                            NewSubjectData.SubjectName = SubjectDataSave.SubjectName;
-//                            // ... copy other data ...
-//                            SubjectGroupData.Subjects.Add(NewSubjectData);
-//                        }
-//                        AreaData.SubjectGroups.Add(SubjectGroupData);
-//                    }
-//                    FieldData.Areas.Add(AreaData);
-//                }
-//                FieldDataArray.Add(FieldData);
-//            }
-//        }
-//    }
-//}
 
 
 void UBaseGameInstance::LoadGameData()

@@ -325,8 +325,6 @@ class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
 public:
 	UBaseGameInstance();
 
-	//void Init();
-
 	virtual void Init() override;
 
 	TArray<FFieldStruct> Fields;
