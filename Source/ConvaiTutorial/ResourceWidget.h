@@ -36,7 +36,30 @@ public:
     void ButtonClicked();
 
     UFUNCTION(BlueprintCallable, Category = "Widgets")
-    int32 FindMatchingSubjectIndex();
+    TArray<int32> FindMatchingIndices();
+
+    //UFUNCTION(BlueprintCallable, Category = "Widgets")
+    //void ButtonClicked();
+
+    //UFUNCTION(BlueprintCallable, Category = "Widgets")
+    //int32 FindMatchingSubjectIndex();
+
+
 
     UButton* MyButton;
+
+    // Indices of the parent structures of this widget
+public:
+    int32 FieldIndex;
+    int32 AreaIndex;
+    int32 SubjectGroupIndex;
+
+public:
+
+    //// The index of the subject associated with this widget.
+    //UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+    //int32 SubjectIndex;
+
+
+
 };

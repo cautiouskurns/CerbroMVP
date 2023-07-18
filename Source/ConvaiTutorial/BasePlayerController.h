@@ -132,13 +132,19 @@ public:
 	void CreateDirectoryHierarchyWidgets(const TArray<FFieldStruct>& FieldDataArray, TSubclassOf<UFieldWidget> FieldWidgetClass, TSubclassOf<UAreaWidget> AreaWidgetClass, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass, UDirectoryWidget* MainUIDirectory);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	void CreateAreaWidgets(const TArray<FAreaStruct>& AreaDataArray, UFieldWidget* ParentWidget, TSubclassOf<UAreaWidget> AreaWidgetClass, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+	void CreateAreaWidgets(const TArray<FAreaStruct>& AreaDataArray, UFieldWidget* ParentWidget, TSubclassOf<UAreaWidget> AreaWidgetClass, 
+		TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass, int32 FieldIndex);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	void CreateSubjectGroupWidgets(const TArray<FSubjectGroupStruct>& SubjectGroupDataArray, UAreaWidget* ParentWidget, TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+	void CreateSubjectGroupWidgets(const TArray<FSubjectGroupStruct>& SubjectGroupDataArray, UAreaWidget* ParentWidget, 
+		TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass, int32 FieldIndex,
+		int32 AreaIndex);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	void CreateSubjectWidgets(const TArray<FSubjectStruct>& SubjectDataArray, UHierarchySubjectWidget* ParentWidget, TSubclassOf<UResourceWidget> ResourceWidgetClass);
+	void CreateSubjectWidgets(const TArray<FSubjectStruct>& SubjectDataArray, UHierarchySubjectWidget* ParentWidget, 
+		TSubclassOf<UResourceWidget> ResourceWidgetClass, int32 FieldIndex,
+		int32 AreaIndex,
+		int32 SubjectGroupIndex);
 
 
 

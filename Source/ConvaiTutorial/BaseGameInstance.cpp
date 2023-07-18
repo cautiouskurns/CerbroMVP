@@ -302,10 +302,10 @@ void UBaseGameInstance::LoadGameData()
                                     SectionData.Topics.Add(TopicData);
                                 }
 
-                                SubjectData.SubjectDetailsArray.Add(SectionData);
+                                SubjectDataNew.SubjectDetailsArray.Add(SectionData);
                             }
 
-                            SubjectGroupData.Subjects.Add(SubjectData);
+                            SubjectGroupData.Subjects.Add(SubjectDataNew);
                         }
 
                         AreaData.SubjectGroups.Add(SubjectGroupData);

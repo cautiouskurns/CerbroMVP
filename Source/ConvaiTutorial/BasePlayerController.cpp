@@ -307,14 +307,15 @@ void ABasePlayerController::CreateDirectoryHierarchyWidgets(
 {
     DirectoryWidgetReference = MainUIDirectory;
 
-    for (const FFieldStruct& FieldData : FieldDataArray)
+    for (int32 FieldIndex = 0; FieldIndex < FieldDataArray.Num(); ++FieldIndex)
     {
+        const FFieldStruct& FieldData = FieldDataArray[FieldIndex];
         UFieldWidget* FieldWidget = CreateWidget<UFieldWidget>(GetWorld(), FieldWidgetClass);
 
         if (FieldWidget)
         {
             FieldWidget->SetName(FieldData.FieldName);
-            CreateAreaWidgets(FieldData.Areas, FieldWidget, AreaWidgetClass, SubjectWidgetClass, ResourceWidgetClass);
+            CreateAreaWidgets(FieldData.Areas, FieldWidget, AreaWidgetClass, SubjectWidgetClass, ResourceWidgetClass, FieldIndex);
 
             // Add FieldWidget to the main UI
             if (MainUIDirectory != nullptr)
@@ -337,17 +338,19 @@ void ABasePlayerController::CreateAreaWidgets(
     UFieldWidget* ParentWidget,
     TSubclassOf<UAreaWidget> AreaWidgetClass,
     TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
-    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+    TSubclassOf<UResourceWidget> ResourceWidgetClass,
+    int32 FieldIndex)
 {
     FieldWidgetReference = ParentWidget;
 
-    for (const FAreaStruct& AreaData : AreaDataArray)
+    for (int32 AreaIndex = 0; AreaIndex < AreaDataArray.Num(); ++AreaIndex)
     {
+        const FAreaStruct& AreaData = AreaDataArray[AreaIndex];
         UAreaWidget* AreaWidget = CreateWidget<UAreaWidget>(GetWorld(), AreaWidgetClass);
         if (AreaWidget)
         {
             AreaWidget->SetName(AreaData.AreaName);
-            CreateSubjectGroupWidgets(AreaData.SubjectGroups, AreaWidget, SubjectWidgetClass, ResourceWidgetClass);
+            CreateSubjectGroupWidgets(AreaData.SubjectGroups, AreaWidget, SubjectWidgetClass, ResourceWidgetClass, FieldIndex, AreaIndex);
             ParentWidget->AddChildWidget(AreaWidget);
 
             if (FieldWidgetReference)
@@ -363,17 +366,20 @@ void ABasePlayerController::CreateSubjectGroupWidgets(
     const TArray<FSubjectGroupStruct>& SubjectDataArray,
     UAreaWidget* ParentWidget,
     TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass,
-    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+    TSubclassOf<UResourceWidget> ResourceWidgetClass,
+    int32 FieldIndex,
+    int32 AreaIndex)
 {
     AreaWidgetReference = ParentWidget;
 
-    for (const FSubjectGroupStruct& SubjectData : SubjectDataArray)
+    for (int32 SubjectGroupIndex = 0; SubjectGroupIndex < SubjectDataArray.Num(); ++SubjectGroupIndex)
     {
+        const FSubjectGroupStruct& SubjectData = SubjectDataArray[SubjectGroupIndex];
         UHierarchySubjectWidget* SubjectWidget = CreateWidget<UHierarchySubjectWidget>(GetWorld(), SubjectWidgetClass);
         if (SubjectWidget)
         {
             SubjectWidget->SetName(SubjectData.SubjectGroupName);
-            CreateSubjectWidgets(SubjectData.Subjects, SubjectWidget, ResourceWidgetClass);
+            CreateSubjectWidgets(SubjectData.Subjects, SubjectWidget, ResourceWidgetClass, FieldIndex, AreaIndex, SubjectGroupIndex);
             ParentWidget->AddChildWidget(SubjectWidget);
 
             if (AreaWidgetReference)
@@ -387,7 +393,10 @@ void ABasePlayerController::CreateSubjectGroupWidgets(
 void ABasePlayerController::CreateSubjectWidgets(
     const TArray<FSubjectStruct>& ResourceDataArray,
     UHierarchySubjectWidget* ParentWidget,
-    TSubclassOf<UResourceWidget> ResourceWidgetClass)
+    TSubclassOf<UResourceWidget> ResourceWidgetClass,
+    int32 FieldIndex,
+    int32 AreaIndex,
+    int32 SubjectGroupIndex)
 {
     HierarchySubjectWidgetReference = ParentWidget;
 
@@ -395,6 +404,12 @@ void ABasePlayerController::CreateSubjectWidgets(
     {
         UResourceWidget* ResourceWidget = CreateWidget<UResourceWidget>(GetWorld(), ResourceWidgetClass);
         ResourceWidget->AssociatedSubject.SubjectName = ResourceData.SubjectName;
+
+
+        // Pass the indices to the ResourceWidget
+        ResourceWidget->FieldIndex = FieldIndex;
+        ResourceWidget->AreaIndex = AreaIndex;
+        ResourceWidget->SubjectGroupIndex = SubjectGroupIndex;
 
         if (ResourceWidget)
         {
@@ -409,6 +424,9 @@ void ABasePlayerController::CreateSubjectWidgets(
         }
     }
 }
+
+
+
 
 void ABasePlayerController::OnButtonClicked(UResourceWidget* ClickedWidget)
 {
@@ -450,6 +468,8 @@ FSubjectStruct ABasePlayerController::FindSubjectByName(FString TargetSubjectNam
     // If no subject with the given name is found, return an empty FSubjectStruct
     return FSubjectStruct();
 }
+
+
 
 //
 //

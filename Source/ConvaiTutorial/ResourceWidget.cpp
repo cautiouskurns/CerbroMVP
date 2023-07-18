@@ -30,67 +30,136 @@ void UResourceWidget::NativeConstruct()
 
 void UResourceWidget::ButtonClicked()
 {
-    FString TargetSubjectName = this->AssociatedSubject.SubjectName;  // Assuming you have stored the SubjectName in the Widget
+ /*   int32 SubjectIndex = this->FindMyMatchingSubjectIndex();
 
-    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
-    if (GameInstance)
-    {
-        for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
-        {
-            for (const FAreaStruct& AreaData : FieldData.Areas)
-            {
-                for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
-                {
-                    for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
-                    {
-                        if (SubjectData.SubjectName == TargetSubjectName)
-                        {
-                            // You found the subject data you're looking for.
-                            // Do something with SubjectData
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    OnSubjectButtonClicked.Broadcast(SubjectIndex);*/
 }
 
-int32 UResourceWidget::FindMatchingSubjectIndex()
+
+
+//int32 UResourceWidget::FindMatchingSubjectIndex()
+//{
+//    FString TargetSubjectName = this->AssociatedSubject.SubjectName;  // Assuming you have stored the SubjectName in the Widget
+//
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+//    if (GameInstance)
+//    {
+//        int32 FieldIndex2 = 0;
+//        for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+//        {
+//            int32 AreaIndex2 = 0;
+//            for (const FAreaStruct& AreaData : FieldData.Areas)
+//            {
+//                int32 SubjectGroupIndex2 = 0;
+//                for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+//                {
+//                    int32 SubjectIndex2 = 0;
+//                    for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+//                    {
+//                        if (SubjectData.SubjectName == TargetSubjectName)
+//                        {
+//                            // Found the subject data you're looking for.
+//                            // Return the subject index.
+//                            return SubjectIndex2;
+//                        }
+//                        SubjectIndex2++;
+//                    }
+//                    SubjectGroupIndex2++;
+//                }
+//                AreaIndex2++;
+//            }
+//            FieldIndex2++;
+//        }
+//    }
+//
+//    // Subject not found, return an invalid index.
+//    return -1;
+//}
+
+TArray<int32> UResourceWidget::FindMatchingIndices()
 {
     FString TargetSubjectName = this->AssociatedSubject.SubjectName;  // Assuming you have stored the SubjectName in the Widget
 
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
     if (GameInstance)
     {
-        int32 FieldIndex = 0;
+        int32 FieldIndex2 = 0;
         for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
         {
-            int32 AreaIndex = 0;
+            int32 AreaIndex2 = 0;
             for (const FAreaStruct& AreaData : FieldData.Areas)
             {
-                int32 SubjectGroupIndex = 0;
+                int32 SubjectGroupIndex2 = 0;
                 for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
                 {
-                    int32 SubjectIndex = 0;
+                    int32 SubjectIndex2 = 0;
                     for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
                     {
                         if (SubjectData.SubjectName == TargetSubjectName)
                         {
                             // Found the subject data you're looking for.
-                            // Return the subject index.
-                            return SubjectIndex;
+                            // Return the indices.
+                            return { FieldIndex2, AreaIndex2, SubjectGroupIndex2, SubjectIndex2 };
                         }
-                        SubjectIndex++;
+                        SubjectIndex2++;
                     }
-                    SubjectGroupIndex++;
+                    SubjectGroupIndex2++;
                 }
-                AreaIndex++;
+                AreaIndex2++;
             }
-            FieldIndex++;
+            FieldIndex2++;
         }
     }
 
-    // Subject not found, return an invalid index.
-    return -1;
+    // Subject not found, return an invalid indices.
+    return { -1, -1, -1, -1 };
 }
+
+//int32 UResourceWidget::FindMatchingSubjectIndex(int32 FieldIndex2, int32 AreaIndex2, int32 SubjectGroupIndex2)
+//{
+//    FString TargetSubjectName = this->AssociatedSubject.SubjectName;  // Assuming you have stored the SubjectName in the Widget
+//
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+//    if (GameInstance)
+//    {
+//        if (FieldIndex2 < GameInstance->FieldDataArray.Num())
+//        {
+//            const FFieldStruct& FieldData = GameInstance->FieldDataArray[FieldIndex2];
+//            if (AreaIndex2 < FieldData.Areas.Num())
+//            {
+//                const FAreaStruct& AreaData = FieldData.Areas[AreaIndex2];
+//                if (SubjectGroupIndex2 < AreaData.SubjectGroups.Num())
+//                {
+//                    const FSubjectGroupStruct& SubjectGroupData = AreaData.SubjectGroups[SubjectGroupIndex2];
+//                    int32 SubjectIndex2 = 0;
+//                    for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+//                    {
+//                        if (SubjectData.SubjectName == TargetSubjectName)
+//                        {
+//                            // Found the subject data you're looking for.
+//                            // Return the subject index.
+//                            return SubjectIndex2;
+//                        }
+//                        SubjectIndex2++;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    // Subject not found, return an invalid index.
+//    return -1;
+//}
+
+
+//int32 UResourceWidget::FindMyMatchingSubjectIndex()
+//{
+//    return FindMatchingSubjectIndex(this->FieldIndex, this->AreaIndex, this->SubjectGroupIndex);
+//}
+//
+//
+//
+//void UResourceWidget::HandleButtonClicked()
+//{
+//    OnButtonClicked.Broadcast(SubjectIndex);
+//}

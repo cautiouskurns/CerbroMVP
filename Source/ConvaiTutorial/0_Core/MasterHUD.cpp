@@ -2,7 +2,7 @@
 
 
 #include "MasterHUD.h"
-#include "ReadWriteJsonFile.h"
+#include "ConvaiTutorial/ReadWriteJsonFile.h
 #include "SubjectWidget.h"
 #include "SubTopicWidget.h"
 #include "HUDWidgetTest.h"
@@ -11,6 +11,7 @@
 #include "Components/TextBlock.h"
 #include "Components/ListView.h"
 #include "BaseGameInstance.h"
+#include "ConvaiTutorial/BasePlayerController.h"
 
 void UMasterHUD::NativeConstruct()
 {
