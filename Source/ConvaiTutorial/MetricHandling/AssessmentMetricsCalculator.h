@@ -150,12 +150,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	FTest UpdateTimesTestedAndCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, const FString& SelectedAnswer, TArray<FSubjectStruct>& SubjectDataArray);
 
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	FTest UpdateAnswerStatus(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray);
+
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	FString SubmitAnswer(const FString& AnswerText);
-
-	UFUNCTION(BlueprintCallable, Category = "Assessment")
-	FTest UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray);
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray);

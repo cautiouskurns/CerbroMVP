@@ -32,8 +32,18 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     FString GetCurrentQuestionContent();
 
+
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     void ResetIndices();
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    void SetFieldIndex(int32 Index);
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    void SetAreaIndex(int32 Index);
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    void SetSubjectGroupIndex(int32 Index);
 
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     void SetSubjectIndex(int32 Index);
@@ -47,6 +57,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     void SetSubTopicIndex(int32 Index);
     
+
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     void SetSelectionIndices(int32 Level, int32 Index);
 
@@ -68,5 +79,35 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     FText GetSubTopicName() const;
 
-	
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    FText GetSubjectGroupName() const;
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    FText GetAreaName() const;
+
+    UFUNCTION(BlueprintCallable, Category = "Widgets")
+    FText GetFieldName() const;
+
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void PopulateFieldComboBox(UComboBoxString* ComboBox);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void PopulateAreaComboBox(UComboBoxString* ComboBox, const FString& SelectedField);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void PopulateSubjectGroupComboBox(UComboBoxString* ComboBox, const FString& SelectedArea);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void PopulateSubjectComboBox(UComboBoxString* ComboBox, const FString& SelectedSubjectGroup);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void PopulateSectionComboBox(UComboBoxString* ComboBox, const FString& SelectedSubject);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void PopulateTopicComboBox(UComboBoxString* ComboBox, const FString& SelectedSection);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void PopulateSubTopicComboBox(UComboBoxString* ComboBox, const FString& SelectedTopic);
+
 };

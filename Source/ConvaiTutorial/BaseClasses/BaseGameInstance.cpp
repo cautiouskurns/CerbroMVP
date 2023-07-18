@@ -131,6 +131,7 @@ void UBaseGameInstance::SaveGameData()
                                     FTestSaveData TestDataSave;
                                     TestDataSave.Question = TestData.Question;
                                     TestDataSave.CorrectAnswer = TestData.CorrectAnswer;
+                                    TestDataSave.Answers = TestData.Answers;
                                     TestDataSave.TimesTested = TestData.TimesTested;
                                     TestDataSave.TimesCorrect = TestData.TimesCorrect;
                                     TestDataSave.ProficiencyScore = TestData.ProficiencyScore;
@@ -162,6 +163,83 @@ void UBaseGameInstance::SaveGameData()
     UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
 }
 
+//
+//void UBaseGameInstance::OverwriteGameData()
+//{
+//    UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+//
+//    for (const FFieldStruct& FieldData : FieldDataArray)
+//    {
+//        FFieldStructSaveData FieldDataSave;
+//        FieldDataSave.FieldName = FieldData.FieldName;
+//
+//        for (const FAreaStruct& AreaData : FieldData.Areas)
+//        {
+//            FAreaStructSaveData AreaDataSave;
+//            AreaDataSave.AreaName = AreaData.AreaName;
+//
+//            for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+//            {
+//                FSubjectGroupStructSaveData SubjectGroupDataSave;
+//                SubjectGroupDataSave.SubjectGroupName = SubjectGroupData.SubjectGroupName;
+//
+//                for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+//                {
+//                    FSubjectStructSaveData SubjectDataSave;
+//                    SubjectDataSave.SubjectName = SubjectData.SubjectName;
+//
+//                    for (const FSubjectDetailStruct& SubjectDetailData : SubjectData.SubjectDetailsArray)
+//                    {
+//                        FSubjectDetailStructSaveData SubjectDetailDataSave;
+//                        SubjectDetailDataSave.SectionName = SubjectDetailData.SectionName;
+//
+//                        for (const FTopicStruct& TopicData : SubjectDetailData.Topics)
+//                        {
+//                            FTopicStructSaveData TopicDataSave;
+//                            TopicDataSave.Title = TopicData.Title;
+//
+//                            for (const FSubtopicStruct& SubtopicData : TopicData.Subtopics)
+//                            {
+//                                FSubtopicStructSaveData SubtopicDataSave;
+//                                SubtopicDataSave.Title = SubtopicData.Title;
+//                                SubtopicDataSave.Content = SubtopicData.Content;
+//
+//                                for (const FTest& TestData : SubtopicData.Questions)
+//                                {
+//                                    FTestSaveData TestDataSave;
+//                                    TestDataSave.Question = TestData.Question;
+//                                    TestDataSave.CorrectAnswer = TestData.CorrectAnswer;
+//                                    TestDataSave.Answers = TestData.Answers;
+//                                    TestDataSave.TimesTested = TestData.TimesTested;
+//                                    TestDataSave.TimesCorrect = TestData.TimesCorrect;
+//                                    TestDataSave.ProficiencyScore = TestData.ProficiencyScore;
+//
+//                                    SubtopicDataSave.QuestionsSaveData.Add(TestDataSave);
+//                                }
+//
+//                                TopicDataSave.SubtopicsSaveData.Add(SubtopicDataSave);
+//                            }
+//
+//                            SubjectDetailDataSave.TopicsSaveData.Add(TopicDataSave);
+//                        }
+//
+//                        SubjectDataSave.SubjectDetailsArraySaveData.Add(SubjectDetailDataSave);
+//                    }
+//
+//                    SubjectGroupDataSave.SubjectsSaveData.Add(SubjectDataSave);
+//                }
+//
+//                AreaDataSave.SubjectGroupsSaveData.Add(SubjectGroupDataSave);
+//            }
+//
+//            FieldDataSave.AreasSaveData.Add(AreaDataSave);
+//        }
+//
+//        SaveGameObject->FieldDataArraySaveData.Add(FieldDataSave);
+//    }
+//
+//    UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
+//}
 
 
 void UBaseGameInstance::LoadGameData()
@@ -292,6 +370,7 @@ FTest UBaseGameInstance::UpdateTimesTestedAndCorrectForQuestion(int32 SubjectInd
 }
 
 
+
 FString UBaseGameInstance::SubmitAnswer(const FString& AnswerText)
 {
     if (AssessmentMetricsCalculatorGlobal == nullptr)
@@ -303,15 +382,26 @@ FString UBaseGameInstance::SubmitAnswer(const FString& AnswerText)
     return AnswerText;
 }
 
-FTest UBaseGameInstance::UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
+FTest UBaseGameInstance::UpdateAnswerStatus(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
 {
     if (AssessmentMetricsCalculatorGlobal == nullptr)
     {
         AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
     }
-    return AssessmentMetricsCalculatorGlobal->UpdateAnswerStatus(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, SubjectDataArray);
-
+    return AssessmentMetricsCalculatorGlobal->UpdateAnswerStatus(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, FieldDataArray);
 }
+
+
+
+//FTest UBaseGameInstance::UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
+//{
+//    if (AssessmentMetricsCalculatorGlobal == nullptr)
+//    {
+//        AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
+//    }
+//    return AssessmentMetricsCalculatorGlobal->UpdateAnswerStatus(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, SubjectDataArray);
+//
+//}
 
 
 int32 UBaseGameInstance::GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)

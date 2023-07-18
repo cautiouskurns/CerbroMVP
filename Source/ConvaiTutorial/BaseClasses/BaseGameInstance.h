@@ -273,12 +273,57 @@ public:
 
 
 
+//USTRUCT(BlueprintType)
+//struct FQuestionSelector
+//{
+//	GENERATED_BODY()
+//
+//public:
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+//	int SubjectIndex;
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+//	int SectionIndex;
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+//	int TopicIndex;
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+//	int SubTopicIndex;
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+//	int QuestionIndex;
+//
+//	// Randomization level
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+//	int32 RandomizationLevel;
+//
+//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+//	// Random number generator
+//	FRandomStream RandStream;
+//
+//	FQuestionSelector()
+//	{
+//		RandStream.GenerateNewSeed();  // Generate a new random seed
+//	}
+//
+//};
+
 USTRUCT(BlueprintType)
 struct FQuestionSelector
 {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+	int FieldIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+	int AreaIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
+	int SubjectGroupIndex;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
 	int SubjectIndex;
 
@@ -298,12 +343,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
 	int32 RandomizationLevel;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-	//// Reference to the data array
-	//TArray<FSubjectStruct>* DataArray;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-	// Random number generator
 	FRandomStream RandStream;
 
 	FQuestionSelector()
@@ -312,7 +352,6 @@ public:
 	}
 
 };
-
 
 class UDataProvider;
 class UAssessmentMetricsCalculator;
@@ -356,6 +395,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "YourCategory")
 	void SaveGameData();
+
+	/*UFUNCTION(BlueprintCallable, Category = "YourCategory")
+	void OverwriteGameData();*/
 
 	UFUNCTION(BlueprintCallable, Category = "YourCategory")
 	void LoadGameData();
@@ -436,7 +478,7 @@ public:
 	FString SubmitAnswer(const FString& AnswerText);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	FTest UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
+	FTest UpdateAnswerStatus(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);

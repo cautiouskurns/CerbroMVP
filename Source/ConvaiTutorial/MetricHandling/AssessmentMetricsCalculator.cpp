@@ -367,24 +367,35 @@ FString UAssessmentMetricsCalculator::SubmitAnswer(const FString& AnswerText)
     return SubmittedAnswer;
 }
 
-FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray)
+
+FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
 {
-    if (!SubjectDataArray.IsValidIndex(SubjectIndex)) return FTest();
-    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
+    if (!FieldDataArray.IsValidIndex(FieldIndex)) return FTest();
+    FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
+
+    if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return FTest();
+    FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
+
+    if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return FTest();
+    FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
+
+    if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return FTest();
+    FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
+
     if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return FTest();
     FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
+
     if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return FTest();
     FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
+
     if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return FTest();
     FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
+
     for (FTest& Question : SelectedSubtopic.Questions)
     {
-       
         if (Question.Question == QuestionText)
         {
-            
             Question.TimesTested++;
-
             if (SubmittedAnswer == Question.CorrectAnswer)
             {
                 Question.TimesCorrect++;
@@ -395,6 +406,34 @@ FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 SubjectIndex, int32
     return FTest(); // Return an empty FTest if no question with the given text is found
 }
 
+
+//FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray)
+//{
+//    if (!SubjectDataArray.IsValidIndex(SubjectIndex)) return FTest();
+//    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
+//    if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return FTest();
+//    FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
+//    if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return FTest();
+//    FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
+//    if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return FTest();
+//    FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
+//    for (FTest& Question : SelectedSubtopic.Questions)
+//    {
+//
+//        if (Question.Question == QuestionText)
+//        {
+//
+//            Question.TimesTested++;
+//
+//            if (SubmittedAnswer == Question.CorrectAnswer)
+//            {
+//                Question.TimesCorrect++;
+//            }
+//            return Question;
+//        }
+//    }
+//    return FTest(); // Return an empty FTest if no question with the given text is found
+//}
 
 // New function to get the number of times a specific question has been tested
 int32 UAssessmentMetricsCalculator::GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray)
