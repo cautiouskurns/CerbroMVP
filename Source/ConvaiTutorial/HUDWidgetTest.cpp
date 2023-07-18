@@ -2,7 +2,9 @@
 
 
 #include "HUDWidgetTest.h"
-#include "SectionWidget.h"
+
+#include "ConvaiTutorial/Widgets/SectionWidget.h"
+
 #include "Components/VerticalBox.h"
 
 void UHUDWidgetTest::AddSectionWidgetToHUD(USectionWidget* SectionWidget)

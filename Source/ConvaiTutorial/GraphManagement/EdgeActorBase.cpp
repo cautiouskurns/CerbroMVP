@@ -2,6 +2,7 @@
 
 
 #include "EdgeActorBase.h"
+
 #include "NodeActorBase.h"
 #include "Engine/World.h"
 #include "Components/StaticMeshComponent.h"

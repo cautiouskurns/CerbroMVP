@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Actor.h"
 #include <Engine/TextRenderActor.h>
 #include <Components/TextRenderComponent.h>
+
 #include "NodeActorBase.generated.h"
 
 

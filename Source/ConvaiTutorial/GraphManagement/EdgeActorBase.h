@@ -3,8 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Actor.h"
 #include "NodeActorBase.h"
+
 #include "EdgeActorBase.generated.h"
 
 UCLASS()

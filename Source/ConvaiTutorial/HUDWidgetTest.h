@@ -3,8 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "ConvaiTutorial/Widgets/SectionWidget.h"
+
+
 #include "Blueprint/UserWidget.h"
-#include "SectionWidget.h"
+
 #include "HUDWidgetTest.generated.h"
 
 /**

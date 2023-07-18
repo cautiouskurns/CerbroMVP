@@ -2,16 +2,23 @@
 
 
 #include "MasterHUD.h"
-#include "ConvaiTutorial/ReadWriteJsonFile.h
-#include "SubjectWidget.h"
-#include "SubTopicWidget.h"
-#include "HUDWidgetTest.h"
-#include "BasePlayerController.h"
-#include "InteractWidget.h"
+
+#include "ConvaiTutorial/BaseClasses/BaseGameInstance.h"
+#include "ConvaiTutorial/BaseClasses/BasePlayerController.h"
+
+#include "ConvaiTutorial/DataManagement/ReadWriteJsonFile.h"
+
+#include "ConvaiTutorial/Widgets/InteractWidget.h"
+#include "ConvaiTutorial/Widgets/SubjectWidget.h"
+#include "ConvaiTutorial/Widgets/SubTopicWidget.h"
+
+
+#include "ConvaiTutorial/HUDWidgetTest.h"
+
 #include "Components/TextBlock.h"
 #include "Components/ListView.h"
-#include "BaseGameInstance.h"
-#include "ConvaiTutorial/BasePlayerController.h"
+
+
 
 void UMasterHUD::NativeConstruct()
 {
