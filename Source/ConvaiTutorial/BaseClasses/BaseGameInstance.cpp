@@ -163,84 +163,6 @@ void UBaseGameInstance::SaveGameData()
     UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
 }
 
-//
-//void UBaseGameInstance::OverwriteGameData()
-//{
-//    UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
-//
-//    for (const FFieldStruct& FieldData : FieldDataArray)
-//    {
-//        FFieldStructSaveData FieldDataSave;
-//        FieldDataSave.FieldName = FieldData.FieldName;
-//
-//        for (const FAreaStruct& AreaData : FieldData.Areas)
-//        {
-//            FAreaStructSaveData AreaDataSave;
-//            AreaDataSave.AreaName = AreaData.AreaName;
-//
-//            for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
-//            {
-//                FSubjectGroupStructSaveData SubjectGroupDataSave;
-//                SubjectGroupDataSave.SubjectGroupName = SubjectGroupData.SubjectGroupName;
-//
-//                for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
-//                {
-//                    FSubjectStructSaveData SubjectDataSave;
-//                    SubjectDataSave.SubjectName = SubjectData.SubjectName;
-//
-//                    for (const FSubjectDetailStruct& SubjectDetailData : SubjectData.SubjectDetailsArray)
-//                    {
-//                        FSubjectDetailStructSaveData SubjectDetailDataSave;
-//                        SubjectDetailDataSave.SectionName = SubjectDetailData.SectionName;
-//
-//                        for (const FTopicStruct& TopicData : SubjectDetailData.Topics)
-//                        {
-//                            FTopicStructSaveData TopicDataSave;
-//                            TopicDataSave.Title = TopicData.Title;
-//
-//                            for (const FSubtopicStruct& SubtopicData : TopicData.Subtopics)
-//                            {
-//                                FSubtopicStructSaveData SubtopicDataSave;
-//                                SubtopicDataSave.Title = SubtopicData.Title;
-//                                SubtopicDataSave.Content = SubtopicData.Content;
-//
-//                                for (const FTest& TestData : SubtopicData.Questions)
-//                                {
-//                                    FTestSaveData TestDataSave;
-//                                    TestDataSave.Question = TestData.Question;
-//                                    TestDataSave.CorrectAnswer = TestData.CorrectAnswer;
-//                                    TestDataSave.Answers = TestData.Answers;
-//                                    TestDataSave.TimesTested = TestData.TimesTested;
-//                                    TestDataSave.TimesCorrect = TestData.TimesCorrect;
-//                                    TestDataSave.ProficiencyScore = TestData.ProficiencyScore;
-//
-//                                    SubtopicDataSave.QuestionsSaveData.Add(TestDataSave);
-//                                }
-//
-//                                TopicDataSave.SubtopicsSaveData.Add(SubtopicDataSave);
-//                            }
-//
-//                            SubjectDetailDataSave.TopicsSaveData.Add(TopicDataSave);
-//                        }
-//
-//                        SubjectDataSave.SubjectDetailsArraySaveData.Add(SubjectDetailDataSave);
-//                    }
-//
-//                    SubjectGroupDataSave.SubjectsSaveData.Add(SubjectDataSave);
-//                }
-//
-//                AreaDataSave.SubjectGroupsSaveData.Add(SubjectGroupDataSave);
-//            }
-//
-//            FieldDataSave.AreasSaveData.Add(AreaDataSave);
-//        }
-//
-//        SaveGameObject->FieldDataArraySaveData.Add(FieldDataSave);
-//    }
-//
-//    UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
-//}
-
 
 void UBaseGameInstance::LoadGameData()
 {
@@ -347,19 +269,19 @@ int32 UBaseGameInstance::UpdateTimesCorrect(int32 SubjectIndex, int32 SectionInd
 int32 UBaseGameInstance::CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle)
 {
     UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
-    return AssessmentMetricsCalculator->CalculateTimesAskedForSubtopicIR(SubtopicTitle, SubjectDataArray);
+    return AssessmentMetricsCalculator->CalculateTimesAskedForSubtopicIR(SubtopicTitle, FieldDataArray);
 }
 
-int32 UBaseGameInstance::CalculateTimesAskedForQuestionIR(const FString& QuestionText)
-{
-    UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
-    return AssessmentMetricsCalculator->CalculateTimesAskedForQuestionIR(QuestionText, SubjectDataArray);
-}
+//int32 UBaseGameInstance::CalculateTimesAskedForQuestionIR(const FString& QuestionText)
+//{
+//    UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+//    return AssessmentMetricsCalculator->CalculateTimesAskedForQuestionIR(QuestionText, SubjectDataArray);
+//}
 
 int32 UBaseGameInstance::CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle)
 {
 	UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
-	return AssessmentMetricsCalculator->CalculateTimesCorrectForSubtopicIR(SubtopicTitle, SubjectDataArray);
+	return AssessmentMetricsCalculator->CalculateTimesCorrectForSubtopicIR(SubtopicTitle, FieldDataArray);
 }
 
 
@@ -404,23 +326,25 @@ FTest UBaseGameInstance::UpdateAnswerStatus(int32 FieldIndex, int32 AreaIndex, i
 //}
 
 
-int32 UBaseGameInstance::GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
+int32 UBaseGameInstance::GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
 {
     if (AssessmentMetricsCalculatorGlobal == nullptr)
     {
         AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
     }
-    return AssessmentMetricsCalculatorGlobal->GetTimesTestedForQuestion(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, SubjectDataArray);
+    return AssessmentMetricsCalculatorGlobal->GetTimesTestedForQuestion(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, FieldDataArray);
 }
 
+
+
 // New function to get the number of times a specific question has been answered correctly
-int32 UBaseGameInstance::GetTimesCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
+int32 UBaseGameInstance::GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
 {
     if (AssessmentMetricsCalculatorGlobal == nullptr)
     {
         AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
     }
-    return AssessmentMetricsCalculatorGlobal->GetTimesCorrectForQuestion(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, SubjectDataArray);
+    return AssessmentMetricsCalculatorGlobal->GetTimesCorrectForQuestion(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, FieldDataArray);
 }
 
 

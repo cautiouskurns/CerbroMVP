@@ -54,21 +54,29 @@ int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubject(const FSubject
     return TotalTimesAsked;
 }
 
-// INCREMENTAL REFACTORING FUNCTIONS
-// Calculate total times questions have been asked for a specific subtopic, given its title
-int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle, const TArray<FSubjectStruct>& SubjectDataArray)
+
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle, const TArray<FFieldStruct>& FieldDataArray)
 {
-    for (const FSubjectStruct& Subject : SubjectDataArray)
+    for (const FFieldStruct& Field : FieldDataArray)
     {
-        for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
+        for (const FAreaStruct& Area : Field.Areas)
         {
-            for (const FTopic& Topic : Section.Topics)
+            for (const FSubjectGroupStruct& SubjectGroup : Area.SubjectGroups)
             {
-                for (const FSubtopic& Subtopic : Topic.Subtopics)
+                for (const FSubjectStruct& Subject : SubjectGroup.Subjects)
                 {
-                    if (Subtopic.Title == SubtopicTitle)
+                    for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
                     {
-                        return CalculateTimesAskedForQuestions(Subtopic.Questions);
+                        for (const FTopic& Topic : Section.Topics)
+                        {
+                            for (const FSubtopic& Subtopic : Topic.Subtopics)
+                            {
+                                if (Subtopic.Title == SubtopicTitle)
+                                {
+                                    return CalculateTimesAskedForQuestions(Subtopic.Questions);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -90,29 +98,37 @@ int32 UAssessmentMetricsCalculator::CalculateTimesAskedForQuestionsIndividual(co
     return TotalTimesAsked;
 }
 
-int32 UAssessmentMetricsCalculator::CalculateTimesAskedForQuestionIR(const FString& QuestionText, const TArray<FSubjectStruct>& SubjectDataArray)
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle, const TArray<FFieldStruct>& FieldDataArray)
 {
-    for (const FSubjectStruct& Subject : SubjectDataArray)
+    for (const FFieldStruct& Field : FieldDataArray)
     {
-        for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
+        for (const FAreaStruct& Area : Field.Areas)
         {
-            for (const FTopic& Topic : Section.Topics)
+            for (const FSubjectGroupStruct& SubjectGroup : Area.SubjectGroups)
             {
-                for (const FSubtopic& Subtopic : Topic.Subtopics)
+                for (const FSubjectStruct& Subject : SubjectGroup.Subjects)
                 {
-                    for (const FTest& Question : Subtopic.Questions)
+                    for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
                     {
-                        if (Question.Question == QuestionText)
+                        for (const FTopic& Topic : Section.Topics)
                         {
-                            return CalculateTimesAskedForQuestionsIndividual(Subtopic.Questions);
+                            for (const FSubtopic& Subtopic : Topic.Subtopics)
+                            {
+                                if (Subtopic.Title == SubtopicTitle)
+                                {
+                                    
+
+                                    return CalculateTimesCorrectForQuestions(Subtopic.Questions);
+                                }
+                            }
                         }
                     }
-
                 }
             }
         }
     }
-
+      
     return 0; // Return 0 if no subtopic with the given title is found
 }
 
@@ -169,33 +185,6 @@ int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForSubject(const FSubje
     }
     return TotalTimesCorrect;
 }
-
-
-// INCREMENTAL REFACTORING FUNCTION
-// Calculate total times questions have been answered correctly for a specific subtopic, given its title
-int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle, const TArray<FSubjectStruct>& SubjectDataArray)
-{
-    for (const FSubjectStruct& Subject : SubjectDataArray)
-    {
-        for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
-        {
-            for (const FTopic& Topic : Section.Topics)
-            {
-                for (const FSubtopic& Subtopic : Topic.Subtopics)
-                {
-                    if (Subtopic.Title == SubtopicTitle)
-                    {
-                        return CalculateTimesCorrectForQuestions(Subtopic.Questions);
-                    }
-                }
-            }
-        }
-    }
-
-    return 0; // Return 0 if no subtopic with the given title is found
-}
-
-
 
 
 
@@ -407,39 +396,17 @@ FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 FieldIndex, int32 A
 }
 
 
-//FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray)
-//{
-//    if (!SubjectDataArray.IsValidIndex(SubjectIndex)) return FTest();
-//    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
-//    if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return FTest();
-//    FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
-//    if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return FTest();
-//    FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
-//    if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return FTest();
-//    FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
-//    for (FTest& Question : SelectedSubtopic.Questions)
-//    {
-//
-//        if (Question.Question == QuestionText)
-//        {
-//
-//            Question.TimesTested++;
-//
-//            if (SubmittedAnswer == Question.CorrectAnswer)
-//            {
-//                Question.TimesCorrect++;
-//            }
-//            return Question;
-//        }
-//    }
-//    return FTest(); // Return an empty FTest if no question with the given text is found
-//}
 
-// New function to get the number of times a specific question has been tested
-int32 UAssessmentMetricsCalculator::GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray)
+int32 UAssessmentMetricsCalculator::GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
 {
-    if (!SubjectDataArray.IsValidIndex(SubjectIndex)) return -1;
-    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
+    if (!FieldDataArray.IsValidIndex(FieldIndex)) return -1;
+    FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
+    if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return -1;
+    FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
+    if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return -1;
+    FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
+    if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return -1;
+    FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
     if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return -1;
     FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
     if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return -1;
@@ -456,11 +423,17 @@ int32 UAssessmentMetricsCalculator::GetTimesTestedForQuestion(int32 SubjectIndex
     return -1; // Return -1 if no question with the given text is found
 }
 
-// New function to get the number of times a specific question has been answered correctly
-int32 UAssessmentMetricsCalculator::GetTimesCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray)
+
+int32 UAssessmentMetricsCalculator::GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
 {
-    if (!SubjectDataArray.IsValidIndex(SubjectIndex)) return -1;
-    FSubjectStruct& SelectedSubject = SubjectDataArray[SubjectIndex];
+    if (!FieldDataArray.IsValidIndex(FieldIndex)) return -1;
+    FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
+    if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return -1;
+    FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
+    if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return -1;
+    FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
+    if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return -1;
+    FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
     if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return -1;
     FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
     if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return -1;

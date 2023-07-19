@@ -269,46 +269,6 @@ public:
 
 
 
-
-
-
-
-//USTRUCT(BlueprintType)
-//struct FQuestionSelector
-//{
-//	GENERATED_BODY()
-//
-//public:
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-//	int SubjectIndex;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-//	int SectionIndex;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-//	int TopicIndex;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-//	int SubTopicIndex;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-//	int QuestionIndex;
-//
-//	// Randomization level
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-//	int32 RandomizationLevel;
-//
-//	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
-//	// Random number generator
-//	FRandomStream RandStream;
-//
-//	FQuestionSelector()
-//	{
-//		RandStream.GenerateNewSeed();  // Generate a new random seed
-//	}
-//
-//};
-
 USTRUCT(BlueprintType)
 struct FQuestionSelector
 {
@@ -353,6 +313,7 @@ public:
 
 };
 
+
 class UDataProvider;
 class UAssessmentMetricsCalculator;
 
@@ -395,9 +356,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "YourCategory")
 	void SaveGameData();
-
-	/*UFUNCTION(BlueprintCallable, Category = "YourCategory")
-	void OverwriteGameData();*/
 
 	UFUNCTION(BlueprintCallable, Category = "YourCategory")
 	void LoadGameData();
@@ -463,8 +421,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle);
 
-	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	int32 CalculateTimesAskedForQuestionIR(const FString& SubtopicTitle);
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//int32 CalculateTimesAskedForQuestionIR(const FString& SubtopicTitle);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle);
@@ -480,19 +438,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	FTest UpdateAnswerStatus(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
 
-	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	int32 GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	int32 GetTimesCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
+	int32 GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
+
 
 	UAssessmentMetricsCalculator* AssessmentMetricsCalculatorGlobal;
 
 	
 
-	/*UFUNCTION(BlueprintCallable, Category = "Widgets")
-	int32 UpdateTimesCorrect(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer);*/
-
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	FSubjectStruct LoadJsonFromFile(FString FilePath);

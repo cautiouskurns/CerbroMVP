@@ -60,13 +60,13 @@ public:
 public:
 	// Calculate total times questions have been answered for a specific subtopic, given its title
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
-	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle, const TArray<FSubjectStruct>& SubjectDataArray);
+	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle, const TArray<FFieldStruct>& FieldDataArray);
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 CalculateTimesAskedForQuestionsIndividual(const TArray<FTest>& Questions);
 
-	UFUNCTION(BlueprintCallable, Category = "Assessment")
-	int32 CalculateTimesAskedForQuestionIR(const FString& QuestionText, const TArray<FSubjectStruct>& SubjectDataArray);
+	//UFUNCTION(BlueprintCallable, Category = "Assessment")
+	//int32 CalculateTimesAskedForQuestionIR(const FString& QuestionText, const TArray<FFieldStruct>& FieldDataArray);
 
 
 
@@ -93,7 +93,7 @@ public:
 // INCREMENTAL REFACTORING FUNCTIONS
 	// Calculate total times questions have been answered correctly for a specific subtopic, given its title
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
-	int32 CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle, const TArray<FSubjectStruct>& SubjectDataArray);
+	int32 CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle, const TArray<FFieldStruct>& FieldDataArray);
 
 
 
@@ -158,10 +158,10 @@ public:
 	FString SubmitAnswer(const FString& AnswerText);
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
-	int32 GetTimesTestedForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray);
+	int32 GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray);
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
-	int32 GetTimesCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FSubjectStruct>& SubjectDataArray);
+	int32 GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray);
 
 	private:
 		FString SubmittedAnswer;
