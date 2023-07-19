@@ -18,6 +18,12 @@
 
 #include "NodeManager.generated.h"
 
+enum class ENodeType
+{
+	Section,
+	Topic,
+	Subtopic
+};
 
 UCLASS()
 class CONVAITUTORIAL_API ANodeManager : public AActor
@@ -82,12 +88,21 @@ public:
 	// TopicNodeMaterial: Material to be used for topic nodes
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Materials")
+	UMaterialInterface* SectionNodeMaterial;
+
+	// TopicNodeMaterial: Material to be used for topic nodes
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Materials")
 	UMaterialInterface* TopicNodeMaterial;
 
 	// SubtopicNodeMaterial: Material to be used for subtopic nodes
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Materials")
 	UMaterialInterface* SubtopicNodeMaterial;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Config")
+	FColor SectionFontColor;
 
 	// TopicFontColor: Font color for the text on topic nodes
 public:
@@ -108,7 +123,15 @@ public:
 	void InitializeNodesBySubject();
 
 	// CreateNode: Creates a new node with the given parameters
-	ANodeActorBase* CreateNode(const FString& NodeName, const FString& NodeContent, const FVector& Position, bool IsTopicNode);
+	//ANodeActorBase* CreateNode(const FString& NodeName, const FString& NodeContent, const FVector& Position, bool IsTopicNode);
+
+	ANodeActorBase* CreateNode(const FString& NodeName, const FString& NodeContent, const FVector& Position, int NodeType);
+
+	//float GetNodeSizeBasedOnType(ENodeType NodeType);
+
+	FVector CalculateNodePosition(int32 NodeIndex, int32 TotalNumberOfNodes, FVector ParentNodePosition, float Radius);
+
+	//FVector CalculateNodePosition(int32 NodeIndex, int32 TotalNumberOfNodes, FVector ParentNodePosition, int NodeType);
 
 	// CalculateTopicPosition: Calculates the position of a topic node based on its index and the total number of topics
 	FVector CalculateTopicPosition(int32 TopicIndex, int32 TotalNumberOfTopics);
@@ -122,6 +145,11 @@ public:
 	// IsSubtopicOf: Checks if one node is a subtopic of another
 	bool IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode);
 
+
+	bool IsChildOf(ANodeActorBase* PotentialChild, ANodeActorBase* PotentialParent);
+
+	bool IsParentOf(ANodeActorBase* PotentialParent, ANodeActorBase* PotentialChild);
+
 	// PositionNodes: Positions NodeActors in a grid
 	void PositionNodes();
 
@@ -134,7 +162,9 @@ public:
 	// HighlightTopic: Highlights a topic node and its related nodes and edges
 public:
 	UFUNCTION(BlueprintCallable, Category = "Interaction Logic")
-	void HighlightTopic(ANodeActorBase* TopicNode);
+	void HighlightNode(ANodeActorBase* NodeToHighlight);
+
+	//void HighlightTopic(ANodeActorBase* TopicNode);
 
 	// SubjectSwitch: Changes the current subject
 	UFUNCTION(BlueprintCallable, Category = "Interaction Logic")

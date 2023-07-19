@@ -46,6 +46,9 @@ public:
 	ANodeActorBase* ParentTopic;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
+	ANodeActorBase* ParentSection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Node")
 	bool bIsHighlighted;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Subtopic")

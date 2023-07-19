@@ -21,6 +21,7 @@
 #include <Kismet/GameplayStatics.h>
 
 
+
 // Sets default values
 ANodeManager::ANodeManager()
 {
@@ -55,57 +56,6 @@ void ANodeManager::Tick(float DeltaTime)
 
 }
 
-
-// This function initializes the nodes by retrieving data from the GameInstance.
-void ANodeManager::InitializeNodes()
-{
-    UWorld* World = GetWorld();
-    if (!World) return;
-
-    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-    if (!GameInstance) return;
-
-    TArray<FSectionStruct> GameInstanceSectionDataArray = GameInstance->SectionDataArray;
-    TArray<FSubtopic> GameInstanceSubTopicDataArray = GameInstance->SubTopicStructArray;
-
-
-    // Create nodes based on the topics and subtopics in the GameInstance.
-
-    int TotalSubTopics = 0;
-
-
-    if (GameInstance)
-    {
-        for (FSectionStruct& Section : GameInstance->SectionDataArray)
-        {
-            for (FTopic& Topic : Section.Topics)
-            {
-                TotalSubTopics += Topic.Subtopics.Num();
-            }
-        }
-    }
-
-
-    // Create a node for each subtopic
-    for (int i = 0; i < TotalSubTopics; ++i)  
-    {
-        FActorSpawnParameters SpawnParams;
-
-        if (NodeBlueprintClass)
-        {
-            // Spawn a node actor
-            ANodeActorBase* NodeActor = World->SpawnActor<ANodeActorBase>(NodeBlueprintClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
-            NodeActors.Add(NodeActor);
-
-            UE_LOG(LogTemp, Warning, TEXT("Node spawned!"));
-        }
-        else
-        {
-			UE_LOG(LogTemp, Warning, TEXT("NodeBlueprintClass is null!"));
-		}
-
-    }
-}
 
 
 // This function positions the nodes in a grid.
@@ -243,50 +193,6 @@ void ANodeManager::SubjectSwitch(const FString& NewSubjectName)
     }
 }
 
-//// This function is called when the subject is switched.
-//void ANodeManager::SubjectSwitch(const FString& NewSubjectName)
-//{
-//    UWorld* World = GetWorld();
-//    if (!World) return;
-//
-//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-//    if (!GameInstance) return;
-//
-//    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
-//
-//    // Find the new subject
-//    for (const FSubjectStruct& Subject : GameInstanceSubjectDataArray)
-//    {
-//        if (Subject.SubjectName == NewSubjectName)
-//        {
-//            // Clear current nodes and edges
-//            for (ANodeActorBase* Node : NodeActors)
-//            {
-//                if (Node != nullptr)
-//                {
-//                    Node->Destroy();
-//                }
-//            }
-//            NodeActors.Empty();
-//
-//            for (AEdgeActorBase* Edge : EdgeActors)
-//            {
-//                if (Edge != nullptr)
-//                {
-//                    Edge->Destroy();
-//                }
-//            }
-//            EdgeActors.Empty();
-//
-//            // Set the current subject and initialize nodes and edges for new subject
-//            CurrentSubject = Subject;
-//            GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
-//
-//            return;
-//        }
-//    }
-//}
-
 
 // This function initializes nodes and edges for the current subject.
 void ANodeManager::InitializeNodesBySubject()
@@ -299,53 +205,63 @@ void ANodeManager::InitializeNodesBySubject()
 
     TArray<FFieldStruct> GameInstanceFieldDataArray = GameInstance->FieldDataArray;
 
-    // Determine total number of topics across all sections
+    float BaseSectionRadius = 500.f;
+    float BaseTopicRadius = 300.f;
+    float BaseSubTopicRadius = 100.f;
+
+    // Determine total number of sections
+    int32 TotalNumberOfSections = CurrentSubject.SubjectDetailsArray.Num();
     int32 TotalNumberOfTopics = 0;
+    int32 TotalNumberOfSubtopics = 0;
 
-    // Find the correct SubjectGroup and Subject based on the CurrentSubject 
-    for (const FFieldStruct& Field : GameInstanceFieldDataArray)
-    {
-        for (const FAreaStruct& Area : Field.Areas)
-        {
-            for (const FSubjectGroupStruct& SubjectGroup : Area.SubjectGroups)
-            {
-                for (const FSubjectStruct& Subject : SubjectGroup.Subjects)
-                {
-                    if (Subject.SubjectName == CurrentSubject.SubjectName)
-                    {
-                        for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
-                        {
-                            TotalNumberOfTopics += Section.Topics.Num();
-                        }
-                        goto subjectFound;  // Exit the nested loops when the correct subject is found
-                    }
-                }
-            }
-        }
-    }
-
-subjectFound:
-
-    // Generate Nodes for Topics and Subtopics
+    // Generate Nodes for Sections, Topics and Subtopics
+    int32 SectionIndex = 0;
     int32 TopicIndex = 0;
 
     for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
     {
+        TotalNumberOfTopics += Section.Topics.Num();
+        for (const FTopic& Topic : Section.Topics)
+        {
+            TotalNumberOfSubtopics += Topic.Subtopics.Num();
+        }
+    }
+
+    // Calculate radii based on the total number of sections, topics, and subtopics
+    float SectionRadius = BaseSectionRadius * FMath::Sqrt(static_cast<float>(TotalNumberOfSections));
+    float TopicRadius = BaseTopicRadius * FMath::Sqrt(static_cast<float>(TotalNumberOfTopics));
+    float SubTopicRadius = BaseSubTopicRadius * FMath::Sqrt(static_cast<float>(TotalNumberOfSubtopics));
+
+
+
+
+    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
+    {
+        // Create a node for the Section
+        ANodeActorBase* SectionNode = CreateNode(Section.SectionName, "", CalculateNodePosition(SectionIndex, TotalNumberOfSections, StartPosition, SectionRadius), 0);
+        SectionNode->ParentTopic = nullptr;
+
+        SectionNode->SetNodeTextFontColor(SectionFontColor);  // Set font color for section
+        NodeActors.Add(SectionNode);
+
+        //int32 TotalNumberOfTopics = Section.Topics.Num();
+
         for (const FTopic& Topic : Section.Topics)
         {
             // Create a node for the Topic
-            ANodeActorBase* TopicNode = CreateNode(Topic.Title, "", CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
-            TopicNode->ParentTopic = nullptr;
+            ANodeActorBase* TopicNode = CreateNode(Topic.Title, "", CalculateNodePosition(TopicIndex, TotalNumberOfTopics, SectionNode->GetActorLocation(), TopicRadius), 1);
+            TopicNode->ParentTopic = SectionNode;  // Set the parent to the section node
 
             TopicNode->SetNodeTextFontColor(TopicFontColor);  // Set font color for topic
             NodeActors.Add(TopicNode);
 
+            CreateEdge(SectionNode, TopicNode);
 
             // Create a node for each Subtopic
             int32 SubtopicIndex = 0;
             for (const FSubtopic& Subtopic : Topic.Subtopics)
             {
-                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, Subtopic.Content, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
+                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, Subtopic.Content, CalculateNodePosition(SubtopicIndex, Topic.Subtopics.Num(), TopicNode->GetActorLocation(), SubTopicRadius), 2);
                 SubtopicNode->ParentTopic = TopicNode;
 
                 SubtopicNode->SetNodeTextFontColor(SubtopicFontColor);  // Set font color for subtopic
@@ -359,76 +275,21 @@ subjectFound:
 
             TopicIndex++;
         }
+
+        SectionIndex++;
     }
 }
 
-//// This function initializes nodes and edges for the current subject.
-//void ANodeManager::InitializeNodesBySubject()
-//{
-//    UWorld* World = GetWorld();
-//    if (!World) return;
-//
-//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-//    if (!GameInstance) return;
-//
-//    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
-//
-//    // Determine total number of topics across all sections
-//    int32 TotalNumberOfTopics = 0;
-//
-// 
-//    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
-//    {
-//        TotalNumberOfTopics += Section.Topics.Num();
-//    }
-// 
-//    // Generate Nodes for Topics and Subtopics
-//    int32 TopicIndex = 0;
-//
-//    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
-//    {
-//        for (const FTopic& Topic : Section.Topics)
-//        {
-//            // Create a node for the Topic
-//            ANodeActorBase* TopicNode = CreateNode(Topic.Title, "", CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
-//            TopicNode->ParentTopic = nullptr;
-//
-//            TopicNode->SetNodeTextFontColor(TopicFontColor);  // Set font color for topic
-//            NodeActors.Add(TopicNode);
-//
-//
-//            // Create a node for each Subtopic
-//            int32 SubtopicIndex = 0;
-//            for (const FSubtopic& Subtopic : Topic.Subtopics)
-//            {
-//                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, Subtopic.Content, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
-//                SubtopicNode->ParentTopic = TopicNode;
-//
-//                SubtopicNode->SetNodeTextFontColor(SubtopicFontColor);  // Set font color for subtopic
-//
-//                NodeActors.Add(SubtopicNode);
-//
-//                CreateEdge(TopicNode, SubtopicNode);
-//                //CreateEdgeToSurface(TopicNode, SubtopicNode);
-//
-//                SubtopicIndex++;
-//            }
-//
-//            TopicIndex++;
-//        }
-//    }
-//}
 
-
-// Create a node
-ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FString& NodeContent, const FVector& Position, bool IsTopicNode)
+ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FString& NodeContent, const FVector& Position, int NodeType)
 {
+    float SectionFontSize = 32.0f;
     float TopicFontSize = 28.0f;
     float SubtopicFontSize = 18.0f;
 
+    float SectionNodeSize = 1.5f;
     float TopicNodeSize = 1.0f;
     float SubTopicNodeSize = 0.5f;
-
 
     UWorld* World = GetWorld();
     if (!World) return nullptr;
@@ -439,17 +300,60 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FString&
         ANodeActorBase* NodeActor = World->SpawnActor<ANodeActorBase>(NodeBlueprintClass, Position, FRotator::ZeroRotator, SpawnParams);
         if (NodeActor)
         {
-            // Set font size based on whether it's a topic node
-            NodeActor->SetNodeTextFontSize(IsTopicNode ? TopicFontSize : SubtopicFontSize);
+            // Set font size based on NodeType
+            if (NodeType == 0)
+            {
+                NodeActor->SetNodeTextFontSize(SectionFontSize);
+                NodeActor->SetNodeSize(SectionNodeSize);
+
+                // Move the NodeTextComponent up based on the size of the node
+                FVector TextPosition(0.0f, 0.0f, SectionNodeSize * 100.0f);  // Adjust the multiplier based on your needs
+                NodeActor->NodeTextComponent->SetRelativeLocation(TextPosition);
+            }
+            else if (NodeType == 1)
+            {
+                NodeActor->SetNodeTextFontSize(TopicFontSize);
+                NodeActor->SetNodeSize(TopicNodeSize);
+
+                // Move the NodeTextComponent up based on the size of the node
+                FVector TextPosition(0.0f, 0.0f, TopicNodeSize * 100.0f);  // Adjust the multiplier based on your needs
+                NodeActor->NodeTextComponent->SetRelativeLocation(TextPosition);
+            }
+            else if (NodeType == 2)
+            {
+                NodeActor->SetNodeTextFontSize(SubtopicFontSize);
+                NodeActor->SetNodeSize(SubTopicNodeSize);
+
+                // Move the NodeTextComponent up based on the size of the node
+                FVector TextPosition(0.0f, 0.0f, SubTopicNodeSize * 100.0f);  // Adjust the multiplier based on your needs
+                NodeActor->NodeTextComponent->SetRelativeLocation(TextPosition);
+            }
+
             NodeActor->SetNodeText(NodeName);
-            NodeActor->SetNodeSize(IsTopicNode ? TopicNodeSize : SubTopicNodeSize);
             NodeActor->SubtopicContent = NodeContent; // Set the subtopic content
             NodeActor->SubtopicTitle = NodeName; // Set the subtopic content
 
-            // Set the material based on whether this is a Topic or Subtopic node
-            UMaterialInterface* Material = IsTopicNode ? TopicNodeMaterial : SubtopicNodeMaterial;
-            UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(Material, NodeActor);
-            NodeActor->GetStaticMeshComponent()->SetMaterial(0, DynamicMaterial);
+            // Set the material based on NodeType
+            UMaterialInterface* Material = nullptr; // Initialize Material to nullptr here
+            if (NodeType == 0)
+            {
+                Material = SectionNodeMaterial;
+            }
+            else if (NodeType == 1)
+            {
+                Material = TopicNodeMaterial;
+            }
+            else if (NodeType == 2)
+            {
+                Material = SubtopicNodeMaterial;
+            }
+
+            if (Material)  // Only use Material if it is not nullptr
+            {
+                UMaterialInstanceDynamic* DynamicMaterial = UMaterialInstanceDynamic::Create(Material, NodeActor);
+                NodeActor->GetStaticMeshComponent()->SetMaterial(0, DynamicMaterial);
+            }
+
             return NodeActor;
         }
     }
@@ -458,38 +362,35 @@ ANodeActorBase* ANodeManager::CreateNode(const FString& NodeName, const FString&
 }
 
 
-// Calculate the position of the Topic node based on its index and the total number of topics
-FVector ANodeManager::CalculateTopicPosition(int32 TopicIndex, int32 TotalNumberOfTopics)
+//float ANodeManager::GetNodeSizeBasedOnType(ENodeType NodeType)
+//{
+//    switch (NodeType)
+//    {
+//    case ENodeType::Section:
+//        return SectionNodeSize;
+//    case ENodeType::Topic:
+//        return TopicNodeSize;
+//    case ENodeType::Subtopic:
+//        return SubTopicNodeSize;
+//    default:
+//        return 1.0f;  // Default size
+//    }
+//}
+
+
+FVector ANodeManager::CalculateNodePosition(int32 NodeIndex, int32 TotalNumberOfNodes, FVector ParentNodePosition, float Radius)
 {
-    // Implement this function to calculate where the Topic nodes should be positioned
+    // Implement this function to calculate where the nodes should be positioned
     // Example:
-    float Radius = 500.0f;
-    float AngleStep = 360.0f / TotalNumberOfTopics;
-    float CurrentAngle = AngleStep * TopicIndex;
+    float AngleStep = 360.0f / TotalNumberOfNodes;
+    float CurrentAngle = AngleStep * NodeIndex;
     FVector Position;
     Position.X = Radius * FMath::Cos(FMath::DegreesToRadians(CurrentAngle));
     Position.Y = Radius * FMath::Sin(FMath::DegreesToRadians(CurrentAngle));
     Position.Z = 0;
 
-    return Position;
-}
-
-FVector ANodeManager::CalculateSubTopicPosition(int32 TopicIndex, int32 SubTopicIndex, int32 TotalNumberOfSubTopics, int32 TotalNumberOfTopics)
-{
-    // Implement this function to calculate where the Subtopic nodes should be positioned relative to their Topic
-    // Example:
-    float Radius = 300.0f; // Subtopics will be closer to their Topic
-    float AngleStep = 360.0f / TotalNumberOfSubTopics;
-    float CurrentAngle = AngleStep * SubTopicIndex;
-    FVector Position;
-    Position.X = Radius * FMath::Cos(FMath::DegreesToRadians(CurrentAngle));
-    Position.Y = Radius * FMath::Sin(FMath::DegreesToRadians(CurrentAngle));
-    Position.Z = 0;
-
-    FVector TopicPosition = CalculateTopicPosition(TopicIndex, TotalNumberOfTopics);
-
-    // Add the position of the parent Topic to the calculated position
-    return Position + TopicPosition;
+    // Add the position of the parent Node to the calculated position
+    return Position + ParentNodePosition;
 }
 
 
@@ -524,25 +425,58 @@ bool ANodeManager::IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode)
 }
 
 
-// Highlight the selected topic and its subtopics
-void ANodeManager::HighlightTopic(ANodeActorBase* TopicNode)
+
+// Highlight the selected node and its children
+// Called in the NodeActorBase_Test event grpah
+//void ANodeManager::HighlightNode(ANodeActorBase* NodeToHighlight)
+//{
+//    // If the selected node is already highlighted, unhighlight it and its children, 
+//    // and restore all other nodes to full opacity
+//    if (NodeToHighlight->bIsHighlighted)
+//    {
+//        for (ANodeActorBase* Node : NodeActors)
+//        {
+//            Node->RestoreNodeOpacity();
+//        }
+//
+//        NodeToHighlight->bIsHighlighted = false;
+//    }
+//    else
+//    {
+//        for (ANodeActorBase* Node : NodeActors)
+//        {
+//            if (Node == NodeToHighlight || IsChildOf(Node, NodeToHighlight))
+//            {
+//                Node->HighlightNode();
+//            }
+//            else
+//            {
+//                Node->LowerNodeOpacity();
+//            }
+//        }
+//
+//        NodeToHighlight->bIsHighlighted = true;
+//    }
+//}
+
+void ANodeManager::HighlightNode(ANodeActorBase* NodeToHighlight)
 {
-    // If the selected node is already highlighted, unhighlight it and its subtopics, 
+    // If the selected node is already highlighted, unhighlight it and its children, 
     // and restore all other nodes to full opacity
-    if (TopicNode->bIsHighlighted)
+    if (NodeToHighlight->bIsHighlighted)
     {
         for (ANodeActorBase* Node : NodeActors)
         {
             Node->RestoreNodeOpacity();
         }
 
-        TopicNode->bIsHighlighted = false;
+        NodeToHighlight->bIsHighlighted = false;
     }
     else
     {
         for (ANodeActorBase* Node : NodeActors)
         {
-            if (Node == TopicNode || IsSubtopicOf(Node, TopicNode))
+            if (Node == NodeToHighlight || IsChildOf(Node, NodeToHighlight) || IsParentOf(NodeToHighlight, Node))
             {
                 Node->HighlightNode();
             }
@@ -552,10 +486,66 @@ void ANodeManager::HighlightTopic(ANodeActorBase* TopicNode)
             }
         }
 
-        TopicNode->bIsHighlighted = true;
+        NodeToHighlight->bIsHighlighted = true;
     }
 }
 
 
+bool ANodeManager::IsChildOf(ANodeActorBase* PotentialChild, ANodeActorBase* PotentialParent)
+{
+    // If the PotentialChild is a direct child of the PotentialParent
+    if (PotentialChild->ParentTopic == PotentialParent || PotentialChild->ParentSection == PotentialParent)
+    {
+        return true;
+    }
+    // If the PotentialChild is not at the top of the hierarchy, check its parent
+    else if (PotentialChild->ParentTopic != nullptr)
+    {
+        return IsChildOf(PotentialChild->ParentTopic, PotentialParent);
+    }
+    else if (PotentialChild->ParentSection != nullptr)
+    {
+        return IsChildOf(PotentialChild->ParentSection, PotentialParent);
+    }
+
+    // If we've reached here, the PotentialChild is not a child of the PotentialParent
+    return false;
+}
+
+bool ANodeManager::IsParentOf(ANodeActorBase* PotentialParent, ANodeActorBase* PotentialChild)
+{
+    if (PotentialChild->ParentTopic == PotentialParent)
+    {
+        return true;
+    }
+    else if (PotentialChild->ParentSection == PotentialParent)
+    {
+        return true;
+    }
+    else if (PotentialChild->ParentTopic && PotentialChild->ParentTopic->ParentSection == PotentialParent)
+    {
+        return true;
+    }
+
+    return false;
+}
 
 
+
+//bool ANodeManager::IsChildOf(ANodeActorBase* PotentialChild, ANodeActorBase* PotentialParent)
+//{
+//    if (PotentialChild->ParentTopic == PotentialParent)
+//    {
+//        return true;
+//    }
+//    else if (PotentialChild->ParentSection == PotentialParent)
+//    {
+//        return true;
+//    }
+//    else if (PotentialChild->ParentTopic && PotentialChild->ParentTopic->ParentSection == PotentialParent)
+//    {
+//        return true;
+//    }
+//
+//    return false;
+//}
