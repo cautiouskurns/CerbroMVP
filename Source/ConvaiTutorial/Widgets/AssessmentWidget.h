@@ -9,6 +9,7 @@
 #include "ConvaiTutorial/DataManagement/ReadWriteJsonFile.h"
 
 #include "Blueprint/UserWidget.h"
+#include <Components/TextBlock.h>
 
 #include "AssessmentWidget.generated.h"
 
@@ -21,9 +22,13 @@ class CONVAITUTORIAL_API UAssessmentWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+
+ 
     // Declare a question selector
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Questions")
     FQuestionSelector QuestionSelector;
+
+    void NativeConstruct();
 
     // Function to get the current question
     UFUNCTION(BlueprintCallable, Category = "Widgets")
@@ -31,6 +36,38 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Widgets")
     FString GetCurrentQuestionContent();
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    class UButton* Answer1Button;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    class UButton* Answer2Button;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    class UButton* Answer3Button;
+
+    UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+    class UButton* Answer4Button;
+
+    UPROPERTY(BlueprintReadWrite)
+    TArray<class UButton*> AnswerButtons;
+
+protected:
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+    UTextBlock* QuestionText;
+
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+    class UTextBlock* Answer1Text;
+
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+    class UTextBlock* Answer2Text;
+
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+    class UTextBlock* Answer3Text;
+
+    UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+    class UTextBlock* Answer4Text;
+
 
 
     UFUNCTION(BlueprintCallable, Category = "Widgets")
@@ -109,5 +146,12 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "ComboBox")
     void PopulateSubTopicComboBox(UComboBoxString* ComboBox, const FString& SelectedTopic);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    void SetQuestionAndAnswers(const FString& Question, const TArray<FString>& Answers);
+
+    UFUNCTION(BlueprintCallable, Category = "ComboBox")
+    TArray<FLinearColor> ColorCodeAnswers(const FString& SubmittedAnswer, const TArray<FString>& PotentialAnswers, const FString& CorrectAnswer);
+
 
 };

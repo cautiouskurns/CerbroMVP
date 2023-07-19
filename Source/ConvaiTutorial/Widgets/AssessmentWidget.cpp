@@ -5,8 +5,20 @@
 
 #include "ConvaiTutorial/BaseClasses/BaseGameInstance.h"
 
+
 #include "Kismet/GameplayStatics.h"
 #include <Components/ComboBoxString.h>
+
+
+void UAssessmentWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	AnswerButtons.Add(Answer1Button);
+	AnswerButtons.Add(Answer2Button);
+	AnswerButtons.Add(Answer3Button);
+	AnswerButtons.Add(Answer4Button);
+}
 
 
 FTest UAssessmentWidget::GetCurrentQuestion()
@@ -684,6 +696,75 @@ void UAssessmentWidget::PopulateSubTopicComboBox(UComboBoxString* ComboBox, cons
 }
 
 
+
+void UAssessmentWidget::SetQuestionAndAnswers(const FString& Question, const TArray<FString>& Answers)
+{
+	if (QuestionText)
+	{
+		QuestionText->SetText(FText::FromString(Question));
+	}
+
+	UTextBlock* AnswerTextBlocks[] = { Answer1Text, Answer2Text, Answer3Text, Answer4Text };
+
+	for (int32 i = 0; i < Answers.Num() && i < sizeof(AnswerTextBlocks) / sizeof(UTextBlock*); ++i)
+	{
+		if (AnswerTextBlocks[i])
+		{
+			AnswerTextBlocks[i]->SetText(FText::FromString(Answers[i]));
+		}
+	}
+}
+
+
+TArray<FLinearColor> UAssessmentWidget::ColorCodeAnswers(const FString& SubmittedAnswer, const TArray<FString>& PotentialAnswers, const FString& CorrectAnswer)
+{
+	TArray<FLinearColor> AnswerColors;
+	AnswerColors.SetNum(PotentialAnswers.Num());
+
+	for (int32 i = 0; i < PotentialAnswers.Num(); ++i)
+	{
+		if (PotentialAnswers[i] == SubmittedAnswer)
+		{
+			AnswerColors[i] = (PotentialAnswers[i] == CorrectAnswer) ? FLinearColor::Green : FLinearColor::Red;
+		}
+		else
+		{
+			AnswerColors[i] = FLinearColor::Red;
+		}
+	}
+
+	return AnswerColors;
+}
+
+//void UAssessmentWidget::ColorCodeAnswers(const FString& SubmittedAnswer, const FString& CorrectAnswer, const TArray<FString>& PotentialAnswers)
+//{
+//	for (int32 i = 0; i < PotentialAnswers.Num(); ++i)
+//	{
+//		if (PotentialAnswers[i] == SubmittedAnswer)
+//		{
+//			if (PotentialAnswers[i] == CorrectAnswer)
+//			{
+//				// This is the submitted answer and it's correct. Color it green.
+//				AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::Green));
+//			}
+//			else
+//			{
+//				// This is the submitted answer but it's incorrect. Color it red.
+//				AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::Red));
+//			}
+//		}
+//		else if (PotentialAnswers[i] == CorrectAnswer)
+//		{
+//			// This is the correct answer, but it wasn't the one submitted. Color it green.
+//			AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::Green));
+//		}
+//		else
+//		{
+//			// This answer was neither submitted nor correct. Set it to its default color.
+//			AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::White));
+//		}
+//	}
+//}
 
 
 

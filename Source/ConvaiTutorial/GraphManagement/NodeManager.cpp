@@ -59,56 +59,56 @@ void ANodeManager::Tick(float DeltaTime)
 
 
 // This function positions the nodes in a grid.
-void ANodeManager::PositionNodes()
-{
-    // For each node, calculate its position based on its index and place it in the world.
-    int32 size = FMath::RoundToInt(FMath::Sqrt(static_cast<float>(NodeActors.Num())));  // the number of nodes along one edge of the grid
-    float spacing = 1000.f / size;  // the distance between each node
-
-    for (int32 i = 0; i < NodeActors.Num(); i++)
-    {
-        AActor* NodeActor = NodeActors[i];
-        if (!NodeActor) continue;  // skip if the pointer is null
-
-        FVector Position;
-
-        // Print position
-        Position.X = (i % size) * spacing;
-        Position.Y = (i / size) * spacing;
-        Position.Z = 0;
-
-        NodeActor->SetActorLocation(Position + StartPosition);
-       
-    }
-
-    // Set Node Text
-    SetGraphNodeText();
-}
-
-
-// This function sets the text for each node in the graph.
-void ANodeManager::SetGraphNodeText()
-{
-    // Geenrate subtopic names and contents
-    TArray<FString> SubTopicNames = NodeDataLoader->GenerateSubtopicNames();
-    TArray<FString> SubTopicContents = NodeDataLoader->GenerateSubtopicContents(CurrentSubject);
-
-    for (int32 i = 0; i < NodeActors.Num(); i++)
-    {
-        AActor* NodeActor = NodeActors[i];
-        if (!NodeActor) continue;  // skip if the pointer is null
-
-        ANodeActorBase* NodeActorBase = Cast<ANodeActorBase>(NodeActor);
-        if (NodeActorBase && i < SubTopicNames.Num() && i < SubTopicContents.Num())
-        {
-
-            // Set the node's text to the corresponding subtopic name
-            // Set the node's content to the corresponding subtopic content
-            NodeActorBase->SetNodeTextAndContent(SubTopicNames[i], SubTopicContents[i]);
-
-        }
-    }
-}
+//void ANodeManager::PositionNodes()
+//{
+//    // For each node, calculate its position based on its index and place it in the world.
+//    int32 size = FMath::RoundToInt(FMath::Sqrt(static_cast<float>(NodeActors.Num())));  // the number of nodes along one edge of the grid
+//    float spacing = 1000.f / size;  // the distance between each node
+//
+//    for (int32 i = 0; i < NodeActors.Num(); i++)
+//    {
+//        AActor* NodeActor = NodeActors[i];
+//        if (!NodeActor) continue;  // skip if the pointer is null
+//
+//        FVector Position;
+//
+//        // Print position
+//        Position.X = (i % size) * spacing;
+//        Position.Y = (i / size) * spacing;
+//        Position.Z = 0;
+//
+//        NodeActor->SetActorLocation(Position + StartPosition);
+//       
+//    }
+//
+//    // Set Node Text
+//    SetGraphNodeText();
+//}
+//
+//
+//// This function sets the text for each node in the graph.
+//void ANodeManager::SetGraphNodeText()
+//{
+//    // Geenrate subtopic names and contents
+//    TArray<FString> SubTopicNames = NodeDataLoader->GenerateSubtopicNames();
+//    TArray<FString> SubTopicContents = NodeDataLoader->GenerateSubtopicContents(CurrentSubject);
+//
+//    for (int32 i = 0; i < NodeActors.Num(); i++)
+//    {
+//        AActor* NodeActor = NodeActors[i];
+//        if (!NodeActor) continue;  // skip if the pointer is null
+//
+//        ANodeActorBase* NodeActorBase = Cast<ANodeActorBase>(NodeActor);
+//        if (NodeActorBase && i < SubTopicNames.Num() && i < SubTopicContents.Num())
+//        {
+//
+//            // Set the node's text to the corresponding subtopic name
+//            // Set the node's content to the corresponding subtopic content
+//            NodeActorBase->SetNodeTextAndContent(SubTopicNames[i], SubTopicContents[i]);
+//
+//        }
+//    }
+//}
 
 // This function generates edges between nodes.
 void ANodeManager::GenerateEdges()
@@ -425,40 +425,6 @@ bool ANodeManager::IsSubtopicOf(ANodeActorBase* Node, ANodeActorBase* TopicNode)
 }
 
 
-
-// Highlight the selected node and its children
-// Called in the NodeActorBase_Test event grpah
-//void ANodeManager::HighlightNode(ANodeActorBase* NodeToHighlight)
-//{
-//    // If the selected node is already highlighted, unhighlight it and its children, 
-//    // and restore all other nodes to full opacity
-//    if (NodeToHighlight->bIsHighlighted)
-//    {
-//        for (ANodeActorBase* Node : NodeActors)
-//        {
-//            Node->RestoreNodeOpacity();
-//        }
-//
-//        NodeToHighlight->bIsHighlighted = false;
-//    }
-//    else
-//    {
-//        for (ANodeActorBase* Node : NodeActors)
-//        {
-//            if (Node == NodeToHighlight || IsChildOf(Node, NodeToHighlight))
-//            {
-//                Node->HighlightNode();
-//            }
-//            else
-//            {
-//                Node->LowerNodeOpacity();
-//            }
-//        }
-//
-//        NodeToHighlight->bIsHighlighted = true;
-//    }
-//}
-
 void ANodeManager::HighlightNode(ANodeActorBase* NodeToHighlight)
 {
     // If the selected node is already highlighted, unhighlight it and its children, 
@@ -530,22 +496,3 @@ bool ANodeManager::IsParentOf(ANodeActorBase* PotentialParent, ANodeActorBase* P
     return false;
 }
 
-
-
-//bool ANodeManager::IsChildOf(ANodeActorBase* PotentialChild, ANodeActorBase* PotentialParent)
-//{
-//    if (PotentialChild->ParentTopic == PotentialParent)
-//    {
-//        return true;
-//    }
-//    else if (PotentialChild->ParentSection == PotentialParent)
-//    {
-//        return true;
-//    }
-//    else if (PotentialChild->ParentTopic && PotentialChild->ParentTopic->ParentSection == PotentialParent)
-//    {
-//        return true;
-//    }
-//
-//    return false;
-//}
