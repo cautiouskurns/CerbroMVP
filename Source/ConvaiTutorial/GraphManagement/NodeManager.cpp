@@ -199,40 +199,93 @@ void ANodeManager::SubjectSwitch(const FString& NewSubjectName)
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
     if (!GameInstance) return;
 
-    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
+    TArray<FFieldStruct> GameInstanceFieldDataArray = GameInstance->FieldDataArray;
 
     // Find the new subject
-    for (const FSubjectStruct& Subject : GameInstanceSubjectDataArray)
+    for (const FFieldStruct& Field : GameInstanceFieldDataArray)
     {
-        if (Subject.SubjectName == NewSubjectName)
+        for (const FAreaStruct& Area : Field.Areas)
         {
-            // Clear current nodes and edges
-            for (ANodeActorBase* Node : NodeActors)
+            for (const FSubjectGroupStruct& SubjectGroup : Area.SubjectGroups)
             {
-                if (Node != nullptr)
+                for (const FSubjectStruct& Subject : SubjectGroup.Subjects)
                 {
-                    Node->Destroy();
+                    if (Subject.SubjectName == NewSubjectName)
+                    {
+                        // Clear current nodes and edges
+                        for (ANodeActorBase* Node : NodeActors)
+                        {
+                            if (Node != nullptr)
+                            {
+                                Node->Destroy();
+                            }
+                        }
+                        NodeActors.Empty();
+
+                        for (AEdgeActorBase* Edge : EdgeActors)
+                        {
+                            if (Edge != nullptr)
+                            {
+                                Edge->Destroy();
+                            }
+                        }
+                        EdgeActors.Empty();
+
+                        // Set the current subject and initialize nodes and edges for new subject
+                        CurrentSubject = Subject;
+                        GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
+
+                        return;
+                    }
                 }
             }
-            NodeActors.Empty();
-
-            for (AEdgeActorBase* Edge : EdgeActors)
-            {
-                if (Edge != nullptr)
-                {
-                    Edge->Destroy();
-                }
-            }
-            EdgeActors.Empty();
-
-            // Set the current subject and initialize nodes and edges for new subject
-            CurrentSubject = Subject;
-            GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
-
-            return;
         }
     }
 }
+
+//// This function is called when the subject is switched.
+//void ANodeManager::SubjectSwitch(const FString& NewSubjectName)
+//{
+//    UWorld* World = GetWorld();
+//    if (!World) return;
+//
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+//    if (!GameInstance) return;
+//
+//    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
+//
+//    // Find the new subject
+//    for (const FSubjectStruct& Subject : GameInstanceSubjectDataArray)
+//    {
+//        if (Subject.SubjectName == NewSubjectName)
+//        {
+//            // Clear current nodes and edges
+//            for (ANodeActorBase* Node : NodeActors)
+//            {
+//                if (Node != nullptr)
+//                {
+//                    Node->Destroy();
+//                }
+//            }
+//            NodeActors.Empty();
+//
+//            for (AEdgeActorBase* Edge : EdgeActors)
+//            {
+//                if (Edge != nullptr)
+//                {
+//                    Edge->Destroy();
+//                }
+//            }
+//            EdgeActors.Empty();
+//
+//            // Set the current subject and initialize nodes and edges for new subject
+//            CurrentSubject = Subject;
+//            GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ANodeManager::InitializeNodesBySubject);
+//
+//            return;
+//        }
+//    }
+//}
 
 
 // This function initializes nodes and edges for the current subject.
@@ -244,17 +297,35 @@ void ANodeManager::InitializeNodesBySubject()
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
     if (!GameInstance) return;
 
-    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
+    TArray<FFieldStruct> GameInstanceFieldDataArray = GameInstance->FieldDataArray;
 
     // Determine total number of topics across all sections
     int32 TotalNumberOfTopics = 0;
 
- 
-    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
+    // Find the correct SubjectGroup and Subject based on the CurrentSubject 
+    for (const FFieldStruct& Field : GameInstanceFieldDataArray)
     {
-        TotalNumberOfTopics += Section.Topics.Num();
+        for (const FAreaStruct& Area : Field.Areas)
+        {
+            for (const FSubjectGroupStruct& SubjectGroup : Area.SubjectGroups)
+            {
+                for (const FSubjectStruct& Subject : SubjectGroup.Subjects)
+                {
+                    if (Subject.SubjectName == CurrentSubject.SubjectName)
+                    {
+                        for (const FSectionStruct& Section : Subject.SubjectDetailsArray)
+                        {
+                            TotalNumberOfTopics += Section.Topics.Num();
+                        }
+                        goto subjectFound;  // Exit the nested loops when the correct subject is found
+                    }
+                }
+            }
+        }
     }
- 
+
+subjectFound:
+
     // Generate Nodes for Topics and Subtopics
     int32 TopicIndex = 0;
 
@@ -282,7 +353,6 @@ void ANodeManager::InitializeNodesBySubject()
                 NodeActors.Add(SubtopicNode);
 
                 CreateEdge(TopicNode, SubtopicNode);
-                //CreateEdgeToSurface(TopicNode, SubtopicNode);
 
                 SubtopicIndex++;
             }
@@ -291,6 +361,63 @@ void ANodeManager::InitializeNodesBySubject()
         }
     }
 }
+
+//// This function initializes nodes and edges for the current subject.
+//void ANodeManager::InitializeNodesBySubject()
+//{
+//    UWorld* World = GetWorld();
+//    if (!World) return;
+//
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+//    if (!GameInstance) return;
+//
+//    TArray<FSubjectStruct> GameInstanceSubjectDataArray = GameInstance->SubjectDataArray;
+//
+//    // Determine total number of topics across all sections
+//    int32 TotalNumberOfTopics = 0;
+//
+// 
+//    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
+//    {
+//        TotalNumberOfTopics += Section.Topics.Num();
+//    }
+// 
+//    // Generate Nodes for Topics and Subtopics
+//    int32 TopicIndex = 0;
+//
+//    for (const FSectionStruct& Section : CurrentSubject.SubjectDetailsArray)
+//    {
+//        for (const FTopic& Topic : Section.Topics)
+//        {
+//            // Create a node for the Topic
+//            ANodeActorBase* TopicNode = CreateNode(Topic.Title, "", CalculateTopicPosition(TopicIndex, TotalNumberOfTopics) + StartPosition, true);
+//            TopicNode->ParentTopic = nullptr;
+//
+//            TopicNode->SetNodeTextFontColor(TopicFontColor);  // Set font color for topic
+//            NodeActors.Add(TopicNode);
+//
+//
+//            // Create a node for each Subtopic
+//            int32 SubtopicIndex = 0;
+//            for (const FSubtopic& Subtopic : Topic.Subtopics)
+//            {
+//                ANodeActorBase* SubtopicNode = CreateNode(Subtopic.Title, Subtopic.Content, CalculateSubTopicPosition(TopicIndex, SubtopicIndex, Topic.Subtopics.Num(), TotalNumberOfTopics) + StartPosition, false);
+//                SubtopicNode->ParentTopic = TopicNode;
+//
+//                SubtopicNode->SetNodeTextFontColor(SubtopicFontColor);  // Set font color for subtopic
+//
+//                NodeActors.Add(SubtopicNode);
+//
+//                CreateEdge(TopicNode, SubtopicNode);
+//                //CreateEdgeToSurface(TopicNode, SubtopicNode);
+//
+//                SubtopicIndex++;
+//            }
+//
+//            TopicIndex++;
+//        }
+//    }
+//}
 
 
 // Create a node

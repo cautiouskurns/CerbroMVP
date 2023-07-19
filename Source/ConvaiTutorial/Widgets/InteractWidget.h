@@ -28,6 +28,23 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Interact Widget")
 	void UpdateText(const FString& NewText, const FString& NewTextTitle);
 
+
+	UFUNCTION(BlueprintCallable, Category = "Interact Widget")
+	void PopulateFieldComboBox(UComboBoxString* ComboBox);
+
+	UFUNCTION(BlueprintCallable, Category = "Interact Widget")
+	void PopulateAreaComboBox(UComboBoxString* ComboBox, const FString& SelectedField);
+
+	UFUNCTION(BlueprintCallable, Category = "Interact Widget")
+	void PopulateSubjectGroupComboBox(UComboBoxString* ComboBox, const FString& SelectedArea);
+
+	UFUNCTION(BlueprintCallable, Category = "Interact Widget")
+	void PopulateSubjectComboBox(UComboBoxString* ComboBox, const FString& SelectedSubjectGroup);
+
+	UFUNCTION(BlueprintCallable, Category = "Interact Widget")
+	void PopulateSectionComboBox(UComboBoxString* ComboBox, const FString& SelectedSubject);
+
+
 	UPROPERTY(BlueprintReadWrite, Category = "Widgets")
 	UTestWidget* TestWidgetInstance;
 	
