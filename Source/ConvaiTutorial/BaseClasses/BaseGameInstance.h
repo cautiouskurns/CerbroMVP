@@ -22,6 +22,18 @@
 
 #include "BaseGameInstance.generated.h"
 
+UENUM(BlueprintType)
+enum class EStructLevelJSON : uint8
+{
+	EL_Field,
+	EL_Area,
+	EL_SubjectGroup,
+	EL_Subject,
+	EL_Section,
+	EL_Topic,
+	EL_Subtopic
+};
+
 
 class FJsonObject;
 
@@ -445,13 +457,30 @@ public:
 
 	UAssessmentMetricsCalculator* AssessmentMetricsCalculatorGlobal;
 
-	
-
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText);
 
+
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	FSubjectStruct LoadJsonFromFile(FString FilePath);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void LoadJsonArrayFromFile(FString FilePath, EStructLevelJSON StructLevel, const FString& ParentName);
+
+
+
+	FFieldStruct* FindFieldByName(const FString& FieldName);
+
+	FAreaStruct* FindAreaByName(const FString& AreaName);
+
+	FSubjectGroupStruct* FindSubjectGroupByName(const FString& SubjectGroupName);
+
+	FSubjectStruct* FindSubjectByName(const FString& SubjectName);
+
+	FSectionStruct* FindSectionByName(const FString& SectionName);
+
+	FTopic* FindTopicByName(const FString& TopicName);
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
 	UDataProvider* DataProvider;

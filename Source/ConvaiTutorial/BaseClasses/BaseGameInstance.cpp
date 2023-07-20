@@ -384,4 +384,228 @@ FSubjectStruct UBaseGameInstance::LoadJsonFromFile(FString FilePath)
 
 
 
+void UBaseGameInstance::LoadJsonArrayFromFile(FString FilePath, EStructLevelJSON StructLevel, const FString& ParentName)
+{
+    FString JsonContent;
+    if (!FFileHelper::LoadFileToString(JsonContent, *FilePath))
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
+        return;
+    }
 
+    TArray<TSharedPtr<FJsonValue>> JsonArray;
+    TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(JsonContent);
+
+    if (!FJsonSerializer::Deserialize(Reader, JsonArray) || JsonArray.Num() <= 0)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to parse the JSON in file: %s"), *FilePath);
+        return;
+    }
+
+    switch (StructLevel)
+    {
+        case EStructLevelJSON::EL_Area:
+        {
+            TArray<FAreaStruct> LoadedStructs;
+            if (FJsonObjectConverter::JsonArrayStringToUStruct(JsonContent, &LoadedStructs, 0, 0))
+            {
+                FFieldStruct* ParentField = FindFieldByName(ParentName);
+                if (ParentField)
+                {
+                    ParentField->Areas.Append(LoadedStructs);
+                }
+            }
+            break;
+        }
+        case EStructLevelJSON::EL_SubjectGroup:
+        {
+            TArray<FSubjectGroupStruct> LoadedStructs;
+            if (FJsonObjectConverter::JsonArrayStringToUStruct(JsonContent, &LoadedStructs, 0, 0))
+            {
+                FAreaStruct* ParentArea = FindAreaByName(ParentName);
+                if (ParentArea)
+                {
+                    ParentArea->SubjectGroups.Append(LoadedStructs);
+                }
+            }
+            break;
+        }
+        case EStructLevelJSON::EL_Subject:
+        {
+            TArray<FSubjectStruct> LoadedStructs;
+            if (FJsonObjectConverter::JsonArrayStringToUStruct(JsonContent, &LoadedStructs, 0, 0))
+            {
+                FSubjectGroupStruct* ParentSubjectGroup = FindSubjectGroupByName(ParentName);
+                if (ParentSubjectGroup)
+                {
+                    ParentSubjectGroup->Subjects.Append(LoadedStructs);
+                }
+            }
+            break;
+        }
+        case EStructLevelJSON::EL_Section:
+        {
+            TArray<FSectionStruct> LoadedStructs;
+            if (FJsonObjectConverter::JsonArrayStringToUStruct(JsonContent, &LoadedStructs, 0, 0))
+            {
+                FSubjectStruct* ParentSubject = FindSubjectByName(ParentName);
+                if (ParentSubject)
+                {
+                    ParentSubject->SubjectDetailsArray.Append(LoadedStructs);
+                }
+            }
+            break;
+        }
+        case EStructLevelJSON::EL_Topic:
+        {
+            TArray<FTopic> LoadedStructs;
+            if (FJsonObjectConverter::JsonArrayStringToUStruct(JsonContent, &LoadedStructs, 0, 0))
+            {
+                FSectionStruct* ParentSection = FindSectionByName(ParentName);
+                if (ParentSection)
+                {
+                    ParentSection->Topics.Append(LoadedStructs);
+                }
+            }
+            break;
+        }
+        case EStructLevelJSON::EL_Subtopic:
+        {
+            TArray<FSubtopic> LoadedStructs;
+            if (FJsonObjectConverter::JsonArrayStringToUStruct(JsonContent, &LoadedStructs, 0, 0))
+            {
+                FTopic* ParentSection = FindTopicByName(ParentName);
+                if (ParentSection)
+                {
+                    ParentSection->Subtopics.Append(LoadedStructs);
+                }
+            }
+            break;
+        }
+    }
+}
+
+
+
+FFieldStruct* UBaseGameInstance::FindFieldByName(const FString& FieldName)
+{
+    for (auto& Field : FieldDataArray)
+    {
+        if (Field.FieldName == FieldName)
+        {
+            return &Field;
+        }
+    }
+
+    return nullptr;
+}
+
+FAreaStruct* UBaseGameInstance::FindAreaByName(const FString& AreaName)
+{
+    for (auto& Field : FieldDataArray)
+    {
+        for (auto& Area : Field.Areas)
+        {
+            if (Area.AreaName == AreaName)
+            {
+                return &Area;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+FSubjectGroupStruct* UBaseGameInstance::FindSubjectGroupByName(const FString& SubjectGroupName)
+{
+    for (auto& Field : FieldDataArray)
+    {
+        for (auto& Area : Field.Areas)
+        {
+            for (auto& SubjectGroup : Area.SubjectGroups)
+            {
+                if (SubjectGroup.SubjectGroupName == SubjectGroupName)
+                {
+                    return &SubjectGroup;
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+FSubjectStruct* UBaseGameInstance::FindSubjectByName(const FString& SubjectName)
+{
+    for (auto& Field : FieldDataArray)
+    {
+        for (auto& Area : Field.Areas)
+        {
+            for (auto& SubjectGroup : Area.SubjectGroups)
+            {
+                for (auto& Subject : SubjectGroup.Subjects)
+                {
+                    if (Subject.SubjectName == SubjectName)
+                    {
+                        return &Subject;
+                    }
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+FSectionStruct* UBaseGameInstance::FindSectionByName(const FString& SectionName)
+{
+    for (auto& Field : FieldDataArray)
+    {
+        for (auto& Area : Field.Areas)
+        {
+            for (auto& SubjectGroup : Area.SubjectGroups)
+            {
+                for (auto& Subject : SubjectGroup.Subjects)
+                {
+                    for (auto& Section : Subject.SubjectDetailsArray)
+                    {
+                        if (Section.SectionName == SectionName)
+                        {
+                            return &Section;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
+
+FTopic* UBaseGameInstance::FindTopicByName(const FString& TopicName)
+{
+    for (auto& Field : FieldDataArray)
+    {
+        for (auto& Area : Field.Areas)
+        {
+            for (auto& SubjectGroup : Area.SubjectGroups)
+            {
+                for (auto& Subject : SubjectGroup.Subjects)
+                {
+                    for (auto& Section : Subject.SubjectDetailsArray)
+                    {
+                        for (auto& Topic : Section.Topics)
+                        {
+                            if (Topic.Title == TopicName)
+                            {
+                                return &Topic;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return nullptr;
+}
