@@ -8,6 +8,10 @@
 #include "Engine/Engine.h"
 #include "Misc/Paths.h"
 #include "Misc/FileHelper.h"
+#include <Kismet/GameplayStatics.h>
+#include <Components/ComboBoxString.h>
+
+
 
 
 FString UImportWidget::OpenDialogForFile()
@@ -288,3 +292,513 @@ bool UImportWidget::AddSubtopicToTopic(const FString& SubjectName, const FString
     return false; // Subject, section, or topic with given name not found
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void UImportWidget::AddNewElement(EStructLevel Level, const FString& FieldName, const FString& AreaName, const FString& SubjectGroupName, 
+    const FString& SubjectName, const FString& SectionName, const FString& TopicName, const FString& SubtopicName, 
+    const FString& ElementName, const FString& ElementContent)
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetGameInstance());
+    if (GameInstance == nullptr)
+        return;
+
+    switch (Level)
+    {
+    case EStructLevel::EL_Field:
+    {
+        FFieldStruct NewField;
+        NewField.FieldName = ElementName;
+        GameInstance->FieldDataArray.Add(NewField);
+        break;
+    }
+    case EStructLevel::EL_Area:
+    {
+        for (auto& Field : GameInstance->FieldDataArray)
+        {
+            if (Field.FieldName == FieldName)
+            {
+                FAreaStruct NewArea;
+                NewArea.AreaName = ElementName;
+                Field.Areas.Add(NewArea);
+                return;
+            }
+        }
+        break;
+    }
+    case EStructLevel::EL_SubjectGroup:
+    {
+        for (auto& Field : GameInstance->FieldDataArray)
+        {
+            if (Field.FieldName == FieldName)
+            {
+                for (auto& Area : Field.Areas)
+                {
+                    if (Area.AreaName == AreaName)
+                    {
+                        FSubjectGroupStruct NewSubjectGroup;
+                        NewSubjectGroup.SubjectGroupName = ElementName;
+                        Area.SubjectGroups.Add(NewSubjectGroup);
+                        return;
+                    }
+                }
+            }
+        }
+        break;
+    }
+    case EStructLevel::EL_Subject:
+    {
+        for (auto& Field : GameInstance->FieldDataArray)
+        {
+            if (Field.FieldName == FieldName)
+            {
+                for (auto& Area : Field.Areas)
+                {
+                    if (Area.AreaName == AreaName)
+                    {
+                        for (auto& SubjectGroup : Area.SubjectGroups)
+                        {
+                            if (SubjectGroup.SubjectGroupName == SubjectGroupName)
+                            {
+                                FSubjectStruct NewSubject;
+                                NewSubject.SubjectName = ElementName;
+                                SubjectGroup.Subjects.Add(NewSubject);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    }
+    case EStructLevel::EL_Section:
+    {
+        for (auto& Field : GameInstance->FieldDataArray)
+        {
+            if (Field.FieldName == FieldName)
+            {
+                for (auto& Area : Field.Areas)
+                {
+                    if (Area.AreaName == AreaName)
+                    {
+                        for (auto& SubjectGroup : Area.SubjectGroups)
+                        {
+                            if (SubjectGroup.SubjectGroupName == SubjectGroupName)
+                            {
+                                for (auto& Subject : SubjectGroup.Subjects)
+                                {
+                                    if (Subject.SubjectName == SubjectName)
+                                    {
+                                        FSectionStruct NewSection;
+                                        NewSection.SectionName = ElementName;
+                                        Subject.SubjectDetailsArray.Add(NewSection);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    }
+    case EStructLevel::EL_Topic:
+    {
+        for (auto& Field : GameInstance->FieldDataArray)
+        {
+            if (Field.FieldName == FieldName)
+            {
+                for (auto& Area : Field.Areas)
+                {
+                    if (Area.AreaName == AreaName)
+                    {
+                        for (auto& SubjectGroup : Area.SubjectGroups)
+                        {
+                            if (SubjectGroup.SubjectGroupName == SubjectGroupName)
+                            {
+                                for (auto& Subject : SubjectGroup.Subjects)
+                                {
+                                    if (Subject.SubjectName == SubjectName)
+                                    {
+                                        for (auto& Section : Subject.SubjectDetailsArray)
+                                        {
+                                            if (Section.SectionName == SectionName)
+                                            {
+                                                FTopic NewTopic;
+                                                NewTopic.Title = ElementName;
+                                                Section.Topics.Add(NewTopic);
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    }
+    case EStructLevel::EL_Subtopic:
+    {
+        for (auto& Field : GameInstance->FieldDataArray)
+        {
+            if (Field.FieldName == FieldName)
+            {
+                for (auto& Area : Field.Areas)
+                {
+                    if (Area.AreaName == AreaName)
+                    {
+                        for (auto& SubjectGroup : Area.SubjectGroups)
+                        {
+                            if (SubjectGroup.SubjectGroupName == SubjectGroupName)
+                            {
+                                for (auto& Subject : SubjectGroup.Subjects)
+                                {
+                                    if (Subject.SubjectName == SubjectName)
+                                    {
+                                        for (auto& Section : Subject.SubjectDetailsArray)
+                                        {
+                                            if (Section.SectionName == SectionName)
+                                            {
+                                                for (auto& Topic : Section.Topics)
+                                                {
+                                                    if (Topic.Title == TopicName)
+                                                    {
+                                                        for (auto& Subtopic : Topic.Subtopics)
+                                                        {
+                                                            // If a subtopic with the given name already exists, append the new content to it
+                                                            if (Subtopic.Title == ElementName)
+                                                            {
+                                                                Subtopic.Content += ElementContent;
+                                                                return;
+                                                            }
+                                                        }
+
+                                                        // If no existing subtopic was found, create a new one
+                                                        FSubtopic NewSubtopic;
+                                                        NewSubtopic.Title = ElementName;
+                                                        NewSubtopic.Content = ElementContent;
+                                                        Topic.Subtopics.Add(NewSubtopic);
+                                                        return;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    }
+    default:
+        break;
+    }
+}
+
+
+
+
+void UImportWidget::PopulateFieldComboBox(UComboBoxString* ComboBox)
+{
+	// Get Game Instance and check if it's valid
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance || !ComboBox) return;
+
+	// Clear the combo box first
+	ComboBox->ClearOptions();
+
+	// Loop through FieldDataArray
+	for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+	{
+		// Add FieldName to combo box
+		ComboBox->AddOption(FieldData.FieldName);
+	}
+
+	// Refresh the combo box to show the new options
+	ComboBox->RefreshOptions();
+}
+
+
+
+void UImportWidget::PopulateAreaComboBox(UComboBoxString* ComboBox, const FString& SelectedField)
+{
+	// Get Game Instance and check if it's valid
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance || !ComboBox) return;
+
+	// Clear the combo box first
+	ComboBox->ClearOptions();
+
+	// Loop through FieldDataArray
+	for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+	{
+		// Only add options for the selected field
+		if (FieldData.FieldName == SelectedField)
+		{
+			// Loop through Areas in FieldData
+			for (const FAreaStruct& AreaData : FieldData.Areas)
+			{
+				// Add AreaName to combo box
+				ComboBox->AddOption(AreaData.AreaName);
+			}
+
+			// Found the selected field, no need to continue the loop
+			break;
+		}
+	}
+
+	// Refresh the combo box to show the new options
+	ComboBox->RefreshOptions();
+}
+
+
+
+void UImportWidget::PopulateSubjectGroupComboBox(UComboBoxString* ComboBox, const FString& SelectedArea)
+{
+	// Get Game Instance and check if it's valid
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance || !ComboBox) return;
+
+	// Clear the combo box first
+	ComboBox->ClearOptions();
+
+	// Loop through FieldDataArray
+	for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+	{
+		for (const FAreaStruct& AreaData : FieldData.Areas)
+		{
+			// Only add options for the selected area
+			if (AreaData.AreaName == SelectedArea)
+			{
+				// Loop through SubjectGroups in AreaData
+				for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+				{
+					// Add SubjectGroupName to combo box
+					ComboBox->AddOption(SubjectGroupData.SubjectGroupName);
+				}
+
+				// Found the selected area, no need to continue the loop
+				break;
+			}
+		}
+	}
+
+	// Refresh the combo box to show the new options
+	ComboBox->RefreshOptions();
+}
+
+
+void UImportWidget::PopulateSubjectComboBox(UComboBoxString* ComboBox, const FString& SelectedSubjectGroup)
+{
+	// Get Game Instance and check if it's valid
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance || !ComboBox) return;
+
+	// Clear the combo box first
+	ComboBox->ClearOptions();
+
+	// Loop through FieldDataArray
+	for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+	{
+		for (const FAreaStruct& AreaData : FieldData.Areas)
+		{
+			for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+			{
+				// Only add options for the selected subject group
+				if (SubjectGroupData.SubjectGroupName == SelectedSubjectGroup)
+				{
+					// Loop through Subjects in SubjectGroupData
+					for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+					{
+						// Add SubjectName to combo box
+						ComboBox->AddOption(SubjectData.SubjectName);
+					}
+
+					// Found the selected subject group, no need to continue the loop
+					break;
+				}
+			}
+		}
+	}
+
+	// Refresh the combo box to show the new options
+	ComboBox->RefreshOptions();
+}
+
+
+void UImportWidget::PopulateSectionComboBox(UComboBoxString* ComboBox, const FString& SelectedSubject)
+{
+	// Get Game Instance and check if it's valid
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance || !ComboBox) return;
+
+	// Clear the combo box first
+	ComboBox->ClearOptions();
+
+	// Loop through FieldDataArray
+	for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+	{
+		for (const FAreaStruct& AreaData : FieldData.Areas)
+		{
+			for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+			{
+				for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+				{
+					// Only add options for the selected subject
+					if (SubjectData.SubjectName == SelectedSubject)
+					{
+						// Loop through SubjectDetailsArray in SubjectData
+						for (const FSectionStruct& SectionData : SubjectData.SubjectDetailsArray)
+						{
+							// Add SectionName to combo box
+							ComboBox->AddOption(SectionData.SectionName);
+						}
+
+						// Found the selected subject, no need to continue the loop
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	// Refresh the combo box to show the new options
+	ComboBox->RefreshOptions();
+}
+
+
+void UImportWidget::PopulateTopicComboBox(UComboBoxString* ComboBox, const FString& SelectedSection)
+{
+	// Get Game Instance and check if it's valid
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance || !ComboBox) return;
+
+	// Clear the combo box first
+	ComboBox->ClearOptions();
+
+	bool bOptionAdded = false; // Variable to check if the option has been added
+
+	// Loop through FieldDataArray
+	for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+	{
+		if (bOptionAdded) break; // Break if the option has been added
+
+		for (const FAreaStruct& AreaData : FieldData.Areas)
+		{
+			if (bOptionAdded) break; // Break if the option has been added
+
+			for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+			{
+				if (bOptionAdded) break; // Break if the option has been added
+
+				for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+				{
+					if (bOptionAdded) break; // Break if the option has been added
+
+					for (const FSectionStruct& SectionData : SubjectData.SubjectDetailsArray)
+					{
+						// Only add options for the selected topic
+						if (SectionData.SectionName == SelectedSection)
+						{
+							// Loop through Topics in SectionData
+							for (const FTopic& TopicData : SectionData.Topics)
+							{
+								// Add Title to combo box
+								ComboBox->AddOption(TopicData.Title);
+							}
+
+							bOptionAdded = true; // Set the variable to true
+
+							// Found the selected topic, no need to continue the loop
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Refresh the combo box to show the new options
+	ComboBox->RefreshOptions();
+}
+
+
+void UImportWidget::PopulateSubTopicComboBox(UComboBoxString* ComboBox, const FString& SelectedTopic)
+{
+	// Get Game Instance and check if it's valid
+	UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (!GameInstance || !ComboBox) return;
+
+	// Clear the combo box first
+	ComboBox->ClearOptions();
+
+	bool bOptionAdded = false; // Variable to check if the option has been added
+
+	// Loop through FieldDataArray
+	for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+	{
+		if (bOptionAdded) break; // Break if the option has been added
+
+		for (const FAreaStruct& AreaData : FieldData.Areas)
+		{
+			if (bOptionAdded) break; // Break if the option has been added
+
+			for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+			{
+				if (bOptionAdded) break; // Break if the option has been added
+
+				for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+				{
+					if (bOptionAdded) break; // Break if the option has been added
+
+					for (const FSectionStruct& SectionData : SubjectData.SubjectDetailsArray)
+					{
+						if (bOptionAdded) break; // Break if the option has been added
+
+						for (const FTopic& TopicData : SectionData.Topics)
+						{
+							// Only add options for the selected topic
+							if (TopicData.Title == SelectedTopic)
+							{
+								// Loop through Subtopics in TopicData
+								for (const FSubtopic& SubtopicData : TopicData.Subtopics)
+								{
+									// Add Title to combo box
+									ComboBox->AddOption(SubtopicData.Title);
+								}
+
+								bOptionAdded = true; // Set the variable to true
+
+								// Found the selected topic, no need to continue the loop
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Refresh the combo box to show the new options
+	ComboBox->RefreshOptions();
+}
