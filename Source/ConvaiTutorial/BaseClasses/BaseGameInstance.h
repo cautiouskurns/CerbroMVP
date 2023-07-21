@@ -481,6 +481,9 @@ public:
 
 	FTopic* FindTopicByName(const FString& TopicName);
 
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	void LoadDataFromCSV(const FString& FilePath);
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
 	UDataProvider* DataProvider;

@@ -229,7 +229,247 @@ public:
 
 
 
+USTRUCT(BlueprintType)
+struct FQuestionInteractionData
+{
+    GENERATED_BODY()
 
+public:
 
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAsked;
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesCorrect;
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesInCorrect;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+};
+
+USTRUCT(BlueprintType)
+struct FSubtopicInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime DateLastAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FQuestionInteractionData> Questions;
+};
+
+USTRUCT(BlueprintType)
+struct FTopicInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime DateLastAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FSubtopicInteractionData> Subtopics;
+};
+
+USTRUCT(BlueprintType)
+struct FSectionInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime DateLastAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FTopicInteractionData> Topics;
+};
+
+USTRUCT(BlueprintType)
+struct FSubjectInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime DateLastAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FSectionInteractionData> Sections;
+};
+
+USTRUCT(BlueprintType)
+struct FSubjectGroupInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime DateLastAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FSubjectInteractionData> Subjects;
+};
+
+USTRUCT(BlueprintType)
+struct FAreaInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime DateLastAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FSubjectGroupInteractionData> SubjectGroups;
+};
+
+USTRUCT(BlueprintType)
+struct FFieldInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 TimesAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ProficiencyScore;
+
+    UPROPERTY(BlueprintReadWrite)
+    float LastInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    float AverageInteractionDuration;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime SpacedRepetitionNextDate;
+
+    UPROPERTY(BlueprintReadWrite)
+    FDateTime DateLastAccessed;
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FAreaInteractionData> Areas;
+};
+
+USTRUCT(BlueprintType)
+struct FUserInteractionData
+{
+    GENERATED_BODY()
+
+public:
+
+    UPROPERTY(BlueprintReadWrite)
+    TMap<FString, FFieldInteractionData> Fields;
+};
 
 

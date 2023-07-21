@@ -23,6 +23,9 @@
 #include "Misc/FileHelper.h"
 #include "Engine/DataTable.h"
 
+#include <fstream>
+#include <sstream>
+
 #include <Kismet/GameplayStatics.h>
 
 UBaseGameInstance::UBaseGameInstance()
@@ -608,4 +611,112 @@ FTopic* UBaseGameInstance::FindTopicByName(const FString& TopicName)
     }
 
     return nullptr;
+}
+
+
+
+void UBaseGameInstance::LoadDataFromCSV(const FString& FilePath)
+{
+    std::ifstream file(TCHAR_TO_UTF8(*FilePath));
+
+    std::string line;
+    // Skip headers
+    std::getline(file, line);
+
+    while (std::getline(file, line))
+    {
+        std::istringstream iss(line);
+        std::string token;
+
+        FFieldStruct field;
+        FAreaStruct area;
+        FSubjectGroupStruct subjectGroup;
+        FSubjectStruct subject;
+        FSectionStruct section;
+        FTopic topic;
+        FSubtopic subtopic;
+        FTest question;
+
+        if (std::getline(iss, token, ','))
+        {
+            field.FieldName = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            area.AreaName = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            subjectGroup.SubjectGroupName = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            subject.SubjectName = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            section.SectionName = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            topic.Title = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            subtopic.Title = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            subtopic.Content = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            question.Question = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            // Assuming answers are stored as a semicolon-separated string
+            TArray<FString> answers;
+            FString(token.c_str()).ParseIntoArray(answers, TEXT(";"));
+            question.Answers = answers;
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            question.CorrectAnswer = FString(token.c_str());
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            question.TimesTested = FCString::Atoi(*FString(token.c_str()));
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            question.TimesCorrect = FCString::Atoi(*FString(token.c_str()));
+        }
+
+        if (std::getline(iss, token, ','))
+        {
+            question.ProficiencyScore = FCString::Atof(*FString(token.c_str()));
+        }
+
+        // Construct your data structure here
+        topic.Subtopics.Add(subtopic);
+        section.Topics.Add(topic);
+        subject.SubjectDetailsArray.Add(section);
+        subjectGroup.Subjects.Add(subject);
+        area.SubjectGroups.Add(subjectGroup);
+        field.Areas.Add(area);
+        FieldDataArray.Add(field);
+    }
 }
