@@ -280,7 +280,7 @@ public:
     UPROPERTY(BlueprintReadWrite)
     FDateTime SpacedRepetitionNextDate;
 
-    UPROPERTY(BlueprintReadWrite)
+    UPROPERTY(BlueprintReadWrite) 
     FDateTime DateLastAccessed;
 
     UPROPERTY(BlueprintReadWrite)

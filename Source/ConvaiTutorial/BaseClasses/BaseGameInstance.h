@@ -8,6 +8,8 @@
 
 #include "ConvaiTutorial/DataManagement/ReadWriteJsonFile.h"
 #include "ConvaiTutorial/DataManagement/KnowledgeStructs.h"
+#include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
+#include "ConvaiTutorial/DataManagement/FieldDataManager.h"
 
 #include "ConvaiTutorial/Widgets/DirectoryHierarchyManager.h"
 #include "ConvaiTutorial/Widgets/FieldWidget.h"
@@ -21,6 +23,7 @@
 #include "Misc/FileHelper.h"
 
 #include "BaseGameInstance.generated.h"
+
 
 UENUM(BlueprintType)
 enum class EStructLevelJSON : uint8
@@ -357,6 +360,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	TArray<FSectionStruct> SectionDataArray;
 
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Test Structs")
+	TArray<FTopicDataTestStruct> TopicTestDataArray;
 
 
 
