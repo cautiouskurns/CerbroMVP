@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "ConvaiTutorial/DataManagement/ReadWriteJsonFile.h"
+#include "ConvaiTutorial/DataManagement/FieldDataManager.h"
 
 #include "ConvaiTutorial/Widgets/SubTopicWidget.h"
 

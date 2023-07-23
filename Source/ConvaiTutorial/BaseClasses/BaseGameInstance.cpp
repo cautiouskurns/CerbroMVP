@@ -41,7 +41,11 @@ void UBaseGameInstance::Init()
 
     UWorld* World = GetWorld();  // Assuming this is called within an actor or component
 
-      
+    // Construct UAssessmentMetricsCalculator and pass in UserInteractionDataManager
+    AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>(this);
+    AssessmentMetricsCalculator->SetUserInteractionDataManager(UserInteractionDataManager);
+
+
     // Create an instance of UDataProvider
     DataProvider = NewObject<UDataProvider>(this);
 
@@ -53,11 +57,21 @@ void UBaseGameInstance::Init()
 }
 
 
-void UBaseGameInstance::InitializeSubjectDataArray()
+void UBaseGameInstance::InitializeDataManagers()
 {
+    // Construct FieldDataManager and UserInteractionDataManager
+    FieldDataManager = NewObject<UFieldDataManager>(this);
+    UserInteractionDataManager = NewObject<UUserInteractionDataManager>(this);
 
+    // Initialize UserInteractions
+    UserInteractionDataManager->InitializeUserInteractions(FieldDataArray);
+
+    // Register the observer
+    FieldDataManager->RegisterObserver(UserInteractionDataManager);
+
+    // Construct AssessmentMetricsCalculator
+    //AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>(this, UserInteractionDataManager);
 }
-
 
 void UBaseGameInstance::PopulateFieldDataArrayFromDataTable(UDataTable* DataTable)
 {
@@ -259,19 +273,19 @@ void UBaseGameInstance::LoadGameData()
 
 int32 UBaseGameInstance::UpdateRandomQuestionTimesTested(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex)
 {
-    UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+    //UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
     return AssessmentMetricsCalculator->UpdateRandomQuestionTimesTested(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionIndex, SubjectDataArray);
 }
 
 int32 UBaseGameInstance::UpdateTimesCorrect(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, int32 QuestionIndex, const FString& SelectedAnswer)
 {
-    UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+   // UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
     return AssessmentMetricsCalculator->UpdateTimesCorrect(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionIndex, SelectedAnswer, SubjectDataArray);
 }
 
 int32 UBaseGameInstance::CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle)
 {
-    UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+    //UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
     return AssessmentMetricsCalculator->CalculateTimesAskedForSubtopicIR(SubtopicTitle, FieldDataArray);
 }
 
@@ -283,14 +297,14 @@ int32 UBaseGameInstance::CalculateTimesAskedForSubtopicIR(const FString& Subtopi
 
 int32 UBaseGameInstance::CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle)
 {
-	UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+	//UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
 	return AssessmentMetricsCalculator->CalculateTimesCorrectForSubtopicIR(SubtopicTitle, FieldDataArray);
 }
 
 
 FTest UBaseGameInstance::UpdateTimesTestedAndCorrectForQuestion(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, const FString& SelectedAnswer)
 {
-    UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
+    //UAssessmentMetricsCalculator* AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>();
     return AssessmentMetricsCalculator->UpdateTimesTestedAndCorrectForQuestion( SubjectIndex,  SectionIndex,  TopicIndex,  SubtopicIndex,  QuestionText,  SelectedAnswer, SubjectDataArray);
 }
 
@@ -298,35 +312,28 @@ FTest UBaseGameInstance::UpdateTimesTestedAndCorrectForQuestion(int32 SubjectInd
 
 FString UBaseGameInstance::SubmitAnswer(const FString& AnswerText)
 {
-    if (AssessmentMetricsCalculatorGlobal == nullptr)
-    {
-        AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
-    }
-    AssessmentMetricsCalculatorGlobal->SubmitAnswer(AnswerText);
+    //if (AssessmentMetricsCalculatorGlobal == nullptr)
+    //{
+    //    AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
+    //}
+    //AssessmentMetricsCalculatorGlobal->SubmitAnswer(AnswerText);
+
+    AssessmentMetricsCalculator->SubmitAnswer(AnswerText);
 
     return AnswerText;
 }
 
 FTest UBaseGameInstance::UpdateAnswerStatus(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
 {
-    if (AssessmentMetricsCalculatorGlobal == nullptr)
+    /*if (AssessmentMetricsCalculatorGlobal == nullptr)
     {
         AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
     }
     return AssessmentMetricsCalculatorGlobal->UpdateAnswerStatus(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, FieldDataArray);
+*/
+    return AssessmentMetricsCalculator->UpdateAnswerStatus(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, FieldDataArray);
+
 }
-
-
-
-//FTest UBaseGameInstance::UpdateAnswerStatus(int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)
-//{
-//    if (AssessmentMetricsCalculatorGlobal == nullptr)
-//    {
-//        AssessmentMetricsCalculatorGlobal = NewObject<UAssessmentMetricsCalculator>();
-//    }
-//    return AssessmentMetricsCalculatorGlobal->UpdateAnswerStatus(SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, SubjectDataArray);
-//
-//}
 
 
 int32 UBaseGameInstance::GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText)

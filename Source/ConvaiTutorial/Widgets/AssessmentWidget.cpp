@@ -736,35 +736,6 @@ TArray<FLinearColor> UAssessmentWidget::ColorCodeAnswers(const FString& Submitte
 	return AnswerColors;
 }
 
-//void UAssessmentWidget::ColorCodeAnswers(const FString& SubmittedAnswer, const FString& CorrectAnswer, const TArray<FString>& PotentialAnswers)
-//{
-//	for (int32 i = 0; i < PotentialAnswers.Num(); ++i)
-//	{
-//		if (PotentialAnswers[i] == SubmittedAnswer)
-//		{
-//			if (PotentialAnswers[i] == CorrectAnswer)
-//			{
-//				// This is the submitted answer and it's correct. Color it green.
-//				AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::Green));
-//			}
-//			else
-//			{
-//				// This is the submitted answer but it's incorrect. Color it red.
-//				AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::Red));
-//			}
-//		}
-//		else if (PotentialAnswers[i] == CorrectAnswer)
-//		{
-//			// This is the correct answer, but it wasn't the one submitted. Color it green.
-//			AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::Green));
-//		}
-//		else
-//		{
-//			// This answer was neither submitted nor correct. Set it to its default color.
-//			AnswerButtons[i]->WidgetStyle.SetBackgroundColor(FSlateColor(FLinearColor::White));
-//		}
-//	}
-//}
 
 
 

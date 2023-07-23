@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "ConvaiTutorial/BaseClasses/BaseGameInstance.h"
+#include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
 
 #include "ConvaiTutorial/DataManagement/ReadWriteJsonFile.h"
 
@@ -30,11 +31,17 @@ public:
 		// Initialize GameInstance or other properties here if necessary
 	}
 
+
+
+
 	void SetGameInstance(UBaseGameInstance* InGameInstance)
 	{
 		GameInstance = InGameInstance;
 	}
 
+
+
+	UAssessmentMetricsCalculator(UObject* ObjectInitializer, UUserInteractionDataManager* manager);
 
 	// Calculate total times a question has been asked in a set of questions
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
@@ -162,6 +169,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray);
+
+	void SetUserInteractionDataManager(UUserInteractionDataManager* manager);
+
+	UUserInteractionDataManager* UserInteractionDataManager;
 
 	private:
 		FString SubmittedAnswer;

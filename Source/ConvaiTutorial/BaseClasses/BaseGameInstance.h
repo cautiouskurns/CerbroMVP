@@ -342,6 +342,10 @@ public:
 
 	virtual void Init() override;
 
+	// Declare a pointer to UAssessmentMetricsCalculator
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
+
 	TArray<FFieldStruct> Fields;
 
 
@@ -365,9 +369,17 @@ public:
 	TArray<FTopicDataTestStruct> TopicTestDataArray;
 
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Test Structs")
+	UFieldDataManager* FieldDataManager;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Test Structs")
+	UUserInteractionDataManager* UserInteractionDataManager;
+
+	//UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Test Structs")
+	//UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
 
 	UFUNCTION(BlueprintCallable, Category = "Data")
-	void InitializeSubjectDataArray();
+	void InitializeDataManagers();
 
 	UFUNCTION(BlueprintCallable, Category = "YourCategory")
 	void PopulateFieldDataArrayFromDataTable(UDataTable* DataTable);

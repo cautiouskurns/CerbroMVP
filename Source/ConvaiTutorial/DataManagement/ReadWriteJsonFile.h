@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 
+#include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
+
+
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Json.h"
 #include "JsonObjectConverter.h"
