@@ -405,7 +405,7 @@ FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 FieldIndex, int32 A
             }
 
             // Here we update the QuestionInteractionData
-            //UserInteractionDataManager->UpdateQuestionInteractionData(FieldName, AreaName, SubjectGroupName, SubjectName, SectionName, TopicName, SubtopicName, QuestionText, SubmittedAnswer == Question.CorrectAnswer);
+            UserInteractionDataManager->UpdateQuestionInteractionData(FieldName, AreaName, SubjectGroupName, SubjectName, SectionName, TopicName, SubtopicName, QuestionText, SubmittedAnswer == Question.CorrectAnswer);
 
             return Question;
         }
@@ -417,193 +417,197 @@ FTest UAssessmentMetricsCalculator::UpdateAnswerStatus(int32 FieldIndex, int32 A
 
 
 
-int32 UAssessmentMetricsCalculator::GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
-{
-    if (!FieldDataArray.IsValidIndex(FieldIndex)) return -1;
-    FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
-    if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return -1;
-    FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
-    if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return -1;
-    FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
-    if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return -1;
-    FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
-    if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return -1;
-    FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
-    if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return -1;
-    FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
-    if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return -1;
-    FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
-    for (FTest& Question : SelectedSubtopic.Questions)
-    {
-        if (Question.Question == QuestionText)
-        {
-            return Question.TimesTested;
-        }
-    }
-    return -1; // Return -1 if no question with the given text is found
-}
-
 //int32 UAssessmentMetricsCalculator::GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
 //{
 //    if (!FieldDataArray.IsValidIndex(FieldIndex)) return -1;
 //    FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
-//    FString FieldNameStr = SelectedField.FieldName;
-//
 //    if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return -1;
 //    FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
-//    FString AreaNameStr = SelectedArea.AreaName;
-//
 //    if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return -1;
 //    FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
-//    FString SubjectGroupNameStr = SelectedSubjectGroup.SubjectGroupName;
-//
 //    if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return -1;
 //    FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
-//    FString SubjectNameStr = SelectedSubject.SubjectName;
-//
 //    if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return -1;
 //    FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
-//    FString SectionNameStr = SelectedSection.SectionName;
-//
 //    if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return -1;
 //    FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
-//    FString TopicNameStr = SelectedTopic.Title;
-//
 //    if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return -1;
 //    FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
-//    FString SubtopicNameStr = SelectedSubtopic.Title;
-//
-//    FFieldInteractionData* FieldInteractionData = UserInteractionDataManager->UserInteractions.Fields.Find(FieldNameStr);
-//    if (FieldInteractionData)
+//    for (FTest& Question : SelectedSubtopic.Questions)
 //    {
-//        FAreaInteractionData* AreaInteractionData = FieldInteractionData->Areas.Find(AreaNameStr);
-//        if (AreaInteractionData)
+//        if (Question.Question == QuestionText)
 //        {
-//            FSubjectGroupInteractionData* SubjectGroupInteractionData = AreaInteractionData->SubjectGroups.Find(SubjectGroupNameStr);
-//            if (SubjectGroupInteractionData)
-//            {
-//                FSubjectInteractionData* SubjectInteractionData = SubjectGroupInteractionData->Subjects.Find(SubjectNameStr);
-//                if (SubjectInteractionData)
-//                {
-//                    FSectionInteractionData* SectionInteractionData = SubjectInteractionData->Sections.Find(SectionNameStr);
-//                    if (SectionInteractionData)
-//                    {
-//                        FTopicInteractionData* TopicInteractionData = SectionInteractionData->Topics.Find(TopicNameStr);
-//                        if (TopicInteractionData)
-//                        {
-//                            FSubtopicInteractionData* SubtopicInteractionData = TopicInteractionData->Subtopics.Find(SubtopicNameStr);
-//                            if (SubtopicInteractionData)
-//                            {
-//                                FQuestionInteractionData* QuestionInteractionData = SubtopicInteractionData->Questions.Find(QuestionText);
-//                                if (QuestionInteractionData)
-//                                {
-//                                    return QuestionInteractionData->TimesAsked;
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+//            return Question.TimesTested;
 //        }
 //    }
-//
 //    return -1; // Return -1 if no question with the given text is found
 //}
 
-
-
-int32 UAssessmentMetricsCalculator::GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
+int32 UAssessmentMetricsCalculator::GetTimesTestedForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
 {
     if (!FieldDataArray.IsValidIndex(FieldIndex)) return -1;
     FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
+    FString FieldNameStr = SelectedField.FieldName;
+
     if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return -1;
     FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
+    FString AreaNameStr = SelectedArea.AreaName;
+
     if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return -1;
     FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
+    FString SubjectGroupNameStr = SelectedSubjectGroup.SubjectGroupName;
+
     if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return -1;
     FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
+    FString SubjectNameStr = SelectedSubject.SubjectName;
+
     if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return -1;
     FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
+    FString SectionNameStr = SelectedSection.SectionName;
+
     if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return -1;
     FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
+    FString TopicNameStr = SelectedTopic.Title;
+
     if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return -1;
     FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
-    for (FTest& Question : SelectedSubtopic.Questions)
+    FString SubtopicNameStr = SelectedSubtopic.Title;
+
+    FFieldInteractionData* FieldInteractionData = UserInteractionDataManager->UserInteractions.Fields.Find(FieldNameStr);
+    if (FieldInteractionData)
     {
-        if (Question.Question == QuestionText)
+        FAreaInteractionData* AreaInteractionData = FieldInteractionData->Areas.Find(AreaNameStr);
+        if (AreaInteractionData)
         {
-            return Question.TimesCorrect;
+            FSubjectGroupInteractionData* SubjectGroupInteractionData = AreaInteractionData->SubjectGroups.Find(SubjectGroupNameStr);
+            if (SubjectGroupInteractionData)
+            {
+                FSubjectInteractionData* SubjectInteractionData = SubjectGroupInteractionData->Subjects.Find(SubjectNameStr);
+                if (SubjectInteractionData)
+                {
+                    FSectionInteractionData* SectionInteractionData = SubjectInteractionData->Sections.Find(SectionNameStr);
+                    if (SectionInteractionData)
+                    {
+                        FTopicInteractionData* TopicInteractionData = SectionInteractionData->Topics.Find(TopicNameStr);
+                        if (TopicInteractionData)
+                        {
+                            FSubtopicInteractionData* SubtopicInteractionData = TopicInteractionData->Subtopics.Find(SubtopicNameStr);
+                            if (SubtopicInteractionData)
+                            {
+                                FQuestionInteractionData* QuestionInteractionData = SubtopicInteractionData->Questions.Find(QuestionText);
+                                if (QuestionInteractionData)
+                                {
+                                    UE_LOG(LogTemp, Warning, TEXT("Getting TimesTested count for question: %s. Count: %d"), *QuestionText, QuestionInteractionData->TimesAsked);
+
+                                    return QuestionInteractionData->TimesAsked;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
+
     return -1; // Return -1 if no question with the given text is found
 }
+
+
 
 //int32 UAssessmentMetricsCalculator::GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
 //{
 //    if (!FieldDataArray.IsValidIndex(FieldIndex)) return -1;
 //    FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
-//    FString FieldNameStr = SelectedField.FieldName;
-//
 //    if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return -1;
 //    FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
-//    FString AreaNameStr = SelectedArea.AreaName;
-//
 //    if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return -1;
 //    FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
-//    FString SubjectGroupNameStr = SelectedSubjectGroup.SubjectGroupName;
-//
 //    if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return -1;
 //    FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
-//    FString SubjectNameStr = SelectedSubject.SubjectName;
-//
 //    if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return -1;
 //    FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
-//    FString SectionNameStr = SelectedSection.SectionName;
-//
 //    if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return -1;
 //    FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
-//    FString TopicNameStr = SelectedTopic.Title;
-//
 //    if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return -1;
 //    FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
-//    FString SubtopicNameStr = SelectedSubtopic.Title;
-//
-//    FFieldInteractionData* FieldInteractionData = UserInteractionDataManager->UserInteractions.Fields.Find(FieldNameStr);
-//    if (FieldInteractionData)
+//    for (FTest& Question : SelectedSubtopic.Questions)
 //    {
-//        FAreaInteractionData* AreaInteractionData = FieldInteractionData->Areas.Find(AreaNameStr);
-//        if (AreaInteractionData)
+//        if (Question.Question == QuestionText)
 //        {
-//            FSubjectGroupInteractionData* SubjectGroupInteractionData = AreaInteractionData->SubjectGroups.Find(SubjectGroupNameStr);
-//            if (SubjectGroupInteractionData)
-//            {
-//                FSubjectInteractionData* SubjectInteractionData = SubjectGroupInteractionData->Subjects.Find(SubjectNameStr);
-//                if (SubjectInteractionData)
-//                {
-//                    FSectionInteractionData* SectionInteractionData = SubjectInteractionData->Sections.Find(SectionNameStr);
-//                    if (SectionInteractionData)
-//                    {
-//                        FTopicInteractionData* TopicInteractionData = SectionInteractionData->Topics.Find(TopicNameStr);
-//                        if (TopicInteractionData)
-//                        {
-//                            FSubtopicInteractionData* SubtopicInteractionData = TopicInteractionData->Subtopics.Find(SubtopicNameStr);
-//                            if (SubtopicInteractionData)
-//                            {
-//                                FQuestionInteractionData* QuestionInteractionData = SubtopicInteractionData->Questions.Find(QuestionText);
-//                                if (QuestionInteractionData)
-//                                {
-//                                    return QuestionInteractionData->TimesCorrect;
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+//            return Question.TimesCorrect;
 //        }
 //    }
-//
 //    return -1; // Return -1 if no question with the given text is found
 //}
+
+int32 UAssessmentMetricsCalculator::GetTimesCorrectForQuestion(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, TArray<FFieldStruct>& FieldDataArray)
+{
+    if (!FieldDataArray.IsValidIndex(FieldIndex)) return -1;
+    FFieldStruct& SelectedField = FieldDataArray[FieldIndex];
+    FString FieldNameStr = SelectedField.FieldName;
+
+    if (!SelectedField.Areas.IsValidIndex(AreaIndex)) return -1;
+    FAreaStruct& SelectedArea = SelectedField.Areas[AreaIndex];
+    FString AreaNameStr = SelectedArea.AreaName;
+
+    if (!SelectedArea.SubjectGroups.IsValidIndex(SubjectGroupIndex)) return -1;
+    FSubjectGroupStruct& SelectedSubjectGroup = SelectedArea.SubjectGroups[SubjectGroupIndex];
+    FString SubjectGroupNameStr = SelectedSubjectGroup.SubjectGroupName;
+
+    if (!SelectedSubjectGroup.Subjects.IsValidIndex(SubjectIndex)) return -1;
+    FSubjectStruct& SelectedSubject = SelectedSubjectGroup.Subjects[SubjectIndex];
+    FString SubjectNameStr = SelectedSubject.SubjectName;
+
+    if (!SelectedSubject.SubjectDetailsArray.IsValidIndex(SectionIndex)) return -1;
+    FSectionStruct& SelectedSection = SelectedSubject.SubjectDetailsArray[SectionIndex];
+    FString SectionNameStr = SelectedSection.SectionName;
+
+    if (!SelectedSection.Topics.IsValidIndex(TopicIndex)) return -1;
+    FTopic& SelectedTopic = SelectedSection.Topics[TopicIndex];
+    FString TopicNameStr = SelectedTopic.Title;
+
+    if (!SelectedTopic.Subtopics.IsValidIndex(SubtopicIndex)) return -1;
+    FSubtopic& SelectedSubtopic = SelectedTopic.Subtopics[SubtopicIndex];
+    FString SubtopicNameStr = SelectedSubtopic.Title;
+
+    FFieldInteractionData* FieldInteractionData = UserInteractionDataManager->UserInteractions.Fields.Find(FieldNameStr);
+    if (FieldInteractionData)
+    {
+        FAreaInteractionData* AreaInteractionData = FieldInteractionData->Areas.Find(AreaNameStr);
+        if (AreaInteractionData)
+        {
+            FSubjectGroupInteractionData* SubjectGroupInteractionData = AreaInteractionData->SubjectGroups.Find(SubjectGroupNameStr);
+            if (SubjectGroupInteractionData)
+            {
+                FSubjectInteractionData* SubjectInteractionData = SubjectGroupInteractionData->Subjects.Find(SubjectNameStr);
+                if (SubjectInteractionData)
+                {
+                    FSectionInteractionData* SectionInteractionData = SubjectInteractionData->Sections.Find(SectionNameStr);
+                    if (SectionInteractionData)
+                    {
+                        FTopicInteractionData* TopicInteractionData = SectionInteractionData->Topics.Find(TopicNameStr);
+                        if (TopicInteractionData)
+                        {
+                            FSubtopicInteractionData* SubtopicInteractionData = TopicInteractionData->Subtopics.Find(SubtopicNameStr);
+                            if (SubtopicInteractionData)
+                            {
+                                FQuestionInteractionData* QuestionInteractionData = SubtopicInteractionData->Questions.Find(QuestionText);
+                                if (QuestionInteractionData)
+                                {
+                                    UE_LOG(LogTemp, Warning, TEXT("Getting TimesCorrect count for question: %s. Count: %d"), *QuestionText, QuestionInteractionData->TimesCorrect);
+
+                                    return QuestionInteractionData->TimesCorrect;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return -1; // Return -1 if no question with the given text is found
+}
 
 
 void UAssessmentMetricsCalculator::SetUserInteractionDataManager(UUserInteractionDataManager* manager)

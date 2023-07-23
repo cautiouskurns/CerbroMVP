@@ -278,6 +278,8 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void AddTopic(FName TopicName);
 
+    FString ToString() const;
+
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Node Spawning")
     TArray<FTopicDataTestStruct> Topics;

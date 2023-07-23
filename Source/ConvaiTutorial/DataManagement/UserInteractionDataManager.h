@@ -284,16 +284,9 @@ class CONVAITUTORIAL_API UUserInteractionDataManager : public UObject
 
 public:
 
- //UFUNCTION(BlueprintCallable, Category = "Topic")
- //void UpdateAccess(FName TopicName);
-
  UFUNCTION(BlueprintCallable, Category = "Topic")
  void UpdateAccess(FName FieldName, FName AreaName = "", FName SubjectGroupName = "", FName SubjectName = "", FName SectionName = "", FName TopicName = "");
 
-
-
-// UFUNCTION(BlueprintCallable, Category = "Topic")
-//int32 GetTimesAccessed(FName TopicName);
 
  UFUNCTION(BlueprintCallable, Category = "Topic")
  int32 GetTimesAccessed(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName, FName SectionName, FName TopicName);
@@ -301,8 +294,7 @@ public:
  //UFUNCTION(BlueprintCallable, Category = "Topic")
  //void UpdateQuestionMetrics(int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex, int32 SubjectIndex, int32 SectionIndex, int32 TopicIndex, int32 SubtopicIndex, const FString& QuestionText, bool Correct);
 
- //UFUNCTION(BlueprintCallable, Category = "Topic")
- //void AddInteraction(FName TopicName);
+
 
 
 
@@ -344,6 +336,8 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void InitializeQuestion(const FTest& Question, FQuestionInteractionData& QuestionInteractionData);
+
+    FString ToString() const;
 
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void UpdateQuestionInteractionData(FString FieldName, FString AreaName, FString SubjectGroupName, FString SubjectName, FString SectionName, FString TopicName, FString SubtopicName, FString QuestionText, bool IsAnswerCorrect);

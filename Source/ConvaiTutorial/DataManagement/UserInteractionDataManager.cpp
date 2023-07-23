@@ -2,21 +2,12 @@
 
 
 #include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
+
+#include <ConvaiTutorial/BaseClasses/BaseGameInstance.h>
+
 #include "ConvaiTutorial/DataManagement/FieldDataManager.h"
 
 
-
-//void UUserInteractionDataManager::UpdateAccess(FName TopicName)
-//{
-//    // Find the corresponding user interaction
-//    int32 InteractionIndex = UserInteractions.IndexOfByPredicate([&](const FUserInteractionData& Interaction) { return Interaction.TopicName == TopicName; });
-//
-//    if (InteractionIndex != INDEX_NONE)
-//    {
-//        // Increase the number of times the topic was accessed
-//        UserInteractions[InteractionIndex].TimesAccessed++;
-//    }
-//}
 
 void UUserInteractionDataManager::UpdateAccess(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName, FName SectionName, FName TopicName)
 {
@@ -65,12 +56,16 @@ void UUserInteractionDataManager::UpdateAccess(FName FieldName, FName AreaName, 
                         {
                             // Increase the number of times the topic was accessed
                             TopicInteractionData->TimesAccessed++;
+                            UE_LOG(LogTemp, Warning, TEXT("Updated access for topic: %s. New count: %d"), *TopicName.ToString(), TopicInteractionData->TimesAccessed);
+
                         }
                     }
                 }
             }
         }
     }
+
+
 }
 
 void UUserInteractionDataManager::UpdateQuestionInteractionData(FString FieldName, FString AreaName, FString SubjectGroupName, FString SubjectName, FString SectionName, FString TopicName, FString SubtopicName, FString QuestionText, bool IsAnswerCorrect)
@@ -121,6 +116,9 @@ void UUserInteractionDataManager::UpdateQuestionInteractionData(FString FieldNam
                                     {
                                         // Increase the number of times the question was asked
                                         QuestionInteractionData->TimesAsked++;
+
+                                        UE_LOG(LogTemp, Warning, TEXT("Updating question interaction data for question: %s. New TimesTested count: %d"), *QuestionText, QuestionInteractionData->TimesAsked);
+
 
                                         if (IsAnswerCorrect)
                                         {
@@ -377,4 +375,12 @@ void UUserInteractionDataManager::InitializeQuestion(const FTest& Question, FQue
     QuestionInteractionData.ProficiencyScore = 0.0f;
     QuestionInteractionData.LastInteractionDuration = 0.0f;
     QuestionInteractionData.AverageInteractionDuration = 0.0f;
+}
+
+
+FString UUserInteractionDataManager::ToString() const
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+
+    return FString::Printf(TEXT("Number of Fields: %d"), GameInstance->FieldDataArray.Num());
 }

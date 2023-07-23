@@ -35,6 +35,7 @@ void UFieldDataManager::AccessTopic(FName FieldName, FName AreaName, FName Subje
     {
         // Find the topic that was accessed
         int32 TopicIndex = GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].Subjects[SubjectIndex].SubjectDetailsArray[SectionIndex].Topics.IndexOfByPredicate([&](const FTopic& Topic) { return Topic.Title == TopicName.ToString(); });
+        UE_LOG(LogTemp, Warning, TEXT("Accessing topic: %s"), *TopicName.ToString());
 
         if (TopicIndex != INDEX_NONE)
         {
@@ -45,6 +46,7 @@ void UFieldDataManager::AccessTopic(FName FieldName, FName AreaName, FName Subje
             }
         }
     }
+
 }
 
 
@@ -343,3 +345,9 @@ void UFieldDataManager::AddTopic(FName TopicName)
 }
 
 
+FString UFieldDataManager::ToString() const
+{
+    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+
+    return FString::Printf(TEXT("Number of Fields: %d"), GameInstance->FieldDataArray.Num());
+}
