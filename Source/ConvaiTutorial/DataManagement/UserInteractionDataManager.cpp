@@ -25,30 +25,35 @@ void UUserInteractionDataManager::UpdateAccess(FName FieldName, FName AreaName, 
     if (FieldInteractionData)
     {
         FieldInteractionData->TimesAccessed++;
+        FieldInteractionData->LastAccessedTime = FDateTime::UtcNow();
 
         FAreaInteractionData* AreaInteractionData = FieldInteractionData->Areas.Find(AreaNameStr);
 
         if (AreaInteractionData)
         {
             AreaInteractionData->TimesAccessed++;
+            AreaInteractionData->LastAccessedTime = FDateTime::UtcNow();
 
             FSubjectGroupInteractionData* SubjectGroupInteractionData = AreaInteractionData->SubjectGroups.Find(SubjectGroupNameStr);
 
             if (SubjectGroupInteractionData)
             {
                 SubjectGroupInteractionData->TimesAccessed++;
+                SubjectGroupInteractionData->LastAccessedTime = FDateTime::UtcNow();
 
                 FSubjectInteractionData* SubjectInteractionData = SubjectGroupInteractionData->Subjects.Find(SubjectNameStr);
 
                 if (SubjectInteractionData)
                 {
                     SubjectInteractionData->TimesAccessed++;
+                    SubjectInteractionData->LastAccessedTime = FDateTime::UtcNow();
 
                     FSectionInteractionData* SectionInteractionData = SubjectInteractionData->Sections.Find(SectionNameStr);
 
                     if (SectionInteractionData)
                     {
                         SectionInteractionData->TimesAccessed++;
+                        SectionInteractionData->LastAccessedTime = FDateTime::UtcNow();
 
                         FTopicInteractionData* TopicInteractionData = SectionInteractionData->Topics.Find(TopicNameStr);
 
@@ -56,7 +61,9 @@ void UUserInteractionDataManager::UpdateAccess(FName FieldName, FName AreaName, 
                         {
                             // Increase the number of times the topic was accessed
                             TopicInteractionData->TimesAccessed++;
-                            UE_LOG(LogTemp, Warning, TEXT("Updated access for topic: %s. New count: %d"), *TopicName.ToString(), TopicInteractionData->TimesAccessed);
+                            TopicInteractionData->LastAccessedTime = FDateTime::UtcNow();
+
+                            //UE_LOG(LogTemp, Warning, TEXT("Updated access for topic: %s. New count: %d"), *TopicName.ToString(), TopicInteractionData->TimesAccessed);
 
                         }
                     }
@@ -383,4 +390,108 @@ FString UUserInteractionDataManager::ToString() const
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
 
     return FString::Printf(TEXT("Number of Fields: %d"), GameInstance->FieldDataArray.Num());
+}
+
+
+//FQuestionInteractionData UUserInteractionDataManager::GetQuestionInteractionData(const FString& QuestionText)
+//{
+//    // Loop over all fields
+//    for (const auto& FieldPair : UserInteractions.Fields)
+//    {
+//        const FFieldInteractionData& FieldData = FieldPair.Value;
+//
+//        // Loop over all areas within the field
+//        for (const auto& AreaPair : FieldData.Areas)
+//        {
+//            const FAreaInteractionData& AreaData = AreaPair.Value;
+//
+//            // Loop over all subject groups within the area
+//            for (const auto& SubjectGroupPair : AreaData.SubjectGroups)
+//            {
+//                const FSubjectGroupInteractionData& SubjectGroupData = SubjectGroupPair.Value;
+//
+//                // Loop over all subjects within the subject group
+//                for (const auto& SubjectPair : SubjectGroupData.Subjects)
+//                {
+//                    const FSubjectInteractionData& SubjectData = SubjectPair.Value;
+//
+//                    // Loop over all sections within the subject
+//                    for (const auto& SectionPair : SubjectData.Sections)
+//                    {
+//                        const FSectionInteractionData& SectionData = SectionPair.Value;
+//
+//                        // Loop over all topics within the section
+//                        for (const auto& TopicPair : SectionData.Topics)
+//                        {
+//                            const FTopicInteractionData& TopicData = TopicPair.Value;
+//
+//                            // Loop over all subtopics within the topic
+//                            for (const auto& SubtopicPair : TopicData.Subtopics)
+//                            {
+//                                const FSubtopicInteractionData& SubtopicData = SubtopicPair.Value;
+//
+//                                // Look for the question within the subtopic
+//                                const FQuestionInteractionData* QuestionData = SubtopicData.Questions.Find(QuestionText);
+//
+//                                if (QuestionData)
+//                                {
+//                                    // We found the question, so return the associated interaction data
+//                                    return *QuestionData;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    // If we reach this point, it means we couldn't find the question
+//    // So we return an empty FQuestionInteractionData object
+//    return FQuestionInteractionData();
+//}
+
+
+
+
+const FFieldInteractionData* UUserInteractionDataManager::GetFieldInteractionData(const FString& FieldName) const
+{
+    return UserInteractions.Fields.Find(FieldName);
+}
+
+const FAreaInteractionData* UUserInteractionDataManager::GetAreaInteractionData(const FString& AreaName, const FFieldInteractionData& FieldData) const
+{
+    return FieldData.Areas.Find(AreaName);
+}
+
+const FSubjectGroupInteractionData* UUserInteractionDataManager::GetSubjectGroupInteractionData(const FString& SubjectGroupName, const FAreaInteractionData& AreaData) const
+{
+    return AreaData.SubjectGroups.Find(SubjectGroupName);
+}
+
+const FSubjectInteractionData* UUserInteractionDataManager::GetSubjectInteractionData(const FString& SubjectName, const FSubjectGroupInteractionData& SubjectGroupData) const
+{
+	return SubjectGroupData.Subjects.Find(SubjectName);
+}
+
+
+const FSectionInteractionData* UUserInteractionDataManager::GetSectionInteractionData(const FString& SectionName, const FSubjectInteractionData& SubjectData) const
+{
+	return SubjectData.Sections.Find(SectionName);
+}
+
+const FTopicInteractionData* UUserInteractionDataManager::GetTopicInteractionData(const FString& TopicName, const FSectionInteractionData& SectionData) const
+{
+	return SectionData.Topics.Find(TopicName);
+}
+
+
+const FSubtopicInteractionData* UUserInteractionDataManager::GetSubtopicInteractionData(const FString& SubtopicName, const FTopicInteractionData& TopicData) const
+{
+	return TopicData.Subtopics.Find(SubtopicName);
+}
+
+const FQuestionInteractionData* UUserInteractionDataManager::GetQuestionInteractionData(const FString& QuestionText, const FSubtopicInteractionData& SubtopicData) const
+{
+    return SubtopicData.Questions.Find(QuestionText);
 }

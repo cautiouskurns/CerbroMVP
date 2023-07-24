@@ -4,6 +4,8 @@
 #include "ResourceWidget.h"
 
 #include "ConvaiTutorial/BaseClasses/BaseGameInstance.h"
+#include "ConvaiTutorial/DataManagement/KnowledgeStructs.h"
+
 
 #include "ConvaiTutorial/DataManagement/ReadWriteJsonFile.h"
 

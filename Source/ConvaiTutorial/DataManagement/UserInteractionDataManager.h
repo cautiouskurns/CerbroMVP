@@ -43,6 +43,9 @@ public:
     float AverageInteractionDuration;
 
     UPROPERTY(BlueprintReadWrite)
+    FDateTime LastAccessedTime;
+
+    UPROPERTY(BlueprintReadWrite)
     FDateTime SpacedRepetitionNextDate;
 };
 
@@ -69,7 +72,7 @@ public:
     FDateTime SpacedRepetitionNextDate;
 
     UPROPERTY(BlueprintReadWrite)
-    FDateTime DateLastAccessed;
+    FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
     TMap<FString, FQuestionInteractionData> Questions;
@@ -98,7 +101,7 @@ public:
         FDateTime SpacedRepetitionNextDate;
 
     UPROPERTY(BlueprintReadWrite)
-        FDateTime DateLastAccessed;
+        FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
         TMap<FString, FSubtopicInteractionData> Subtopics;
@@ -127,7 +130,7 @@ public:
         FDateTime SpacedRepetitionNextDate;
 
     UPROPERTY(BlueprintReadWrite)
-        FDateTime DateLastAccessed;
+        FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
         TMap<FString, FTopicInteractionData> Topics;
@@ -156,7 +159,7 @@ public:
         FDateTime SpacedRepetitionNextDate;
 
     UPROPERTY(BlueprintReadWrite)
-        FDateTime DateLastAccessed;
+        FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
         TMap<FString, FSectionInteractionData> Sections;
@@ -185,7 +188,7 @@ public:
         FDateTime SpacedRepetitionNextDate;
 
     UPROPERTY(BlueprintReadWrite)
-        FDateTime DateLastAccessed;
+        FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
         TMap<FString, FSubjectInteractionData> Subjects;
@@ -214,7 +217,7 @@ public:
         FDateTime SpacedRepetitionNextDate;
 
     UPROPERTY(BlueprintReadWrite)
-        FDateTime DateLastAccessed;
+        FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
         TMap<FString, FSubjectGroupInteractionData> SubjectGroups;
@@ -243,7 +246,7 @@ public:
         FDateTime SpacedRepetitionNextDate;
 
     UPROPERTY(BlueprintReadWrite)
-        FDateTime DateLastAccessed;
+        FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
         TMap<FString, FAreaInteractionData> Areas;
@@ -339,6 +342,27 @@ public:
 
     FString ToString() const;
 
+    FQuestionInteractionData GetQuestionInteractionData(const FString& QuestionText);
+
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void UpdateQuestionInteractionData(FString FieldName, FString AreaName, FString SubjectGroupName, FString SubjectName, FString SectionName, FString TopicName, FString SubtopicName, FString QuestionText, bool IsAnswerCorrect);
+
+
+    const FFieldInteractionData* GetFieldInteractionData(const FString& FieldName) const;
+
+    const FAreaInteractionData* GetAreaInteractionData(const FString& AreaName, const FFieldInteractionData& FieldData) const;
+
+    const FSubjectGroupInteractionData* GetSubjectGroupInteractionData(const FString& SubjectGroupName, const FAreaInteractionData& AreaData) const;
+
+    const FSubjectInteractionData* GetSubjectInteractionData(const FString& SubjectName, const FSubjectGroupInteractionData& SubjectGroupData) const;
+
+    const FSectionInteractionData* GetSectionInteractionData(const FString& SectionName, const FSubjectInteractionData& SubjectData) const;
+
+    const FTopicInteractionData* GetTopicInteractionData(const FString& TopicName, const FSectionInteractionData& SectionData) const;
+
+    const FSubtopicInteractionData* GetSubtopicInteractionData(const FString& SubtopicName, const FTopicInteractionData& TopicData) const;
+
+    const FQuestionInteractionData* GetQuestionInteractionData(const FString& QuestionText, const FSubtopicInteractionData& SubtopicData) const;
+
+
 };

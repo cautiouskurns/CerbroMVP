@@ -5,6 +5,9 @@
 
 #include "ConvaiTutorial/DataManagement/ReadWriteJsonFile.h"
 #include "ConvaiTutorial/DataManagement/DataProvider.h"
+#include "ConvaiTutorial/DataManagement/FieldDataManager.h"
+#include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
+#include "ConvaiTutorial/ContentRecommendationManagement/ContentRecommendationManager.h"
 #include "ConvaiTutorial/DataManagement/MySaveGame.h"
 
 #include "ConvaiTutorial/MetricHandling/AssessmentMetricsCalculator.h"
@@ -44,6 +47,8 @@ void UBaseGameInstance::Init()
     // Construct UAssessmentMetricsCalculator and pass in UserInteractionDataManager
     AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>(this);
     AssessmentMetricsCalculator->SetUserInteractionDataManager(UserInteractionDataManager);
+
+    ContentRecommendationManager = NewObject<UContentRecommendationManager>(this);
 
 
     // Create an instance of UDataProvider
@@ -692,3 +697,95 @@ void UBaseGameInstance::LoadDataFromCSV(const FString& FilePath)
         FieldDataArray.Add(field);
     }
 }
+
+
+
+
+const FFieldInteractionData* UBaseGameInstance::GetFieldInteractionData(const FString& FieldName)
+{
+    return UserInteractionDataManager->GetFieldInteractionData(FieldName);
+}
+
+const FAreaInteractionData* UBaseGameInstance::GetAreaInteractionData(const FString& AreaName, const FFieldInteractionData& FieldData)
+{
+    return UserInteractionDataManager->GetAreaInteractionData(AreaName, FieldData);
+}
+
+const FSubjectGroupInteractionData* UBaseGameInstance::GetSubjectGroupInteractionData(const FString& SubjectGroupName, const FAreaInteractionData& AreaData)
+{
+	return UserInteractionDataManager->GetSubjectGroupInteractionData(SubjectGroupName, AreaData);
+}
+
+const FSubjectInteractionData* UBaseGameInstance::GetSubjectInteractionData(const FString& SubjectName, const FSubjectGroupInteractionData& SubjectGroupData)
+{
+	return UserInteractionDataManager->GetSubjectInteractionData(SubjectName, SubjectGroupData);
+}
+
+const FSectionInteractionData* UBaseGameInstance::GetSectionInteractionData(const FString& SectionName, const FSubjectInteractionData& LocalSubjectData)
+{
+	return UserInteractionDataManager->GetSectionInteractionData(SectionName, LocalSubjectData);
+}
+
+const FTopicInteractionData* UBaseGameInstance::GetTopicInteractionData(const FString& TopicName, const FSectionInteractionData& SectionData)
+{
+	return UserInteractionDataManager->GetTopicInteractionData(TopicName, SectionData);
+}
+
+const FSubtopicInteractionData* UBaseGameInstance::GetSubtopicInteractionData(const FString& SubtopicName, const FTopicInteractionData& TopicData)
+{
+	return UserInteractionDataManager->GetSubtopicInteractionData(SubtopicName, TopicData);
+}
+
+
+
+float UBaseGameInstance::CalculateProficiencyForSubTopic(const FString& SubtopicName, const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName)
+{
+    const FFieldInteractionData* FieldData = GetFieldInteractionData(FieldName);
+    if (!FieldData) return 0.0f;
+
+    const FAreaInteractionData* AreaData = GetAreaInteractionData(AreaName, *FieldData);
+    if (!AreaData) return 0.0f;
+
+    const FSubjectGroupInteractionData* SubjectGroupData = GetSubjectGroupInteractionData(SubjectGroupName, *AreaData);
+    if (!SubjectGroupData) return 0.0f;
+
+    const FSubjectInteractionData* LocalSubjectData = GetSubjectInteractionData(SubjectName, *SubjectGroupData);
+    if (!LocalSubjectData) return 0.0f;
+
+    const FSectionInteractionData* SectionData = GetSectionInteractionData(SectionName, *LocalSubjectData);
+    if (!SectionData) return 0.0f;
+
+    const FTopicInteractionData* TopicData = GetTopicInteractionData(TopicName, *SectionData);
+    if (!TopicData) return 0.0f;
+
+    const FSubtopicInteractionData* SubTopicData = GetSubtopicInteractionData(SubtopicName, *TopicData);
+    if (!SubTopicData) return 0.0f;
+
+    return ContentRecommendationManager->CalculateProficiencyForSubTopic(*SubTopicData);
+}
+
+
+float UBaseGameInstance::CalculateProficiencyForTopic(const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName)
+{
+    const FFieldInteractionData* FieldData = GetFieldInteractionData(FieldName);
+    if (!FieldData) return 0.0f;
+
+    const FAreaInteractionData* AreaData = GetAreaInteractionData(AreaName, *FieldData);
+    if (!AreaData) return 0.0f;
+
+    const FSubjectGroupInteractionData* SubjectGroupData = GetSubjectGroupInteractionData(SubjectGroupName, *AreaData);
+    if (!SubjectGroupData) return 0.0f;
+
+    const FSubjectInteractionData* LocalSubjectData = GetSubjectInteractionData(SubjectName, *SubjectGroupData);
+    if (!LocalSubjectData) return 0.0f;
+
+    const FSectionInteractionData* SectionData = GetSectionInteractionData(SectionName, *LocalSubjectData);
+    if (!SectionData) return 0.0f;
+
+    const FTopicInteractionData* TopicData = GetTopicInteractionData(TopicName, *SectionData);
+    if (!TopicData) return 0.0f;
+
+    return ContentRecommendationManager->CalculateProficiencyForTopic(*TopicData);
+}
+
+

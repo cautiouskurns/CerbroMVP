@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "ConvaiTutorial/DataManagement/KnowledgeStructs.h"
+#include "ConvaiTutorial/DataManagement/FieldDataManager.h"
 
 #include "Blueprint/UserWidget.h"
 #include <Components/Button.h>

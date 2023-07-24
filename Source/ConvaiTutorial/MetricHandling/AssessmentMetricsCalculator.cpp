@@ -614,3 +614,5 @@ void UAssessmentMetricsCalculator::SetUserInteractionDataManager(UUserInteractio
 {
     UserInteractionDataManager = manager;
 }
+
+

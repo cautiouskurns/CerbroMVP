@@ -331,6 +331,7 @@ public:
 
 class UDataProvider;
 class UAssessmentMetricsCalculator;
+class UContentRecommendationManager;
 
 UCLASS()
 class CONVAITUTORIAL_API UBaseGameInstance : public UGameInstance
@@ -345,6 +346,9 @@ public:
 	// Declare a pointer to UAssessmentMetricsCalculator
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
 	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	UContentRecommendationManager* ContentRecommendationManager;
 
 	TArray<FFieldStruct> Fields;
 
@@ -501,6 +505,35 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	void LoadDataFromCSV(const FString& FilePath);
+
+
+	const FFieldInteractionData* GetFieldInteractionData(const FString& FieldName);
+
+	const FAreaInteractionData* GetAreaInteractionData(const FString& AreaName, const FFieldInteractionData& FieldData);
+
+	const FSubjectGroupInteractionData* GetSubjectGroupInteractionData(const FString& SubjectGroupName, const FAreaInteractionData& AreaData);
+
+	const FSubjectInteractionData* GetSubjectInteractionData(const FString& SubjectName, const FSubjectGroupInteractionData& SubjectGroupData);
+
+	const FSectionInteractionData* GetSectionInteractionData(const FString& SectionName, const FSubjectInteractionData& SubjectData);
+
+	const FTopicInteractionData* GetTopicInteractionData(const FString& TopicName, const FSectionInteractionData& SectionData);
+
+	const FSubtopicInteractionData* GetSubtopicInteractionData(const FString& SubtopicName, const FTopicInteractionData& TopicData);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	float CalculateProficiencyForSubTopic(const FString& SubTopicName, const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	float CalculateProficiencyForTopic(const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName);
+
+
+	
+
+
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//float CalculateProficiencyForTopic();
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
