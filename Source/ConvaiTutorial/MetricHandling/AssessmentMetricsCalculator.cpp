@@ -93,6 +93,87 @@ int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubtopicIR(const FStri
 }
 
 
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForTopicInteract(const FString& TopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesAsked = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            if (TopicPair.Key == TopicName)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+                                    }
+                                }
+                                return TotalTimesAsked;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no topic with the given name is found
+}
+
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForTopicInteract(const FString& TopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesCorrect = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            if (TopicPair.Key == TopicName)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesCorrect += QuestionPair.Value.TimesCorrect;
+                                    }
+                                }
+                                return TotalTimesCorrect;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no topic with the given name is found
+}
+
+
+
 // Calculate total times a question has been asked in a set of questions
 int32 UAssessmentMetricsCalculator::CalculateTimesAskedForQuestionsIndividual(const TArray<FTest>& Questions)
 {

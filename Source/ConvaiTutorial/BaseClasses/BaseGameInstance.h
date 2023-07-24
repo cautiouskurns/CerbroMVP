@@ -527,6 +527,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	float CalculateProficiencyForTopic(const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName);
 
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 CalculateTimesAskedForSubtopic(const FString& SubtopicName, const FTopicInteractionData& TopicData);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 CalculateTimesAskedForTopicInteract(const FString& TopicName);
+
+	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	int32 CalculateTimesCorrectForTopicInteract(const FString& TopicName);
+
+
 
 	
 

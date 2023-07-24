@@ -452,7 +452,15 @@ FString UUserInteractionDataManager::ToString() const
 //}
 
 
+void UUserInteractionDataManager::SetUserInteractions(const FUserInteractionData& NewUserInteractions)
+{
+    UserInteractions = NewUserInteractions;
+}
 
+const FUserInteractionData& UUserInteractionDataManager::GetUserInteractions() const
+{
+    return UserInteractions;
+}
 
 const FFieldInteractionData* UUserInteractionDataManager::GetFieldInteractionData(const FString& FieldName) const
 {
@@ -494,4 +502,19 @@ const FSubtopicInteractionData* UUserInteractionDataManager::GetSubtopicInteract
 const FQuestionInteractionData* UUserInteractionDataManager::GetQuestionInteractionData(const FString& QuestionText, const FSubtopicInteractionData& SubtopicData) const
 {
     return SubtopicData.Questions.Find(QuestionText);
+}
+
+
+
+int32 UUserInteractionDataManager::CalculateTimesAskedForSubtopic(const FString& SubtopicName, const FTopicInteractionData& TopicData)
+{
+    const FSubtopicInteractionData* SubtopicData = GetSubtopicInteractionData(SubtopicName, TopicData);
+    if (!SubtopicData) return 0;
+
+    int32 TotalTimesAsked = 0;
+    for (const auto& QuestionPair : SubtopicData->Questions) {
+        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+    }
+
+    return TotalTimesAsked;
 }

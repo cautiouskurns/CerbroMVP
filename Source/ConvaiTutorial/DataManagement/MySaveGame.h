@@ -7,6 +7,7 @@
 #include "ConvaiTutorial/BaseClasses/BaseGameInstance.h"
 
 #include "ConvaiTutorial/DataManagement/KnowledgeStructs.h"
+#include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
 
 #include "Engine/DataTable.h"
 #include "GameFramework/SaveGame.h"
@@ -24,4 +25,7 @@ class CONVAITUTORIAL_API UMySaveGame : public USaveGame
 public:
 	UPROPERTY()
 	TArray<FFieldStructSaveData> FieldDataArraySaveData;
+
+	UPROPERTY()
+	FUserInteractionData UserInteractionsSaveData;
 };

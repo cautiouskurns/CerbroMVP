@@ -348,6 +348,10 @@ public:
     void UpdateQuestionInteractionData(FString FieldName, FString AreaName, FString SubjectGroupName, FString SubjectName, FString SectionName, FString TopicName, FString SubtopicName, FString QuestionText, bool IsAnswerCorrect);
 
 
+    void SetUserInteractions(const FUserInteractionData& NewUserInteractions);
+
+    const FUserInteractionData& GetUserInteractions() const;
+
     const FFieldInteractionData* GetFieldInteractionData(const FString& FieldName) const;
 
     const FAreaInteractionData* GetAreaInteractionData(const FString& AreaName, const FFieldInteractionData& FieldData) const;
@@ -363,6 +367,8 @@ public:
     const FSubtopicInteractionData* GetSubtopicInteractionData(const FString& SubtopicName, const FTopicInteractionData& TopicData) const;
 
     const FQuestionInteractionData* GetQuestionInteractionData(const FString& QuestionText, const FSubtopicInteractionData& SubtopicData) const;
+
+    int32 CalculateTimesAskedForSubtopic(const FString& SubtopicName, const FTopicInteractionData& TopicData);
 
 
 };

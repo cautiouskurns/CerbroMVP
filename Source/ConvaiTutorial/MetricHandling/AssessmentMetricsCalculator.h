@@ -70,6 +70,14 @@ public:
 	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle, const TArray<FFieldStruct>& FieldDataArray);
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesAskedForTopicInteract(const FString& TopicName, UUserInteractionDataManager* UserInteractionDataManager);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForTopicInteract(const FString& TopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 CalculateTimesAskedForQuestionsIndividual(const TArray<FTest>& Questions);
 
 	//UFUNCTION(BlueprintCallable, Category = "Assessment")

@@ -183,6 +183,21 @@ void UBaseGameInstance::SaveGameData()
         SaveGameObject->FieldDataArraySaveData.Add(FieldDataSave);
     }
 
+    if (SaveGameObject == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("SaveGameObject is null in SaveGameData"));
+        return;
+    }
+
+    if (UserInteractionDataManager == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("UserInteractionDataManager is null in SaveGameData"));
+        return;
+    }
+
+    SaveGameObject->UserInteractionsSaveData = UserInteractionDataManager->GetUserInteractions(); // assuming you have such a getter method in your UserInteractionDataManager
+
+
     UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
 }
 
@@ -273,6 +288,9 @@ void UBaseGameInstance::LoadGameData()
                 FieldDataArray.Add(FieldData);
             }
         }
+
+        UserInteractionDataManager->SetUserInteractions(SaveGameObject->UserInteractionsSaveData); // assuming you have such a setter method in your UserInteractionDataManager
+
     }
 }
 
@@ -788,4 +806,19 @@ float UBaseGameInstance::CalculateProficiencyForTopic(const FString& TopicName, 
     return ContentRecommendationManager->CalculateProficiencyForTopic(*TopicData);
 }
 
+int32 UBaseGameInstance::CalculateTimesAskedForSubtopic(const FString& SubtopicName, const FTopicInteractionData& TopicData)
+{
+    return UserInteractionDataManager->CalculateTimesAskedForSubtopic(SubtopicName, TopicData);
+}
 
+
+
+int32 UBaseGameInstance::CalculateTimesAskedForTopicInteract(const FString& TopicName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesAskedForTopicInteract(TopicName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesCorrectForTopicInteract(const FString& TopicName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesCorrectForTopicInteract(TopicName, UserInteractionDataManager);
+}
