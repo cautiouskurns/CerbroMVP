@@ -5,19 +5,47 @@
 #include <ConvaiTutorial/MetricHandling/AssessmentMetricsCalculator.h>
 #include <ConvaiTutorial/DataManagement/UserInteractionDataManager.h>
 
-//UContentRecommendationManager::ContentRecommendationManager(); // UObject* ObjectInitializer, UUserInteractionDataManager* manager)
-//{
-//    //UserInteractionDataManager = manager;
-//}
 
-float UContentRecommendationManager::CalculateRecommendationScore(const FTopicInteractionData& TopicInteractionData)
+float UContentRecommendationManager::CalculateSubtopicRecommendationScore(const FSubtopicInteractionData& SubtopicInteractionData)
 {
-    float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - TopicInteractionData.LastAccessedTime).GetTotalDays();
+    //float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - SubtopicInteractionData.LastAccessedTime).GetTotalDays();
 
-    float Score = (1.0f - TopicInteractionData.ProficiencyScore) + TimeSinceLastAccessInDays;
+    float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - FDateTime(2023, 7, 24, 12, 30, 0)).GetTotalDays();
+    float normalizedTime = TimeSinceLastAccessInDays / 30.0f;
 
-    return Score;
+    float Score = (1.0f - SubtopicInteractionData.ProficiencyScore) + normalizedTime;
+    float normalizedScore = FMath::GetMappedRangeValueClamped(FVector2D(0, 2), FVector2D(0, 1), Score);
+
+    return normalizedScore;
 }
+
+float UContentRecommendationManager::CalculateTopicRecommendationScore(const FTopicInteractionData& TopicInteractionData)
+{
+
+    //float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - TopicInteractionData.LastAccessedTime).GetTotalDays();
+
+    float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - FDateTime(2023, 7, 24, 12, 30, 0)).GetTotalDays();
+    float normalizedTime = TimeSinceLastAccessInDays / 30.0f;
+
+    float Score = (1.0f - TopicInteractionData.ProficiencyScore) + normalizedTime;
+    float normalizedScore = FMath::GetMappedRangeValueClamped(FVector2D(0, 2), FVector2D(0, 1), Score);
+
+    return normalizedScore;
+}
+
+float UContentRecommendationManager::CalculateSectionRecommendationScore(const FSectionInteractionData& SectionInteractionData)
+{
+    //float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - SectionInteractionData.LastAccessedTime).GetTotalDays();
+
+    float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - FDateTime(2023, 7, 24, 12, 30, 0)).GetTotalDays();
+    float normalizedTime = TimeSinceLastAccessInDays / 30.0f;
+
+    float Score = (1.0f - SectionInteractionData.ProficiencyScore) + normalizedTime;
+    float normalizedScore = FMath::GetMappedRangeValueClamped(FVector2D(0, 2), FVector2D(0, 1), Score);
+
+    return normalizedScore;
+}
+
 
 
 float UContentRecommendationManager::CalculateProficiencyForQuestion(const FString& QuestionText, const FQuestionInteractionData& QuestionInteractionData)
@@ -32,7 +60,7 @@ float UContentRecommendationManager::CalculateProficiencyForQuestion(const FStri
 }
 
 
-float UContentRecommendationManager::CalculateProficiencyForSubTopic(const FSubtopicInteractionData& SubTopicInteractionData)
+float UContentRecommendationManager::CalculateProficiencyForSubtopic(const FSubtopicInteractionData& SubTopicInteractionData)
 {
     if (SubTopicInteractionData.Questions.Num() == 0) {
         // If there are no questions in this topic, return a default proficiency value.
@@ -77,11 +105,16 @@ float UContentRecommendationManager::CalculateProficiencyForTopic(const FTopicIn
 
     float TotalProficiency = 0.0f;
     for (const auto& SubTopicPair : TopicInteractionData.Subtopics) {
-        TotalProficiency += CalculateProficiencyForSubTopic(SubTopicPair.Value);
+        TotalProficiency += CalculateProficiencyForSubtopic(SubTopicPair.Value);
     }
 
-    return TotalProficiency / static_cast<float>(TopicInteractionData.Subtopics.Num());
+    float NewProficiencyScore = TotalProficiency / static_cast<float>(TopicInteractionData.Subtopics.Num());
+
+    return NewProficiencyScore;
 }
+
+
+
 
 
 float UContentRecommendationManager::CalculateProficiencyForSection(const FSectionInteractionData& SectionInteractionData)

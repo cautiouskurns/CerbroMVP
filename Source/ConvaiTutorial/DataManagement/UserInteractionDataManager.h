@@ -350,7 +350,7 @@ public:
 
     void SetUserInteractions(const FUserInteractionData& NewUserInteractions);
 
-    const FUserInteractionData& GetUserInteractions() const;
+    FUserInteractionData& GetUserInteractions();
 
     const FFieldInteractionData* GetFieldInteractionData(const FString& FieldName) const;
 
@@ -370,5 +370,13 @@ public:
 
     int32 CalculateTimesAskedForSubtopic(const FString& SubtopicName, const FTopicInteractionData& TopicData);
 
+    UFUNCTION(BlueprintCallable, Category = "Topic")
+    void UpdateProficiencyForSubtopic(const FString& SubtopicName, float NewProficiencyScore);
+
+    UFUNCTION(BlueprintCallable, Category = "Topic")
+    void UpdateProficiencyForTopic(const FString& TopicName, float NewProficiencyScore);
+
+    UFUNCTION(BlueprintCallable, Category = "Topic")
+    void UpdateProficiencyForSection(const FString& SectionName, float NewProficiencyScore);
 
 };

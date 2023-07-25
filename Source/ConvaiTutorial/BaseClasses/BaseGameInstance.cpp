@@ -756,55 +756,277 @@ const FSubtopicInteractionData* UBaseGameInstance::GetSubtopicInteractionData(co
 
 
 
-float UBaseGameInstance::CalculateProficiencyForSubTopic(const FString& SubtopicName, const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName)
+
+float UBaseGameInstance::CalculateProficiencyForSubtopic(const FString& SubtopicName)
 {
-    const FFieldInteractionData* FieldData = GetFieldInteractionData(FieldName);
-    if (!FieldData) return 0.0f;
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
 
-    const FAreaInteractionData* AreaData = GetAreaInteractionData(AreaName, *FieldData);
-    if (!AreaData) return 0.0f;
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                            {
+                                if (SubtopicPair.Key == SubtopicName)
+                                {
+                                    return ContentRecommendationManager->CalculateProficiencyForSubtopic(SubtopicPair.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    const FSubjectGroupInteractionData* SubjectGroupData = GetSubjectGroupInteractionData(SubjectGroupName, *AreaData);
-    if (!SubjectGroupData) return 0.0f;
+    return 0.0f; // Return 0.0 if no subtopic with the given name is found
+}
 
-    const FSubjectInteractionData* LocalSubjectData = GetSubjectInteractionData(SubjectName, *SubjectGroupData);
-    if (!LocalSubjectData) return 0.0f;
+float UBaseGameInstance::CalculateProficiencyForTopic(const FString& TopicName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
 
-    const FSectionInteractionData* SectionData = GetSectionInteractionData(SectionName, *LocalSubjectData);
-    if (!SectionData) return 0.0f;
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            if (TopicPair.Key == TopicName)
+                            {
+                                return ContentRecommendationManager->CalculateProficiencyForTopic(TopicPair.Value);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    const FTopicInteractionData* TopicData = GetTopicInteractionData(TopicName, *SectionData);
-    if (!TopicData) return 0.0f;
-
-    const FSubtopicInteractionData* SubTopicData = GetSubtopicInteractionData(SubtopicName, *TopicData);
-    if (!SubTopicData) return 0.0f;
-
-    return ContentRecommendationManager->CalculateProficiencyForSubTopic(*SubTopicData);
+    return 0.0f; // Return 0.0 if no topic with the given name is found
 }
 
 
-float UBaseGameInstance::CalculateProficiencyForTopic(const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName)
+float UBaseGameInstance::CalculateProficiencyForSection(const FString& SectionName)
 {
-    const FFieldInteractionData* FieldData = GetFieldInteractionData(FieldName);
-    if (!FieldData) return 0.0f;
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
 
-    const FAreaInteractionData* AreaData = GetAreaInteractionData(AreaName, *FieldData);
-    if (!AreaData) return 0.0f;
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        if (SectionPair.Key == SectionName)
+                        {
+                            return ContentRecommendationManager->CalculateProficiencyForSection(SectionPair.Value);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
-    const FSubjectGroupInteractionData* SubjectGroupData = GetSubjectGroupInteractionData(SubjectGroupName, *AreaData);
-    if (!SubjectGroupData) return 0.0f;
-
-    const FSubjectInteractionData* LocalSubjectData = GetSubjectInteractionData(SubjectName, *SubjectGroupData);
-    if (!LocalSubjectData) return 0.0f;
-
-    const FSectionInteractionData* SectionData = GetSectionInteractionData(SectionName, *LocalSubjectData);
-    if (!SectionData) return 0.0f;
-
-    const FTopicInteractionData* TopicData = GetTopicInteractionData(TopicName, *SectionData);
-    if (!TopicData) return 0.0f;
-
-    return ContentRecommendationManager->CalculateProficiencyForTopic(*TopicData);
+    return 0.0f; // Return 0.0 if no section with the given name is found
 }
+
+float UBaseGameInstance::CalculateProficiencyForSubject(const FString& SubjectName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    if (SubjectPair.Key == SubjectName)
+                    {
+                        return ContentRecommendationManager->CalculateProficiencyForSubject(SubjectPair.Value);
+                    }
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return 0.0 if no subject with the given name is found
+}
+
+
+float UBaseGameInstance::CalculateProficiencyForSubjectGroup(const FString& SubjectGroupName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                if (SubjectGroupPair.Key == SubjectGroupName)
+                {
+                    return ContentRecommendationManager->CalculateProficiencyForSubjectGroup(SubjectGroupPair.Value);
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return 0.0 if no subject group with the given name is found
+}
+
+float UBaseGameInstance::CalculateProficiencyForArea(const FString& AreaName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            if (AreaPair.Key == AreaName)
+            {
+                return ContentRecommendationManager->CalculateProficiencyForArea(AreaPair.Value);
+            }
+        }
+    }
+
+    return 0.0f; // Return 0.0 if no area with the given name is found
+}
+
+float UBaseGameInstance::CalculateProficiencyForField(const FString& FieldName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        if (FieldPair.Key == FieldName)
+        {
+            return ContentRecommendationManager->CalculateProficiencyForField(FieldPair.Value);
+        }
+    }
+
+    return 0.0f; // Return 0.0 if no field with the given name is found
+}
+
+
+
+
+float UBaseGameInstance::CalculateSubtopicRecommendationScore(const FString& SubtopicName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                            {
+                                if (SubtopicPair.Key == SubtopicName)
+                                {
+                                    return ContentRecommendationManager->CalculateSubtopicRecommendationScore(SubtopicPair.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return 0.0 if no subtopic with the given name is found
+}
+
+float UBaseGameInstance::CalculateTopicRecommendationScore(const FString& TopicName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            if (TopicPair.Key == TopicName)
+                            {
+                                return ContentRecommendationManager->CalculateTopicRecommendationScore(TopicPair.Value);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return 0.0 if no topic with the given name is found
+}
+
+
+float UBaseGameInstance::CalculateSectionRecommendationScore(const FString& SectionName)
+{
+    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        if (SectionPair.Key == SectionName)
+                        {
+                            return ContentRecommendationManager->CalculateSectionRecommendationScore(SectionPair.Value);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return 0.0 if no section with the given name is found
+}
+
+
+
+
+
+
+
 
 int32 UBaseGameInstance::CalculateTimesAskedForSubtopic(const FString& SubtopicName, const FTopicInteractionData& TopicData)
 {
@@ -812,13 +1034,90 @@ int32 UBaseGameInstance::CalculateTimesAskedForSubtopic(const FString& SubtopicN
 }
 
 
+int32 UBaseGameInstance::CalculateTimesAskedForSubtopicInteract(const FString& SubtopicName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesAskedForSubtopicInteract(SubtopicName, UserInteractionDataManager);
+}
 
 int32 UBaseGameInstance::CalculateTimesAskedForTopicInteract(const FString& TopicName)
 {
     return AssessmentMetricsCalculator->CalculateTimesAskedForTopicInteract(TopicName, UserInteractionDataManager);
 }
 
+int32 UBaseGameInstance::CalculateTimesAskedForSectionInteract(const FString& SectionName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesAskedForSectionInteract(SectionName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesAskedForSubjectInteract(const FString& SubjectName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesAskedForSubjectInteract(SubjectName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesAskedForSubjectGroupInteract(const FString& SubjectGroupName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesAskedForSubjectGroupInteract(SubjectGroupName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesAskedForAreaInteract(const FString& AreaName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesAskedForAreaInteract(AreaName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesAskedForFieldInteract(const FString& FieldName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesAskedForFieldInteract(FieldName, UserInteractionDataManager);
+}
+
+
+
+int32 UBaseGameInstance::CalculateTimesCorrectForSubtopicInteract(const FString& SubtopicName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesCorrectForSubtopicInteract(SubtopicName, UserInteractionDataManager);
+}
+
 int32 UBaseGameInstance::CalculateTimesCorrectForTopicInteract(const FString& TopicName)
 {
     return AssessmentMetricsCalculator->CalculateTimesCorrectForTopicInteract(TopicName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesCorrectForSectionInteract(const FString& SectionName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesCorrectForSectionInteract(SectionName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesCorrectForSubjectInteract(const FString& SubjectName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesCorrectForSubjectInteract(SubjectName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesCorrectForSubjectGroupInteract(const FString& SubjectGroupName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesCorrectForSubjectGroupInteract(SubjectGroupName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesCorrectForAreaInteract(const FString& AreaName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesCorrectForAreaInteract(AreaName, UserInteractionDataManager);
+}
+
+int32 UBaseGameInstance::CalculateTimesCorrectForFieldInteract(const FString& FieldName)
+{
+    return AssessmentMetricsCalculator->CalculateTimesCorrectForFieldInteract(FieldName, UserInteractionDataManager);
+}
+
+
+void UBaseGameInstance::UpdateProficiencyForSubtopic(const FString& SubtopicName, float NewProficiencyScore)
+{
+    return UserInteractionDataManager->UpdateProficiencyForSubtopic(SubtopicName, NewProficiencyScore);
+}
+
+void UBaseGameInstance::UpdateProficiencyForTopic(const FString& TopicName, float NewProficiencyScore)
+{
+    return UserInteractionDataManager->UpdateProficiencyForTopic(TopicName, NewProficiencyScore);
+}
+
+void UBaseGameInstance::UpdateProficiencyForSection(const FString& SectionName, float NewProficiencyScore)
+{
+	return UserInteractionDataManager->UpdateProficiencyForSection(SectionName, NewProficiencyScore);
 }

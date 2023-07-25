@@ -93,6 +93,56 @@ int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubtopicIR(const FStri
 }
 
 
+
+
+
+
+
+
+
+
+// Calculate total times questions have been asked in a subtopic
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubtopicInteract(const FString& SubtopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesAsked = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                            {
+                                if (SubtopicPair.Key == SubtopicName)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+                                    }
+                                    return TotalTimesAsked;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no subtopic with the given name is found
+}
+
+
+// Calculate total times questions have been asked in a topic
 int32 UAssessmentMetricsCalculator::CalculateTimesAskedForTopicInteract(const FString& TopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
 {
     int32 TotalTimesAsked = 0;
@@ -130,6 +180,242 @@ int32 UAssessmentMetricsCalculator::CalculateTimesAskedForTopicInteract(const FS
     }
 
     return 0; // Return 0 if no topic with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSectionInteract(const FString& SectionName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesAsked = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        if (SectionPair.Key == SectionName)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+                                    }
+                                }
+                            }
+                            return TotalTimesAsked;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no section with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubjectInteract(const FString& SubjectName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesAsked = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    if (SubjectPair.Key == SubjectName)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+                                    }
+                                }
+                            }
+                        }
+                        return TotalTimesAsked;
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no subject with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForSubjectGroupInteract(const FString& SubjectGroupName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesAsked = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                if (SubjectGroupPair.Key == SubjectGroupName)
+                {
+                    for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return TotalTimesAsked;
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no subject group with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForAreaInteract(const FString& AreaName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesAsked = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            if (AreaPair.Key == AreaName)
+            {
+                for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+                {
+                    for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return TotalTimesAsked;
+            }
+        }
+    }
+
+    return 0; // Return 0 if no area with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesAskedForFieldInteract(const FString& FieldName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesAsked = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        if (FieldPair.Key == FieldName)
+        {
+            for (const auto& AreaPair : FieldPair.Value.Areas)
+            {
+                for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+                {
+                    for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesAsked += QuestionPair.Value.TimesAsked;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return TotalTimesAsked;
+        }
+    }
+
+    return 0; // Return 0 if no field with the given name is found
+}
+
+
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForSubtopicInteract(const FString& SubtopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesCorrect = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (const auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                            {
+                                if (SubtopicPair.Key == SubtopicName)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesCorrect += QuestionPair.Value.TimesCorrect;
+                                    }
+                                    return TotalTimesCorrect;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no subtopic with the given name is found
 }
 
 
@@ -171,6 +457,217 @@ int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForTopicInteract(const 
 
     return 0; // Return 0 if no topic with the given name is found
 }
+
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForSectionInteract(const FString& SectionName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesCorrect = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        if (SectionPair.Key == SectionName)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesCorrect += QuestionPair.Value.TimesCorrect;
+                                    }
+                                }
+                            }
+                            return TotalTimesCorrect;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no section with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForSubjectInteract(const FString& SubjectName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesCorrect = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    if (SubjectPair.Key == SubjectName)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesCorrect += QuestionPair.Value.TimesCorrect;
+                                    }
+                                }
+                            }
+                        }
+                        return TotalTimesCorrect;
+                    }
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no subject with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForSubjectGroupInteract(const FString& SubjectGroupName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesCorrect = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                if (SubjectGroupPair.Key == SubjectGroupName)
+                {
+                    for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesCorrect += QuestionPair.Value.TimesCorrect;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return TotalTimesCorrect;
+                }
+            }
+        }
+    }
+
+    return 0; // Return 0 if no subject group with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForAreaInteract(const FString& AreaName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesCorrect = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        for (const auto& AreaPair : FieldPair.Value.Areas)
+        {
+            if (AreaPair.Key == AreaName)
+            {
+                for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+                {
+                    for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesCorrect += QuestionPair.Value.TimesCorrect;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return TotalTimesCorrect;
+            }
+        }
+    }
+
+    return 0; // Return 0 if no area with the given name is found
+}
+
+int32 UAssessmentMetricsCalculator::CalculateTimesCorrectForFieldInteract(const FString& FieldName, UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    int32 TotalTimesCorrect = 0;
+
+    const FUserInteractionData& UserInteractions = UserInteractionDataManagerLocal->GetUserInteractions();
+
+    for (const auto& FieldPair : UserInteractions.Fields)
+    {
+        if (FieldPair.Key == FieldName)
+        {
+            for (const auto& AreaPair : FieldPair.Value.Areas)
+            {
+                for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+                {
+                    for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                    {
+                        for (const auto& SectionPair : SubjectPair.Value.Sections)
+                        {
+                            for (const auto& TopicPair : SectionPair.Value.Topics)
+                            {
+                                for (const auto& SubtopicPair : TopicPair.Value.Subtopics)
+                                {
+                                    for (const auto& QuestionPair : SubtopicPair.Value.Questions)
+                                    {
+                                        TotalTimesCorrect += QuestionPair.Value.TimesCorrect;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return TotalTimesCorrect;
+        }
+    }
+
+    return 0; // Return 0 if no field with the given name is found
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

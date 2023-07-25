@@ -393,71 +393,13 @@ FString UUserInteractionDataManager::ToString() const
 }
 
 
-//FQuestionInteractionData UUserInteractionDataManager::GetQuestionInteractionData(const FString& QuestionText)
-//{
-//    // Loop over all fields
-//    for (const auto& FieldPair : UserInteractions.Fields)
-//    {
-//        const FFieldInteractionData& FieldData = FieldPair.Value;
-//
-//        // Loop over all areas within the field
-//        for (const auto& AreaPair : FieldData.Areas)
-//        {
-//            const FAreaInteractionData& AreaData = AreaPair.Value;
-//
-//            // Loop over all subject groups within the area
-//            for (const auto& SubjectGroupPair : AreaData.SubjectGroups)
-//            {
-//                const FSubjectGroupInteractionData& SubjectGroupData = SubjectGroupPair.Value;
-//
-//                // Loop over all subjects within the subject group
-//                for (const auto& SubjectPair : SubjectGroupData.Subjects)
-//                {
-//                    const FSubjectInteractionData& SubjectData = SubjectPair.Value;
-//
-//                    // Loop over all sections within the subject
-//                    for (const auto& SectionPair : SubjectData.Sections)
-//                    {
-//                        const FSectionInteractionData& SectionData = SectionPair.Value;
-//
-//                        // Loop over all topics within the section
-//                        for (const auto& TopicPair : SectionData.Topics)
-//                        {
-//                            const FTopicInteractionData& TopicData = TopicPair.Value;
-//
-//                            // Loop over all subtopics within the topic
-//                            for (const auto& SubtopicPair : TopicData.Subtopics)
-//                            {
-//                                const FSubtopicInteractionData& SubtopicData = SubtopicPair.Value;
-//
-//                                // Look for the question within the subtopic
-//                                const FQuestionInteractionData* QuestionData = SubtopicData.Questions.Find(QuestionText);
-//
-//                                if (QuestionData)
-//                                {
-//                                    // We found the question, so return the associated interaction data
-//                                    return *QuestionData;
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    // If we reach this point, it means we couldn't find the question
-//    // So we return an empty FQuestionInteractionData object
-//    return FQuestionInteractionData();
-//}
-
 
 void UUserInteractionDataManager::SetUserInteractions(const FUserInteractionData& NewUserInteractions)
 {
     UserInteractions = NewUserInteractions;
 }
 
-const FUserInteractionData& UUserInteractionDataManager::GetUserInteractions() const
+FUserInteractionData& UUserInteractionDataManager::GetUserInteractions()
 {
     return UserInteractions;
 }
@@ -517,4 +459,94 @@ int32 UUserInteractionDataManager::CalculateTimesAskedForSubtopic(const FString&
     }
 
     return TotalTimesAsked;
+}
+
+
+
+void UUserInteractionDataManager::UpdateProficiencyForSubtopic(const FString& SubtopicName, float NewProficiencyScore)
+{
+    FUserInteractionData& LocalUserInteractions = GetUserInteractions();
+
+    for (auto& FieldPair : LocalUserInteractions.Fields)
+    {
+        for (auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            for (auto& SubtopicPair : TopicPair.Value.Subtopics)
+                            {
+                                if (SubtopicPair.Key == SubtopicName)
+                                {
+                                    SubtopicPair.Value.ProficiencyScore = NewProficiencyScore;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void UUserInteractionDataManager::UpdateProficiencyForTopic(const FString& TopicName, float NewProficiencyScore)
+{
+    FUserInteractionData& LocalUserInteractions = GetUserInteractions();
+
+    for (auto& FieldPair : LocalUserInteractions.Fields)
+    {
+        for (auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            if (TopicPair.Key == TopicName)
+                            {
+                                TopicPair.Value.ProficiencyScore = NewProficiencyScore;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+void UUserInteractionDataManager::UpdateProficiencyForSection(const FString& SectionName, float NewProficiencyScore)
+{
+    FUserInteractionData& LocalUserInteractions = GetUserInteractions();
+
+    for (auto& FieldPair : LocalUserInteractions.Fields)
+    {
+        for (auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        if (SectionPair.Key == SectionName)
+                        {
+                            SectionPair.Value.ProficiencyScore = NewProficiencyScore;
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

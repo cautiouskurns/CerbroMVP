@@ -69,11 +69,48 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle, const TArray<FFieldStruct>& FieldDataArray);
 
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesAskedForSubtopicInteract(const FString& SubtopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 CalculateTimesAskedForTopicInteract(const FString& TopicName, UUserInteractionDataManager* UserInteractionDataManager);
 
 	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesAskedForSectionInteract(const FString& SectionName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesAskedForSubjectInteract(const FString& SubjectName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesAskedForSubjectGroupInteract(const FString& SubjectGroupName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesAskedForAreaInteract(const FString& AreaName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesAskedForFieldInteract(const FString& FieldName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSubtopicInteract(const FString& SubtopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
 	int32 CalculateTimesCorrectForTopicInteract(const FString& TopicName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSectionInteract(const FString& SectionName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSubjectInteract(const FString& SubjectName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForSubjectGroupInteract(const FString& SubjectGroupName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForAreaInteract(const FString& AreaName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UFUNCTION(BlueprintCallable, Category = "Assessment")
+	int32 CalculateTimesCorrectForFieldInteract(const FString& FieldName, UUserInteractionDataManager* UserInteractionDataManagerLocal);
 
 
 

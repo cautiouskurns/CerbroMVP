@@ -20,20 +20,25 @@ class CONVAITUTORIAL_API UContentRecommendationManager : public UObject
 
 public:
 
-	//UContentRecommendationManager(); //UObject* ObjectInitializer, UUserInteractionDataManager* manager);
+	UFUNCTION(BlueprintCallable, Category = "Recommendation Score")
+	float CalculateSubtopicRecommendationScore(const FSubtopicInteractionData& SubtopicInteractionData);
 
 	UFUNCTION(BlueprintCallable, Category = "Recommendation Score")
-	float CalculateRecommendationScore(const FTopicInteractionData& TopicInteractionData);
+	float CalculateTopicRecommendationScore(const FTopicInteractionData& TopicInteractionData);
+
+	UFUNCTION(BlueprintCallable, Category = "Recommendation Score")
+	float CalculateSectionRecommendationScore(const FSectionInteractionData& SectionInteractionData);
 
 
 	UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
 	float CalculateProficiencyForQuestion(const FString& QuestionText, const FQuestionInteractionData& QuestionInteractionData);
 
 	UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
-	float CalculateProficiencyForSubTopic(const FSubtopicInteractionData& TopicInteractionData);
+	float CalculateProficiencyForSubtopic(const FSubtopicInteractionData& TopicInteractionData);
 
 	UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
 	float CalculateProficiencyForTopic(const FTopicInteractionData& TopicInteractionData);
+
 
 	UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
 	float CalculateProficiencyForSection(const FSectionInteractionData& SectionInteractionData);

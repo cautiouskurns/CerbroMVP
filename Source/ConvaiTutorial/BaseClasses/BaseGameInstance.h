@@ -455,8 +455,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 CalculateTimesAskedForSubtopicIR(const FString& SubtopicTitle);
 
-	//UFUNCTION(BlueprintCallable, Category = "Widgets")
-	//int32 CalculateTimesAskedForQuestionIR(const FString& SubtopicTitle);
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 CalculateTimesCorrectForSubtopicIR(const FString& SubtopicTitle);
@@ -521,29 +519,96 @@ public:
 
 	const FSubtopicInteractionData* GetSubtopicInteractionData(const FString& SubtopicName, const FTopicInteractionData& TopicData);
 
-	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	float CalculateProficiencyForSubTopic(const FString& SubTopicName, const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName);
+	
+	
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateProficiencyForSubtopic(const FString& SubtopicName);
 
-	UFUNCTION(BlueprintCallable, Category = "Widgets")
-	float CalculateProficiencyForTopic(const FString& TopicName, const FString& SectionName, const FString& SubjectName, const FString& SubjectGroupName, const FString& AreaName, const FString& FieldName);
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateProficiencyForTopic(const FString& TopicName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateProficiencyForSection(const FString& SectionName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateProficiencyForSubject(const FString& SubjectName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateProficiencyForSubjectGroup(const FString& SubjectGroupName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateProficiencyForArea(const FString& AreaName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateProficiencyForField(const FString& FieldName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateSubtopicRecommendationScore(const FString& SubtopicName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateTopicRecommendationScore(const FString& TopicName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float CalculateSectionRecommendationScore(const FString& SectionName);
+
+
+
+
 
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	int32 CalculateTimesAskedForSubtopic(const FString& SubtopicName, const FTopicInteractionData& TopicData);
 
-	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesAskedForSubtopicInteract(const FString& SubtopicName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
 	int32 CalculateTimesAskedForTopicInteract(const FString& TopicName);
 
-	UFUNCTION(BlueprintCallable, Category = "Widgets")
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesAskedForSectionInteract(const FString& SectionName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesAskedForSubjectInteract(const FString& SubjectName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesAskedForSubjectGroupInteract(const FString& SubjectGroupName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesAskedForAreaInteract(const FString& AreaName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesAskedForFieldInteract(const FString& FieldName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesCorrectForSubtopicInteract(const FString& SubtopicName);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
 	int32 CalculateTimesCorrectForTopicInteract(const FString& TopicName);
 
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesCorrectForSectionInteract(const FString& SectionName);
 
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesCorrectForSubjectInteract(const FString& SubjectName);
 
-	
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesCorrectForSubjectGroupInteract(const FString& SubjectGroupName);
 
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesCorrectForAreaInteract(const FString& AreaName);
 
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	int32 CalculateTimesCorrectForFieldInteract(const FString& FieldName);
 
-	//UFUNCTION(BlueprintCallable, Category = "Widgets")
-	//float CalculateProficiencyForTopic();
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	void UpdateProficiencyForSubtopic(const FString& SubtopicName, float NewProficiencyScore);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	void UpdateProficiencyForTopic(const FString& TopicName, float NewProficiencyScore);
+
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	void UpdateProficiencyForSection(const FString& SectionName, float NewProficiencyScore);
+
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
