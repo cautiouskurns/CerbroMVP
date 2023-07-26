@@ -251,8 +251,11 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void UnregisterObserver(UUserInteractionDataManager* observer);
 
+  /*  UFUNCTION(BlueprintCallable, Category = "Topic")
+    void AccessSection(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName, FName SectionName);*/
+
     UFUNCTION(BlueprintCallable, Category = "Topic")
-    void AccessSection(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName, FName SectionName);
+    void AccessSection(FName SectionName);
 
     void AccessSubject(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName);
 

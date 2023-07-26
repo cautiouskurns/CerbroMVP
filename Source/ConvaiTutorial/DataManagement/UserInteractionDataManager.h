@@ -75,6 +75,9 @@ public:
     FDateTime LastAccessedTime;
 
     UPROPERTY(BlueprintReadWrite)
+    TMap<FDateTime, float> ProficiencyHistory;
+
+    UPROPERTY(BlueprintReadWrite)
     TMap<FString, FQuestionInteractionData> Questions;
 };
 
@@ -372,11 +375,17 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void UpdateProficiencyForSubtopic(const FString& SubtopicName, float NewProficiencyScore);
+    UFUNCTION(BlueprintCallable, Category = "Topic")
+    float GetProficiencyForSubtopic(const FString& SubtopicName);
 
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void UpdateProficiencyForTopic(const FString& TopicName, float NewProficiencyScore);
+    UFUNCTION(BlueprintCallable, Category = "Topic")
+    float GetProficiencyForTopic(const FString& TopicName);
 
     UFUNCTION(BlueprintCallable, Category = "Topic")
     void UpdateProficiencyForSection(const FString& SectionName, float NewProficiencyScore);
+    UFUNCTION(BlueprintCallable, Category = "Topic")
+    float GetProficiencyForSection(const FString& SectionName);
 
 };

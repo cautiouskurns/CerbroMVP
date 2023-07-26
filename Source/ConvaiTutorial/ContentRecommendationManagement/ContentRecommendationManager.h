@@ -20,6 +20,11 @@ class CONVAITUTORIAL_API UContentRecommendationManager : public UObject
 
 public:
 
+	void InitializeDataManagers(UUserInteractionDataManager* UserInteractionDataManagerLocal);
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Test Structs")
+	UUserInteractionDataManager* UserInteractionDataManager;
+
 	UFUNCTION(BlueprintCallable, Category = "Recommendation Score")
 	float CalculateSubtopicRecommendationScore(const FSubtopicInteractionData& SubtopicInteractionData);
 
@@ -35,6 +40,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
 	float CalculateProficiencyForSubtopic(const FSubtopicInteractionData& TopicInteractionData);
+
+	/*float CalculateProficiencyForTopic(const FTopicInteractionData& TopicInteractionData);*/
 
 	UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
 	float CalculateProficiencyForTopic(const FTopicInteractionData& TopicInteractionData);
@@ -54,6 +61,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
 	float CalculateProficiencyForField(const FFieldInteractionData& FieldInteractionData);
+
+	//const FSubtopicInteractionData* FindSubtopicInteractionDataByName(const FString& SubtopicName);
+
+	//const FTopicInteractionData* FindTopicInteractionDataByName(const FString& TopicName);
+
+	//UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
+	//float CalculateProficiencyForTopic(const FString& TopicName);
 
 	//UFUNCTION(BlueprintCallable, Category = "Proficiency Score")
 	//void SetUserInteractionDataManager(UUserInteractionDataManager* manager);

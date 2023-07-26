@@ -494,6 +494,40 @@ void UUserInteractionDataManager::UpdateProficiencyForSubtopic(const FString& Su
         }
     }
 }
+float UUserInteractionDataManager::GetProficiencyForSubtopic(const FString& SubtopicName)
+{
+    FUserInteractionData& LocalUserInteractions = GetUserInteractions();
+
+    for (auto& FieldPair : LocalUserInteractions.Fields)
+    {
+        for (auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            for (auto& SubtopicPair : TopicPair.Value.Subtopics)
+                            {
+                                if (SubtopicPair.Key == SubtopicName)
+                                {
+                                    return SubtopicPair.Value.ProficiencyScore;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return a default proficiency score if no subtopic with the given name is found
+}
+
+
 
 void UUserInteractionDataManager::UpdateProficiencyForTopic(const FString& TopicName, float NewProficiencyScore)
 {
@@ -523,6 +557,36 @@ void UUserInteractionDataManager::UpdateProficiencyForTopic(const FString& Topic
         }
     }
 }
+float UUserInteractionDataManager::GetProficiencyForTopic(const FString& TopicName)
+{
+    FUserInteractionData& LocalUserInteractions = GetUserInteractions();
+
+    for (auto& FieldPair : LocalUserInteractions.Fields)
+    {
+        for (auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        for (auto& TopicPair : SectionPair.Value.Topics)
+                        {
+                            if (TopicPair.Key == TopicName)
+                            {
+                                return TopicPair.Value.ProficiencyScore;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return a default proficiency score if no topic with the given name is found
+}
+
 
 
 void UUserInteractionDataManager::UpdateProficiencyForSection(const FString& SectionName, float NewProficiencyScore)
@@ -549,4 +613,30 @@ void UUserInteractionDataManager::UpdateProficiencyForSection(const FString& Sec
             }
         }
     }
+}
+float UUserInteractionDataManager::GetProficiencyForSection(const FString& SectionName)
+{
+    FUserInteractionData& LocalUserInteractions = GetUserInteractions();
+
+    for (auto& FieldPair : LocalUserInteractions.Fields)
+    {
+        for (auto& AreaPair : FieldPair.Value.Areas)
+        {
+            for (auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+            {
+                for (auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+                {
+                    for (auto& SectionPair : SubjectPair.Value.Sections)
+                    {
+                        if (SectionPair.Key == SectionName)
+                        {
+                            return SectionPair.Value.ProficiencyScore;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return 0.0f; // Return a default proficiency score if no section with the given name is found
 }

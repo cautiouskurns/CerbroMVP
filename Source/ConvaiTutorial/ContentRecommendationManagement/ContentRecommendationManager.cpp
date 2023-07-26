@@ -6,6 +6,12 @@
 #include <ConvaiTutorial/DataManagement/UserInteractionDataManager.h>
 
 
+void UContentRecommendationManager::InitializeDataManagers(UUserInteractionDataManager* UserInteractionDataManagerLocal)
+{
+    // Store a reference to UserInteractionDataManager
+    UserInteractionDataManager = UserInteractionDataManagerLocal;
+}
+
 float UContentRecommendationManager::CalculateSubtopicRecommendationScore(const FSubtopicInteractionData& SubtopicInteractionData)
 {
     //float TimeSinceLastAccessInDays = (FDateTime::UtcNow() - SubtopicInteractionData.LastAccessedTime).GetTotalDays();
@@ -191,3 +197,90 @@ float UContentRecommendationManager::CalculateProficiencyForField(const FFieldIn
     return TotalProficiency / static_cast<float>(FieldInteractionData.Areas.Num());
 }
 
+
+//const FSubtopicInteractionData* UContentRecommendationManager::FindSubtopicInteractionDataByName(const FString& SubtopicName)
+//{
+//    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+//
+//    for (const auto& FieldPair : UserInteractions.Fields)
+//    {
+//        for (const auto& AreaPair : FieldPair.Value.Areas)
+//        {
+//            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+//            {
+//                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+//                {
+//                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+//                    {
+//                        for (const auto& TopicPair : SectionPair.Value.Topics)
+//                        {
+//                            for (auto& SubtopicPair : TopicPair.Value.Subtopics)
+//                            {
+//                                if (SubtopicPair.Key == SubtopicName)
+//                                {
+//                                    return &SubtopicPair.Value;
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    return nullptr; // Return nullptr if no subtopic with the given name is found
+//}
+//
+//
+//const FTopicInteractionData* UContentRecommendationManager::FindTopicInteractionDataByName(const FString& TopicName)
+//{
+//    const FUserInteractionData& UserInteractions = UserInteractionDataManager->GetUserInteractions();
+//
+//    for (const auto& FieldPair : UserInteractions.Fields)
+//    {
+//        for (const auto& AreaPair : FieldPair.Value.Areas)
+//        {
+//            for (const auto& SubjectGroupPair : AreaPair.Value.SubjectGroups)
+//            {
+//                for (const auto& SubjectPair : SubjectGroupPair.Value.Subjects)
+//                {
+//                    for (const auto& SectionPair : SubjectPair.Value.Sections)
+//                    {
+//                        for (auto& TopicPair : SectionPair.Value.Topics)
+//                        {
+//                            if (TopicPair.Key == TopicName)
+//                            {
+//                                return &TopicPair.Value;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    return nullptr; // Return nullptr if no topic with the given name is found
+//}
+//
+//
+//float UContentRecommendationManager::CalculateProficiencyForTopic(const FString& TopicName)
+//{
+//    const FTopicInteractionData* TopicData = FindTopicInteractionDataByName(TopicName);
+//    if (!TopicData)
+//    {
+//        return 0.0f; // Return 0.0f if no topic with the given name is found
+//    }
+//
+//    if (TopicData->Subtopics.Num() == 0) {
+//        // If there are no subtopics in this topic, return a default proficiency value.
+//        UE_LOG(LogTemp, Warning, TEXT("No questions in this subtopic."));
+//        return 0.0f;
+//    }
+//
+//    float TotalProficiency = 0.0f;
+//    for (const auto& SubTopicPair : TopicData->Subtopics) {
+//        TotalProficiency += CalculateProficiencyForSubtopic(SubTopicPair.Value);
+//    }
+//
+//    return TotalProficiency / static_cast<float>(TopicData->Subtopics.Num());
+//}

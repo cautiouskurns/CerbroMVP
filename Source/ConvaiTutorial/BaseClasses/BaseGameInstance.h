@@ -519,6 +519,12 @@ public:
 
 	const FSubtopicInteractionData* GetSubtopicInteractionData(const FString& SubtopicName, const FTopicInteractionData& TopicData);
 
+
+
+	const FSubtopicInteractionData* FindSubtopicInteractionDataByName(const FString& SubtopicName);
+
+	const FTopicInteractionData* FindTopicInteractionDataByName(const FString& TopicName);
+
 	
 	
 	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
@@ -602,12 +608,18 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
 	void UpdateProficiencyForSubtopic(const FString& SubtopicName, float NewProficiencyScore);
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float GetProficiencyForSubtopic(const FString& SubtopicName);
 
 	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
 	void UpdateProficiencyForTopic(const FString& TopicName, float NewProficiencyScore);
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float GetProficiencyForTopic(const FString& TopicName);
 
 	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
 	void UpdateProficiencyForSection(const FString& SectionName, float NewProficiencyScore);
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	float GetProficiencyForSection(const FString& SectionName);
 
 
 

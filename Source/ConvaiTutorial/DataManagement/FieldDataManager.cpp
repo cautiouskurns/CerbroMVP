@@ -31,6 +31,7 @@ void UFieldDataManager::AccessTopic(FName FieldName, FName AreaName, FName Subje
 
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
 
+
     if (SectionIndex != INDEX_NONE)
     {
         // Find the topic that was accessed
@@ -50,31 +51,98 @@ void UFieldDataManager::AccessTopic(FName FieldName, FName AreaName, FName Subje
 }
 
 
-void UFieldDataManager::AccessSection(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName, FName SectionName)
-{
-    int32 FieldIndex = GetFieldIndex(FieldName);
-    int32 AreaIndex = GetAreaIndex(FieldIndex, AreaName);
-    int32 SubjectGroupIndex = GetSubjectGroupIndex(FieldIndex, AreaIndex, SubjectGroupName);
-    int32 SubjectIndex = GetSubjectIndex(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectName);
+//void UFieldDataManager::AccessSection(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName, FName SectionName)
+//{
+//    int32 FieldIndex = GetFieldIndex(FieldName);
+//    int32 AreaIndex = GetAreaIndex(FieldIndex, AreaName);
+//    int32 SubjectGroupIndex = GetSubjectGroupIndex(FieldIndex, AreaIndex, SubjectGroupName);
+//    int32 SubjectIndex = GetSubjectIndex(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectName);
+//
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+//
+//
+//    if (SubjectIndex != INDEX_NONE)
+//    {
+//        // Find the section that was accessed
+//        int32 SectionIndex = GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].Subjects[SubjectIndex].SubjectDetailsArray.IndexOfByPredicate([&](const FSectionStruct& Section) { return Section.SectionName == SectionName.ToString(); });
+//
+//        if (SectionIndex != INDEX_NONE)
+//        {
+//            // Notify observers that the section was accessed
+//            for (UUserInteractionDataManager* Observer : Observers)
+//            {
+//                Observer->UpdateAccess(FieldName, AreaName, SubjectGroupName, SubjectName, SectionName);
+//            }
+//        }
+//    }
+//}
 
+
+
+/**
+void UFieldDataManager::AccessSection(FName SectionName)
+
+ * @brief This function is used to access a section in the game. It updates the UserInteractionDataManager with the details of the accessed section.
+ *
+ * @param SectionName The name of the section that is being accessed.
+ *
+ * @return void This function does not return a value. It's purpose is to update the UserInteractionDataManager with the details of the accessed section.
+ *
+ * @note This function refers to the UBaseGameInstance, UUserInteractionDataManager classes and the UpdateAccess function in the UUserInteractionDataManager class.
+ *
+ * The function does the following:
+ * - It gets a reference to the GameInstance.
+ * - It iterates over the FieldDataArray in the GameInstance.
+ * - For each field, it iterates over the Areas.
+ * - For each area, it iterates over the SubjectGroups.
+ * - For each subject group, it iterates over the Subjects.
+ * - It checks if the section name matches the input section name.
+ * - If a match is found, it notifies all observers (UserInteractionDataManagers) and updates them with the details of the accessed section.
+ *
+ * This function makes use of several basic coding principles including:
+ * - Loops for iteration over arrays
+ * - Conditional statements for checking equality
+ * - Use of observer pattern for updating observers
+ *
+ * @warning The function assumes that the SectionName provided is valid and exists within the game's data structure. It does not handle the case where a section with the provided name does not exist.
+ */
+
+void UFieldDataManager::AccessSection(FName SectionName)
+{
     UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
 
-
-    if (SubjectIndex != INDEX_NONE)
+    for (int32 FieldIndex = 0; FieldIndex < GameInstance->FieldDataArray.Num(); ++FieldIndex)
     {
-        // Find the section that was accessed
-        int32 SectionIndex = GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].Subjects[SubjectIndex].SubjectDetailsArray.IndexOfByPredicate([&](const FSectionStruct& Section) { return Section.SectionName == SectionName.ToString(); });
-
-        if (SectionIndex != INDEX_NONE)
+        for (int32 AreaIndex = 0; AreaIndex < GameInstance->FieldDataArray[FieldIndex].Areas.Num(); ++AreaIndex)
         {
-            // Notify observers that the section was accessed
-            for (UUserInteractionDataManager* Observer : Observers)
+            for (int32 SubjectGroupIndex = 0; SubjectGroupIndex < GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups.Num(); ++SubjectGroupIndex)
             {
-                Observer->UpdateAccess(FieldName, AreaName, SubjectGroupName, SubjectName, SectionName);
+                for (int32 SubjectIndex = 0; SubjectIndex < GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].Subjects.Num(); ++SubjectIndex)
+                {
+                    // Find the section that was accessed
+                    int32 SectionIndex = GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].Subjects[SubjectIndex].SubjectDetailsArray.IndexOfByPredicate([&](const FSectionStruct& Section) { return Section.SectionName == SectionName.ToString(); });
+
+                    if (SectionIndex != INDEX_NONE)
+                    {
+                        // Notify observers that the section was accessed
+                        for (UUserInteractionDataManager* Observer : Observers)
+                        {
+                            Observer->UpdateAccess(
+                                FName(GameInstance->FieldDataArray[FieldIndex].FieldName),
+                                FName(GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].AreaName),
+                                FName(GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].SubjectGroupName),
+                                FName(GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].Subjects[SubjectIndex].SubjectName),
+                                SectionName
+                            );
+                        }
+                    }
+                }
             }
         }
     }
 }
+
+
 
 void UFieldDataManager::AccessSubject(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName)
 {
