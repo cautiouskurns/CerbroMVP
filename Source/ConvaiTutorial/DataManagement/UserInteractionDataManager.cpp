@@ -484,6 +484,8 @@ void UUserInteractionDataManager::UpdateProficiencyForSubtopic(const FString& Su
                                 if (SubtopicPair.Key == SubtopicName)
                                 {
                                     SubtopicPair.Value.ProficiencyScore = NewProficiencyScore;
+                                    SubtopicPair.Value.ProficiencyHistory.Add(FDateTime::Now(), NewProficiencyScore);
+
                                     return;
                                 }
                             }
