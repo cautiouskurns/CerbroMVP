@@ -51,33 +51,6 @@ void UFieldDataManager::AccessTopic(FName FieldName, FName AreaName, FName Subje
 }
 
 
-//void UFieldDataManager::AccessSection(FName FieldName, FName AreaName, FName SubjectGroupName, FName SubjectName, FName SectionName)
-//{
-//    int32 FieldIndex = GetFieldIndex(FieldName);
-//    int32 AreaIndex = GetAreaIndex(FieldIndex, AreaName);
-//    int32 SubjectGroupIndex = GetSubjectGroupIndex(FieldIndex, AreaIndex, SubjectGroupName);
-//    int32 SubjectIndex = GetSubjectIndex(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectName);
-//
-//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
-//
-//
-//    if (SubjectIndex != INDEX_NONE)
-//    {
-//        // Find the section that was accessed
-//        int32 SectionIndex = GameInstance->FieldDataArray[FieldIndex].Areas[AreaIndex].SubjectGroups[SubjectGroupIndex].Subjects[SubjectIndex].SubjectDetailsArray.IndexOfByPredicate([&](const FSectionStruct& Section) { return Section.SectionName == SectionName.ToString(); });
-//
-//        if (SectionIndex != INDEX_NONE)
-//        {
-//            // Notify observers that the section was accessed
-//            for (UUserInteractionDataManager* Observer : Observers)
-//            {
-//                Observer->UpdateAccess(FieldName, AreaName, SubjectGroupName, SubjectName, SectionName);
-//            }
-//        }
-//    }
-//}
-
-
 
 /**
 void UFieldDataManager::AccessSection(FName SectionName)

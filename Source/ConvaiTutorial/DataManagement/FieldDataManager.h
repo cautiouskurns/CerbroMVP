@@ -124,6 +124,9 @@ public:
         FString Content;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
+        TArray<FString> ImageURLs;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
         TArray<FTest> Questions;
 };
 
