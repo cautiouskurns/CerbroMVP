@@ -389,10 +389,10 @@ public:
 	void PopulateFieldDataArrayFromDataTable(UDataTable* DataTable);
 
 	UFUNCTION(BlueprintCallable, Category = "YourCategory")
-	void SaveGameData();
+		void SaveGameData(FString SaveGameName);
 
 	UFUNCTION(BlueprintCallable, Category = "YourCategory")
-	void LoadGameData();
+	void LoadGameData(FString SaveGameName);
 
 
 
@@ -621,6 +621,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
 	float GetProficiencyForSection(const FString& SectionName);
 
+	UFUNCTION(BlueprintCallable, Category = "Question Metrics")
+	FString OpenDialogForFile();
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Information Structs")
+	FString SelectedFilePath;
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")

@@ -26,6 +26,9 @@
 #include "Misc/FileHelper.h"
 #include "Engine/DataTable.h"
 
+#include "DesktopPlatform/Public/IDesktopPlatform.h"
+#include "DesktopPlatform/Public/DesktopPlatformModule.h"
+
 #include <fstream>
 #include <sstream>
 
@@ -112,7 +115,7 @@ void UBaseGameInstance::PopulateFieldDataArrayFromDataTable(UDataTable* DataTabl
 }
 
 
-void UBaseGameInstance::SaveGameData()
+void UBaseGameInstance::SaveGameData(FString SaveGameName)
 {
     UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
 
@@ -202,16 +205,22 @@ void UBaseGameInstance::SaveGameData()
 
     SaveGameObject->UserInteractionsSaveData = UserInteractionDataManager->GetUserInteractions(); // assuming you have such a getter method in your UserInteractionDataManager
 
+    /*if (SaveGameName.IsEmpty())
+    {
+        SaveGameName = TEXT("DefaultSave");
+    }*/
 
-    UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
+    //UGameplayStatics::SaveGameToSlot(SaveGameObject, TEXT("YourSaveSlot"), 0);
+    UGameplayStatics::SaveGameToSlot(SaveGameObject, SaveGameName, 0);
+
 }
 
 
-void UBaseGameInstance::LoadGameData()
+void UBaseGameInstance::LoadGameData(FString SaveGameName)
 {
-    if (UGameplayStatics::DoesSaveGameExist(TEXT("YourSaveSlot"), 0))
+    if (UGameplayStatics::DoesSaveGameExist(SaveGameName, 0))
     {
-        UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("YourSaveSlot"), 0));
+        UMySaveGame* SaveGameObject = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(SaveGameName, 0));
 
         if (SaveGameObject)
         {
@@ -1232,4 +1241,42 @@ void UBaseGameInstance::UpdateProficiencyForSection(const FString& SectionName, 
 float UBaseGameInstance::GetProficiencyForSection(const FString& SectionName)
 {
     return UserInteractionDataManager->GetProficiencyForSection(SectionName);
+}
+
+
+FString UBaseGameInstance::OpenDialogForFile()
+{
+    // Set up the File Dialog properties
+    IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
+    TArray<FString> OutFiles;
+    FString DefaultPath = FPaths::ProjectDir() + "Saved/SavedGames";
+
+    if (DesktopPlatform)
+    {
+        uint32 SelectionFlag = 0; // A value of 0 represents single file selection. Change this according to your requirement.
+
+        DesktopPlatform->OpenFileDialog(
+            nullptr,
+            TEXT("Select a file"),
+            DefaultPath,
+            TEXT(""),
+            TEXT("All Files (*.*)|*.*"),
+            SelectionFlag,
+            OutFiles
+        );
+    }
+
+    if (OutFiles.Num() > 0)
+    {
+        SelectedFilePath = OutFiles[0]; // Assuming we're just interested in the first selected file
+        // TODO: Set the text box text to SelectedFilePath and store it in a variable
+
+        SelectedFilePath = FPaths::ConvertRelativePathToFull(SelectedFilePath);
+        SelectedFilePath.ReplaceInline(TEXT("/"), TEXT("\\"));  // MyString now contains "Hello Universe!"
+
+    }
+
+    FString FileName = FPaths::GetBaseFilename(SelectedFilePath);
+
+    return FileName;
 }
