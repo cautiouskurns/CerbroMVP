@@ -11,26 +11,25 @@
 
 
 
+void UVoiceController::Init(UBaseGameInstance* InGameInstance)
+{
+    GameInstance = InGameInstance;
+
+     if (GameInstance)
+    {
+        UE_LOG(LogTemp, Error, TEXT("GameInstance set successfully in UVoiceController::Init"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to set GameInstance in UVoiceController::Init"));
+    }
+}
+
 FString UVoiceController::PrintContentForVoicePrompt(FString VoicePrompt)
 {
-    UWorld* World = GetWorld();
-    if (!World)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("World is null in PrintContentForVoicePrompt"));
-        return FString();
-    }
-
-    UGameInstance* GameInstanceTemp = World->GetGameInstance();
-    if (!GameInstanceTemp)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in PrintContentForVoicePrompt"));
-        return FString();
-    }
-
-    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GameInstanceTemp);
     if (!GameInstance)
     {
-        UE_LOG(LogTemp, Warning, TEXT("BaseGameInstance cast failed in PrintContentForVoicePrompt"));
+        UE_LOG(LogTemp, Warning, TEXT("GameInstance is null in PrintContentForVoicePrompt"));
         return FString();
     }
 
@@ -50,18 +49,13 @@ FString UVoiceController::PrintContentForVoicePrompt(FString VoicePrompt)
                     if (SubjectData.SubjectName.Contains(VoicePrompt, ESearchCase::IgnoreCase))
                     {
                         // // We've found the desired topic, now we can print its content
-                        // if (GEngine)
-                        // {
-                        //     GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Content function: %s"), *SubjectData.SubjectName));
-                        // }
-                        // if (UpdateTextWidget)
-                        // {
-                        //     UpdateTextWidget(SubjectData.SubjectName);
-                        // }
-                        // else
-                        // {
-                        //     UE_LOG(LogTemp, Warning, TEXT("UpdateTextWidget is null in PrintContentForVoicePrompt"));
-                        // }
+                        if (GEngine)
+                        {
+                            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Content function: %s"), *SubjectData.SubjectName));
+                        }
+                       
+                       UE_LOG(LogTemp, Warning, TEXT("About to trigger UpdateTextWidget event"));
+                        // UpdateTextWidget(SubjectData.SubjectName);
 
                         return SubjectData.SubjectName;
                     }
@@ -76,7 +70,14 @@ FString UVoiceController::PrintContentForVoicePrompt(FString VoicePrompt)
     return FString();
 }
 
-
+void UVoiceController::UpdateTextWidget(const FString& Text)
+{
+    // print the text to the screen
+    if (GEngine)
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Content function: %s"), *Text));
+    }
+}
 
 
 
@@ -86,7 +87,7 @@ FString UVoiceController::PrintContentForVoicePrompt(FString VoicePrompt)
 
 FSubjectStruct UVoiceController::FindSubjectByVocalPrompt(FString SubjectName)
 {
-    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+    //UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
     if (GameInstance)
     {
         for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)

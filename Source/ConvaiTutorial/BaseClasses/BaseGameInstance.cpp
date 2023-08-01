@@ -66,6 +66,17 @@ void UBaseGameInstance::Init()
     this->DataProvider = DataProvider;
 
     VoiceControllerInstance = NewObject<UVoiceController>();
+    VoiceControllerInstance->Init(this);
+
+
+    if (VoiceControllerInstance)
+    {
+        UE_LOG(LogTemp, Error, TEXT("VoiceControllerInstance created successfully"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to create VoiceControllerInstance"));
+    }
 }
 
 

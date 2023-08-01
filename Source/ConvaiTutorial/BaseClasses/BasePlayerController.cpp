@@ -6,6 +6,7 @@
 
 #include "ConvaiTutorial/BaseClasses/CoreGameMode.h"
 #include "ConvaiTutorial/BaseClasses/BaseGameInstance.h"
+#include "ConvaiTutorial/VoiceCommandManagement/VoiceController.h"
 
 #include "ConvaiTutorial/GraphManagement/NodeManager.h"
 #include "ConvaiTutorial/GraphManagement/NodeActorBase.h"
@@ -42,15 +43,23 @@ void ABasePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+    UWorld* World = GetWorld();
+    UBaseGameInstance* GameInstance = World ? Cast<UBaseGameInstance>(World->GetGameInstance()) : nullptr;
+
     VoiceControllerInstance = NewObject<UVoiceController>();
+    VoiceControllerInstance->Init(GameInstance);
     VoiceControllerInstance->PlayerControllerRef = this;
 
-UWorld* World = GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull);
-ACharacter* MyCharacter = nullptr;
-if (World)
-{
-    MyCharacter = Cast<ACharacter>(UGameplayStatics::GetPlayerCharacter(World, 0));
-}
+//     VoiceControllerInstance = NewObject<UVoiceController>();
+//     VoiceControllerInstance->PlayerControllerRef = this;
+
+// UWorld* World = GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull);
+
+    ACharacter* MyCharacter = nullptr;
+    if (World)
+    {
+        MyCharacter = Cast<ACharacter>(UGameplayStatics::GetPlayerCharacter(World, 0));
+    }
 }
 
 

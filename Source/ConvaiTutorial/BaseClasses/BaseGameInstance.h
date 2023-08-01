@@ -10,7 +10,6 @@
 #include "ConvaiTutorial/DataManagement/KnowledgeStructs.h"
 #include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
 #include "ConvaiTutorial/DataManagement/FieldDataManager.h"
-#include "ConvaiTutorial/VoiceCommandManagement/VoiceController.h"
 
 #include "ConvaiTutorial/Widgets/DirectoryHierarchyManager.h"
 #include "ConvaiTutorial/Widgets/FieldWidget.h"
@@ -38,6 +37,7 @@ enum class EStructLevelJSON : uint8
 	EL_Subtopic
 };
 
+class UVoiceController;
 
 class FJsonObject;
 

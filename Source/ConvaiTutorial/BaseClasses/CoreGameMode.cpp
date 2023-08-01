@@ -28,4 +28,15 @@ void ACoreGameMode::BeginPlay()
 	// Initialize the AssessmentMetricsCalculator
 	AssessmentMetricsCalculator = NewObject<UAssessmentMetricsCalculator>(this, UAssessmentMetricsCalculator::StaticClass());
 
+// Create an instance of MyHTTPClient
+    HttpClient = NewObject<AMyHttpClient>(this);
+
+// Set up the request data
+    FString Url = "http://localhost:5000/process_data";
+    FString Verb = "POST";
+    FString ContentType = "application/json";
+    FString Body = "{\"key1\":\"value111\", \"key2\":\"value222\"}";
+
+    // Send the request
+	HttpClient->SendRequest(Url, Verb, Body, ContentType);
 }

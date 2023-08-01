@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 
 #include "GameFramework/GameModeBase.h"
+#include "ConvaiTutorial/MyHttpClient.h"
 
 #include "ConvaiTutorial/MetricHandling/AssessmentMetricsCalculator.h"
 
@@ -34,6 +35,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Assessment")
 	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
+
+	// UPROPERTY(BlueprintReadWrite, Category = "HTTP")
+	AMyHttpClient* HttpClient;
 
 };
 
