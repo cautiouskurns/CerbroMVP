@@ -10,6 +10,7 @@
 #include "ConvaiTutorial/DataManagement/KnowledgeStructs.h"
 #include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
 #include "ConvaiTutorial/DataManagement/FieldDataManager.h"
+#include "ConvaiTutorial/VoiceCommandManagement/VoiceController.h"
 
 #include "ConvaiTutorial/Widgets/DirectoryHierarchyManager.h"
 #include "ConvaiTutorial/Widgets/FieldWidget.h"
@@ -633,4 +634,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Directory")
 	UDirectoryHierarchyManager* DirectoryManager;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Voice Control")
+	UVoiceController* VoiceControllerInstance;
 };

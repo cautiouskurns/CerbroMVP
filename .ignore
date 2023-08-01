@@ -1,0 +1,12 @@
+/.git
+/.vs
+/.vscode
+/Content
+/DerivedDataCache
+/Intermediate
+/Platforms
+/Saved
+/Plugins/ConvaiOVRLipSync/Content
+/Plugins/ConvaiOVRLipSync/Intermediate
+/Plugins/ConvaiOVRLipSync/OfflineModel
+/Plugins/ConvaiOVRLipSync/ThirdParty

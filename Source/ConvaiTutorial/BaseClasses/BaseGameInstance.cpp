@@ -9,6 +9,8 @@
 #include "ConvaiTutorial/DataManagement/UserInteractionDataManager.h"
 #include "ConvaiTutorial/ContentRecommendationManagement/ContentRecommendationManager.h"
 #include "ConvaiTutorial/DataManagement/MySaveGame.h"
+#include "ConvaiTutorial/VoiceCommandManagement/VoiceController.h"
+
 
 #include "ConvaiTutorial/MetricHandling/AssessmentMetricsCalculator.h"
 
@@ -62,6 +64,8 @@ void UBaseGameInstance::Init()
 
     // Store the DataProvider in a property if you need to access it later
     this->DataProvider = DataProvider;
+
+    VoiceControllerInstance = NewObject<UVoiceController>();
 }
 
 
@@ -358,6 +362,12 @@ int32 UBaseGameInstance::GetTimesCorrectForQuestion(int32 FieldIndex, int32 Area
 {
     return AssessmentMetricsCalculator->GetTimesCorrectForQuestion(FieldIndex, AreaIndex, SubjectGroupIndex, SubjectIndex, SectionIndex, TopicIndex, SubtopicIndex, QuestionText, FieldDataArray); 
 }
+
+
+
+
+
+
 
 
 

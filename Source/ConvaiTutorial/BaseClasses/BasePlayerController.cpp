@@ -28,6 +28,9 @@
 
 #include <Blueprint/WidgetBlueprintLibrary.h>
 
+
+#include "Kismet/GameplayStatics.h"
+
 #include "ConvaiTutorial/HUDWidgetTest.h"
 #include "ConvaiTutorial/Testwidget.h"
 
@@ -39,6 +42,15 @@ void ABasePlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
+    VoiceControllerInstance = NewObject<UVoiceController>();
+    VoiceControllerInstance->PlayerControllerRef = this;
+
+UWorld* World = GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull);
+ACharacter* MyCharacter = nullptr;
+if (World)
+{
+    MyCharacter = Cast<ACharacter>(UGameplayStatics::GetPlayerCharacter(World, 0));
+}
 }
 
 
@@ -473,4 +485,118 @@ FSubjectStruct ABasePlayerController::FindSubjectByName(FString TargetSubjectNam
     // If no subject with the given name is found, return an empty FSubjectStruct
     return FSubjectStruct();
 }
-
+//
+//FString ABasePlayerController::PrintContentForVoicePrompt(FString VoicePrompt)
+//{
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+//    if (GameInstance)
+//    {
+//        // Traverse the field data array
+//        for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+//        {
+//            // Traverse the areas within each field
+//            for (const FAreaStruct& AreaData : FieldData.Areas)
+//            {
+//                // Traverse the subject groups within each area
+//                for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+//                {
+//                    // Traverse the subjects within each subject group
+//                    for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+//                    {
+//                        // Check if the subject's name matches the voice prompt
+//                        //if (SubjectData.SubjectName == VoicePrompt)
+//                        if (SubjectData.SubjectName.Contains(VoicePrompt, ESearchCase::IgnoreCase))
+//                        {
+//                            // We've found the desired topic, now we can print its content
+//                            if (GEngine)
+//                            {
+//                                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Content function: %s"), *SubjectData.SubjectName));
+//                            }
+//                            UpdateTextWidget(SubjectData.SubjectName);
+//
+//                            return SubjectData.SubjectName;
+//                        }
+//                    
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    return FString();
+//    // If we've gotten this far, the voice prompt did not match any subject
+//    UE_LOG(LogTemp, Warning, TEXT("No content found for voice prompt: %s"), *VoicePrompt);
+//}
+//
+//
+//
+//FSubjectStruct ABasePlayerController::FindSubjectByVocalPrompt(FString SubjectName)
+//{
+//    UBaseGameInstance* GameInstance = Cast<UBaseGameInstance>(GetWorld()->GetGameInstance());
+//    if (GameInstance)
+//    {
+//        for (const FFieldStruct& FieldData : GameInstance->FieldDataArray)
+//        {
+//            for (const FAreaStruct& AreaData : FieldData.Areas)
+//            {
+//                for (const FSubjectGroupStruct& SubjectGroupData : AreaData.SubjectGroups)
+//                {
+//                    for (const FSubjectStruct& SubjectData : SubjectGroupData.Subjects)
+//                    {
+//                        if (SubjectData.SubjectName.Contains(SubjectName, ESearchCase::IgnoreCase))
+//                        {
+//                            return SubjectData;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    return FSubjectStruct(); // Return an empty/default FSubjectStruct if no match found
+//}
+//
+//
+//void ABasePlayerController::RetrieveSectionsForSubject(FString SubjectName)
+//{
+//    // Retrieve the subject based on the SubjectName
+//    FSubjectStruct SubjectData = FindSubjectByVocalPrompt(SubjectName);
+//
+//    // We no longer need the if (SubjectData) check here, because we're working with values directly,
+//    // not pointers. If there's no matching subject, SubjectData will be an empty/default FSubjectStruct.
+//
+//    for (const FSectionStruct& Section : SubjectData.SubjectDetailsArray)
+//    {
+//        OnSectionFound(Section.SectionName);
+//        RetrieveTopicsForSection(Section);
+//    }
+//}
+//
+//void ABasePlayerController::RetrieveTopicsForSection(const FSectionStruct& SectionData)
+//{
+//    for (const FTopic& Topic : SectionData.Topics)
+//    {
+//        OnTopicFound(Topic.Title);
+//        RetrieveSubtopicsForTopic(Topic);
+//    }
+//}
+//
+//void ABasePlayerController::RetrieveSubtopicsForTopic(const FTopic& TopicData)
+//{
+//    for (const FSubtopic& Subtopic : TopicData.Subtopics)
+//    {
+//        OnSubtopicFound(Subtopic.Title);
+//    }
+//}
+//
+//
+//void ABasePlayerController::ClearContentForVoicePrompt(FString VoicePrompt)
+//{
+//    if (VoicePrompt.Contains("Clear", ESearchCase::IgnoreCase))
+//    {
+//        // pritn to screen that content is cleared
+//        if (GEngine)
+//        {
+//			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Content cleared")));
+//		}
+//        OnClearContent();
+//    }
+//}

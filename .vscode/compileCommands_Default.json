@@ -1,0 +1,938 @@
+[
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSyncConvai\\OVRLipSyncConvai.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSyncConvai.95.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSyncConvai\\Private\\OVRLipSyncConvaiModule.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSyncConvai.95.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSyncConvai\\Private\\OVRLipSyncConvaiModule.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSyncConvai.95.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSyncConvai\\Private\\OVRLipSyncConvaiPlaybackActorComponent.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSyncConvai.95.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSyncConvai\\Private\\OVRLipSyncConvaiPlaybackActorComponent.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSyncConvai.95.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSyncEditor\\OVRLipSyncEditor.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSyncEditor.94.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSyncEditor\\Private\\OVRLipSyncEditorModule.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSyncEditor.94.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\OVRLipSync.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\OVRLipSync_APL.xml",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Private\\OVRLipSyncActorComponentBase.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Private\\OVRLipSyncContextWrapper.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Private\\OVRLipSyncLiveActorComponent.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Private\\OVRLipSyncModule.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Private\\OVRLipSyncModule.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Private\\OVRLipSyncPlaybackActorComponent.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Public\\OVRLipSyncActorComponentBase.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Public\\OVRLipSyncContextWrapper.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Public\\OVRLipSyncFrame.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Public\\OVRLipSyncLiveActorComponent.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Plugins\\ConvaiOVRLipSync\\Source\\OVRLipSync\\Public\\OVRLipSyncPlaybackActorComponent.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\OVRLipSync.93.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\0_Core\\MasterHUD.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\0_Core\\MasterHUD.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\AreaTreeViewItem.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\AreaTreeViewItem.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\BaseClasses\\BaseGameInstance.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\BaseClasses\\BaseGameInstance.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\BaseClasses\\BasePlayerController.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\BaseClasses\\BasePlayerController.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\BaseClasses\\CoreGameMode.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\BaseClasses\\CoreGameMode.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\ContentRecommendationManagement\\ContentRecommendationManager.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\ContentRecommendationManagement\\ContentRecommendationManager.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\ConvaiTutorial.Build.cs",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\ConvaiTutorial.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\ConvaiTutorial.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\CoreDataAsset.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\CoreDataAsset.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\DataLoader.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\DataLoader.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\DataProvider.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\DataProvider.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\FieldDataManager.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\FieldDataManager.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\KnowledgeStructs.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\KnowledgeStructs.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\MySaveGame.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\MySaveGame.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\ReadWriteJsonFile.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\ReadWriteJsonFile.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\UserInteractionDataManager.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\DataManagement\\UserInteractionDataManager.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\EdgeActorBase.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\EdgeActorBase.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\GraphManager.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\GraphManager.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\NodeActorBase.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\NodeActorBase.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\NodeDataLoader.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\NodeDataLoader.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\NodeManager.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\GraphManagement\\NodeManager.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\HUDWidgetTest.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\HUDWidgetTest.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\MetricHandling\\AssessmentMetricsCalculator.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\MetricHandling\\AssessmentMetricsCalculator.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\SubjectTreeViewItem.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\SubjectTreeViewItem.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\TestWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\TestWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\TreeViewItem.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\TreeViewItem.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\VoiceCommandManagement\\VoiceController.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\VoiceCommandManagement\\VoiceController.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\AreaWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\AreaWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\AssessmentWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\AssessmentWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\DirectoryHierarchyManager.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\DirectoryHierarchyManager.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\DirectoryWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\DirectoryWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\FieldWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\FieldWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\FileWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\FileWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\FolderWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\FolderWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\HUDWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\HUDWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\HierarchySubjectWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\HierarchySubjectWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\ImportWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\ImportWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\InstructWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\InstructWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\InteractWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\InteractWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\MasterTopicWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\MasterTopicWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\MetadataOverlayWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\MetadataOverlayWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\RPGWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\RPGWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\ResourceWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\ResourceWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SectionWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SectionWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SimulateWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SimulateWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SubTopicWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SubTopicWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SubjectWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\SubjectWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\TopicWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\TopicWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\TreeViewItemWidget.cpp",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	},
+	{
+		"file": "C:\\repositories\\ConvaiTutorial\\Source\\ConvaiTutorial\\Widgets\\TreeViewItemWidget.h",
+		"arguments": [
+			"C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe",
+			"@C:\\repositories\\ConvaiTutorial\\.vscode\\compileCommands_Default\\ConvaiTutorial.302.rsp"
+		],
+		"directory": "C:\\Program Files\\Epic Games\\UE_5.2\\Engine\\Source"
+	}
+]

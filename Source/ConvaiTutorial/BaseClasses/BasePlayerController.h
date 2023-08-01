@@ -101,6 +101,28 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	FSubjectStruct FindSubjectByName(FString TargetSubjectName);
 
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//FString PrintContentForVoicePrompt(FString VoicePrompt);
+
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//FSubjectStruct FindSubjectByVocalPrompt(FString SubjectName);
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//void RetrieveSectionsForSubject(FString SubjectName);
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//void RetrieveTopicsForSection(const FSectionStruct& SectionData);
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//void RetrieveSubtopicsForTopic(const FTopic& TopicData);
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//void ClearContentForVoicePrompt(FString VoicePrompt);
+
+
+
+
 	void OnButtonClicked(UResourceWidget* ClickedWidget);
 
 public:
@@ -147,11 +169,19 @@ public:
 		TSubclassOf<UHierarchySubjectWidget> SubjectWidgetClass, TSubclassOf<UResourceWidget> ResourceWidgetClass, int32 FieldIndex,
 		int32 AreaIndex);
 
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//void CreateSubjectWidgets(const TArray<FSubjectStruct>& ResourceDataArray, UHierarchySubjectWidget* ParentWidget, TSubclassOf<UTextBlock> TextWidgetClass, 
+	//	TSubclassOf<UResourceWidget> ResourceWidgetClass, int32 FieldIndex, int32 AreaIndex, int32 SubjectGroupIndex);
+
 	UFUNCTION(BlueprintCallable, Category = "Widgets")
 	void CreateSubjectWidgets(const TArray<FSubjectStruct>& SubjectDataArray, UHierarchySubjectWidget* ParentWidget, 
 		TSubclassOf<UResourceWidget> ResourceWidgetClass, int32 FieldIndex,
 		int32 AreaIndex,
 		int32 SubjectGroupIndex);
+
+	//UFUNCTION(BlueprintCallable, Category = "Widgets")
+	//void CreateSectionTextBlocks(const TArray<FSectionStruct>& SectionDataArray, UHierarchySubjectWidget* ParentWidget, TSubclassOf<UTextBlock> TextWidgetClass);
+
 
 
 
@@ -166,4 +196,24 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
 	UHierarchySubjectWidget* HierarchySubjectWidgetReference;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void UpdateTextWidget(const FString& Text);
+
+	// Blueprint Implementable Events
+	UFUNCTION(BlueprintImplementableEvent, Category = "Curriculum")
+	void OnSectionFound(const FString& SectionText);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Curriculum")
+	void OnTopicFound(const FString& TopicText);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Curriculum")
+	void OnSubtopicFound(const FString& SubtopicText);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Voice")
+	void OnClearContent();
+
+
+	UPROPERTY(BlueprintReadWrite, Category = "Topic Data")
+	UVoiceController* VoiceControllerInstance;
 };
