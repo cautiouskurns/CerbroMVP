@@ -4,6 +4,7 @@
 #include "ImportWidget.h"
 
 #include "ConvaiTutorial/BaseClasses/BaseGameInstance.h"
+#include "ConvaiTutorial/MyHttpClient.h"
 
 #include "Engine/Engine.h"
 #include "Misc/Paths.h"
@@ -12,6 +13,9 @@
 #include <Components/ComboBoxString.h>
 
 
+UImportWidget::UImportWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+}
 
 
 FString UImportWidget::OpenDialogForFile()
@@ -802,3 +806,24 @@ void UImportWidget::PopulateSubTopicComboBox(UComboBoxString* ComboBox, const FS
 	// Refresh the combo box to show the new options
 	ComboBox->RefreshOptions();
 }
+
+
+FString UImportWidget::ReadFileToString(FString FilePath)
+{
+    FString FileContents;
+    if (!FFileHelper::LoadFileToString(FileContents, *FilePath))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Failed to load file: %s"), *FilePath);
+        return TEXT("");
+    }
+
+    // Create an instance of AMyHttpClient
+   HttpClient = NewObject<AMyHttpClient>(GetWorld());
+
+    // Send the file content to the Python server
+    HttpClient->SendRequest("http://localhost:5000/process_text", "POST", FileContents, "text/plain");
+
+    return FileContents;
+}
+
+

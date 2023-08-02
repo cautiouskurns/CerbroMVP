@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Http.h"
+#include "Misc/DateTime.h"
+#include "Json.h"
+
 #include "MyHttpClient.h"
 
 // Sets default values
@@ -47,8 +50,53 @@ void AMyHttpClient::OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr
     UE_LOG(LogTemp, Warning, TEXT("Response: %s"), *Response->GetContentAsString());
 }
 
-void AMyHttpClient::TestCommunication()
+FString AMyHttpClient::GenerateLineChartData()
 {
-    SendRequest("http://localhost:5000/process_data", "POST", 
-    "{\"key1\":\"value1\", \"key2\":\"value2\"}", "application/json");
+    TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
+    // TArray<TSharedPtr<FJsonValue>> Timestamps;
+    // TArray<TSharedPtr<FJsonValue>> Values;
+
+    // Generate data for 10 points
+    for (int i = 0; i < 10; i++)
+    {
+        // Simulating timestamp in seconds
+        int64 Timestamp = FDateTime::Now().ToUnixTimestamp() + i * 60;
+        // Simulating value (e.g., player's score)
+        int32 Value = 100 * i;
+
+        Timestamps.Add(MakeShareable(new FJsonValueNumber(Timestamp)));
+        Values.Add(MakeShareable(new FJsonValueNumber(Value)));
+    }
+
+    // Add the arrays to the JSON object
+    JsonObject->SetArrayField("timestamps", Timestamps);
+    JsonObject->SetArrayField("values", Values);
+
+    // Convert the JSON object to a string
+    FString Content;
+    TSharedRef<TJsonWriter<>> Writer = TJsonWriterFactory<>::Create(&Content);
+    FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
+
+    // Send the data to the Python server
+    SendRequest("http://localhost:5000/plot_line_chart", "POST", Content, "application/json");
+
+    return Content;
 }
+
+
+void AMyHttpClient::UpdateChartData()
+{
+    // This function updates the chart data when called
+    // For example, you might increment one of the y-values
+    Values[0] = MakeShareable(new FJsonValueNumber(Values[0]->AsNumber() + 1));  // Increment the first y-value
+
+    // Now send the updated data to the Python server
+    FString Url = "http://localhost:5000/plot_line_chart";
+    FString Verb = "POST";
+    FString ContentType = "application/json";
+    FString Body = GenerateLineChartData();  // Assume this function now uses the updated ChartData
+
+    SendRequest(Url, Verb, Body, ContentType);
+}
+
+

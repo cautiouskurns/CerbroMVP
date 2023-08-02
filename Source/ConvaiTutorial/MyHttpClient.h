@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Http.h"
+#include "Misc/DateTime.h"
+#include "Json.h"
 
 #include "MyHttpClient.generated.h"
 
@@ -30,6 +32,12 @@ public:
     void OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
     UFUNCTION(BlueprintCallable, Category = "My Category")
-	void TestCommunication();
+	FString GenerateLineChartData();
+
+	UFUNCTION(BlueprintCallable, Category = "My Category")
+	void UpdateChartData();
+
+	TArray<TSharedPtr<FJsonValue>> Timestamps;
+    TArray<TSharedPtr<FJsonValue>> Values;
 
 };

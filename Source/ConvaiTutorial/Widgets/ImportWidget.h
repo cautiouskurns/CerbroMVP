@@ -8,6 +8,7 @@
 #include "DesktopPlatform/Public/IDesktopPlatform.h"
 #include "DesktopPlatform/Public/DesktopPlatformModule.h"
 #include "Engine/GameInstance.h"
+#include "ConvaiTutorial/MyHttpClient.h"
 
 #include "ImportWidget.generated.h"
 
@@ -30,8 +31,10 @@ class CONVAITUTORIAL_API UImportWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+    UImportWidget(const FObjectInitializer &ObjectInitializer);
+    
 	UFUNCTION(BlueprintCallable, Category = "File Operations")
-	FString OpenDialogForFile();
+    FString OpenDialogForFile();
 
 	UFUNCTION(BlueprintCallable, Category = "File")
 	FString LoadJsonAsString(FString FilePath);
@@ -87,5 +90,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Update Functions")
 	void PopulateSubTopicComboBox(UComboBoxString* ComboBox, const FString& SelectedTopic);
 
-	
+	UFUNCTION(BlueprintCallable, Category = "Update Functions")
+    FString ReadFileToString(FString FilePath);
+
+	UPROPERTY(BlueprintReadWrite, Category = "HTTP")
+    AMyHttpClient* HttpClient;
 };

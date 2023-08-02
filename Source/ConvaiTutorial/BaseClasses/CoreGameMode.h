@@ -36,7 +36,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Assessment")
 	UAssessmentMetricsCalculator* AssessmentMetricsCalculator;
 
-	// UPROPERTY(BlueprintReadWrite, Category = "HTTP")
+	UPROPERTY(BlueprintReadWrite, Category = "HTTP")
 	AMyHttpClient* HttpClient;
 
 };
