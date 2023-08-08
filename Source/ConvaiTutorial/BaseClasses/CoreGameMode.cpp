@@ -31,15 +31,30 @@ void ACoreGameMode::BeginPlay()
 // Create an instance of MyHTTPClient
     HttpClient = NewObject<AMyHttpClient>(this);
 
-// Set up the request data
-    // FString Url = "http://localhost:5000/process_data";
-    // FString Verb = "POST";
-    // FString ContentType = "application/json";
-    // FString Body = "{\"key1\":\"value111\", \"key2\":\"value222\"}";
 
-    // Send the request
-	//HttpClient->SendRequest(Url, Verb, Body, ContentType);
+ // Assuming MyHttpClient is an instance of AMyHttpClient
+    int NumPoints = 100;
+	float Slope = 2.0f;
+	float Intercept = 1.0f;
+	float NoiseStdDev = 0.1f;
+	TArray<FVector2D> Points = GenerateTestData(NumPoints, Slope, Intercept, NoiseStdDev);
+	
+    HttpClient->SendLinRegRequest("http://localhost:5000/predict", "POST", Points);
 
-	//HttpClient->GenerateLineChartData();
+}
 
+
+TArray<FVector2D> ACoreGameMode::GenerateTestData(int NumPoints, float Slope, float Intercept, float NoiseStdDev)
+{
+    TArray<FVector2D> Points;
+    FRandomStream RandStream;
+
+    for (int i = 0; i < NumPoints; i++)
+    {
+        float X = RandStream.FRand();
+        float Y = Slope * X + Intercept + RandStream.FRandRange(-NoiseStdDev, NoiseStdDev);
+        Points.Add(FVector2D(X, Y));
+    }
+
+    return Points;
 }

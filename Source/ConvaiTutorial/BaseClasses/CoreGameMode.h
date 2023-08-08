@@ -24,6 +24,8 @@ class CONVAITUTORIAL_API ACoreGameMode : public AGameModeBase
 
 	virtual void BeginPlay() override;
 
+    TArray<FVector2D> GenerateTestData(int NumPoints, float Slope, float Intercept, float NoiseStdDev);
+
 public:
 
 	UPROPERTY(EditAnywhere, Category = "Manager")

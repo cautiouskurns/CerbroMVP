@@ -821,7 +821,7 @@ FString UImportWidget::ReadFileToString(FString FilePath)
    HttpClient = NewObject<AMyHttpClient>(GetWorld());
 
     // Send the file content to the Python server
-    HttpClient->SendRequest("http://localhost:5000/process_text", "POST", FileContents, "text/plain");
+    //HttpClient->SendRequest("http://localhost:5000/process_text", "POST", FileContents, "text/plain");
 
     return FileContents;
 }

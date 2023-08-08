@@ -27,15 +27,18 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-    void SendRequest(FString Url, FString Verb, FString Content, FString ContentType);
+    // void SendRequest(FString Url, FString Verb, FString Content, FString ContentType);
+	void SendLinRegRequest(FString Url, FString Verb, TArray<FVector2D> Points);
 
-    void OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+    // void OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+	void OnLinRegResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
-    UFUNCTION(BlueprintCallable, Category = "My Category")
-	FString GenerateLineChartData();
 
-	UFUNCTION(BlueprintCallable, Category = "My Category")
-	void UpdateChartData();
+    // UFUNCTION(BlueprintCallable, Category = "My Category")
+	// FString GenerateLineChartData();
+
+	// UFUNCTION(BlueprintCallable, Category = "My Category")
+	// void UpdateChartData();
 
 	TArray<TSharedPtr<FJsonValue>> Timestamps;
     TArray<TSharedPtr<FJsonValue>> Values;
